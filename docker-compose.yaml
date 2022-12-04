@@ -1,0 +1,65 @@
+version : "3"
+services:
+  db:
+    image: mariadb:10
+    container_name: MINEME_DB
+    env_file:
+     - ./.env
+    environment:
+        TZ: Asia/Seoul
+        MARIADB_DATABASE: ${MARIADB_DATABASE}
+        MARIADB_USER: ${MARIADB_USER}
+        MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+        MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    volumes:
+        - ./db/data:/var/lib/mariadb:rw
+    ports:
+        - 33061:3306
+    restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: MINEME_PROD
+    environment:
+      TZ: Asia/Seoul
+    env_file:
+     - ./.env
+    ports:
+        - ${PROD_PORT}:${SERVER_PORT}
+    volumes:
+        - ./build/libs:/app
+    depends_on:
+        - db
+    restart: always
+
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile_dev
+    container_name: MINEME_DEV
+    environment:
+      TZ: Asia/Seoul
+    env_file:
+     - ./.env
+    ports:
+        - ${DEV_PORT}:${SERVER_PORT}
+    volumes:
+        - ./build/libs:/app
+    depends_on:
+        - db
+    restart: always
+
+  nginx:
+    image: nginx
+    container_name: MINEME_NGINX
+    env_file:
+     - ./.env
+    ports:
+        - 8000:${PROD_PORT}
+    volumes:
+        - ./app:/app
+    working_dir: /app
+    restart: always
