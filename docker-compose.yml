@@ -1,9 +1,7 @@
 version : "3"
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: floodnut/mineme-api
     container_name: MINEME_PROD
     environment:
       TZ: Asia/Seoul
@@ -16,9 +14,7 @@ services:
     restart: always
 
   dev:
-    build:
-      context: .
-      dockerfile: Dockerfile_dev
+    image: floodnut/mineme-api
     container_name: MINEME_DEV
     environment:
       TZ: Asia/Seoul
