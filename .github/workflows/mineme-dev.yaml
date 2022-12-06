@@ -2,9 +2,9 @@ name: MINEME-DEV CI/CD
 
 on:
   push:
-    branches: ['main']
+    branches: ['develop']
   pull_request:
-    branches: ['main']
+    branches: ['develop']
 
 jobs:
   build:
@@ -41,10 +41,10 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
-            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker stop MINEME_DEV
-            sudo docker rm -f MINEME_DEV
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/mineme-api
-            sudo docker compose up -d
-            sudo docker image prune -f
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker stop MINEME_DEV
+            docker rm -f MINEME_DEV
+            docker pull ${{ secrets.DOCKER_REPO }}/mineme-api
+            docker-compose up -d
+            docker image prune -f
       
