@@ -9,8 +9,6 @@ services:
      - ./.env
     ports:
         - ${PROD_PORT}:${SERVER_PORT}
-    volumes:
-        - ./build/libs:/app
     restart: always
 
   dev:
@@ -22,8 +20,6 @@ services:
      - ./.env
     ports:
         - ${DEV_PORT}:${SERVER_PORT}
-    volumes:
-        - ./build/libs:/app
     restart: always
 
   nginx:
