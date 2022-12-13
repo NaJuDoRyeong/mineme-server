@@ -1,4 +1,4 @@
-package com.mineme.server.common.env;
+package com.mineme.server.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,15 +2,14 @@ package com.mineme.server.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Builder
-@Data
+
 @AllArgsConstructor
-public class ResponseDto<T> {
-
+@Builder
+@Getter
+public class ResponseDto {
     private Boolean isSuccess;
     private Integer code;
     private String message;
-    private T data;
 }

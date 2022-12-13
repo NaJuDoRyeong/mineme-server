@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import com.mineme.server.common.ResponseDto;
-import com.mineme.server.common.env.ResponseCode;
+import com.mineme.server.common.ResponseSuccessDto;
+import com.mineme.server.common.enums.ResponseCode;
 
 
 @RestController
@@ -23,14 +24,28 @@ public class HelloController {
     @GetMapping
     public ResponseEntity<?> retrieveHello(){
 
-        ResponseDto<String> response = ResponseDto.<String>builder()
-                                        .isSuccess(true)
-                                        .code(ResponseCode.STATUS_2001.getCode())
-                                        .message(ResponseCode.STATUS_2001.getMessage())
-                                        .data("Hello.")
-                                        .build();
+        ResponseSuccessDto<String> response = new ResponseSuccessDto<String>
+            (true, ResponseCode.STATUS_2001.getCode(), ResponseCode.STATUS_2001.getMessage(), "Hello.");
         
         return ResponseEntity.ok()
+                            .body(response); 
+    }
+
+    /** 
+     * This is Sample.
+     * Request GET to /api/v1/fail
+     * @return Bad Request.
+     */
+    @GetMapping("/fail")
+    public ResponseEntity<?> retrieveFail(){
+
+        ResponseDto response = ResponseDto.builder()
+                                        .isSuccess(false)
+                                        .code(ResponseCode.STATUS_4007.getCode())
+                                        .message(ResponseCode.STATUS_4007.getMessage())
+                                        .build();
+        
+        return ResponseEntity.badRequest()
                             .body(response); 
     }
 }
