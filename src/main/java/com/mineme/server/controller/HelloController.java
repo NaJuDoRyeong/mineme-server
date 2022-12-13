@@ -17,10 +17,8 @@ import com.mineme.server.common.env.ResponseCode;
 public class HelloController {
 
     /**
-     * 
-     * @param request
-     * @param response
-     * @return
+     * Request GET to /api/v1
+     * @return "Hello." String
      */
     @GetMapping
     public ResponseEntity<?> retrieveHello(){
