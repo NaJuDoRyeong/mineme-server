@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import com.mineme.server.common.ResponseDto;
+import com.mineme.server.common.env.ResponseCode;
+
 
 @RestController
 @RequestMapping("/api/v1")
@@ -21,6 +24,15 @@ public class HelloController {
      */
     @GetMapping
     public ResponseEntity<?> retrieveHello(){
-        return ResponseEntity.ok().body("Hello"); 
+
+        ResponseDto<String> response = ResponseDto.<String>builder()
+                                        .isSuccess(true)
+                                        .code(ResponseCode.STATUS_2001.getCode())
+                                        .message(ResponseCode.STATUS_2001.getMessage())
+                                        .data("Hello.")
+                                        .build();
+        
+        return ResponseEntity.ok()
+                            .body(response); 
     }
 }

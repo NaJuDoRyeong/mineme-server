@@ -9,8 +9,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class ResponseDto<T> {
 
-    private boolean isSuccess;
-    private int code;
+    private Boolean isSuccess;
+    private Integer code;
     private String message;
     private T data;
 }
