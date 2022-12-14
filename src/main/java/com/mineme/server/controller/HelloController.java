@@ -25,7 +25,7 @@ public class HelloController {
     public ResponseEntity<?> retrieveHello(){
 
         ResponseSuccessDto<String> response = new ResponseSuccessDto<String>
-            (true, ResponseCode.STATUS_2001.getCode(), ResponseCode.STATUS_2001.getMessage(), "Hello.");
+            (ResponseCode.STATUS_2001.getCode(), ResponseCode.STATUS_2001.getMessage(), "Hello.");
         
         return ResponseEntity.ok()
                             .body(response); 
