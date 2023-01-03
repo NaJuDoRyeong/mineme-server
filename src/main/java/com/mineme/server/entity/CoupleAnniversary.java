@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@RequiredArgsConstructor
 @Table(name = "COUPLE_ANNIVERSARY")
 public class CoupleAnniversary {
 
