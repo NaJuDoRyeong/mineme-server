@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.RequiredArgsConstructor;
+import com.mineme.server.common.dto.ExceptionDto;
+import com.mineme.server.common.dto.ResponseDto;
+import com.mineme.server.common.enums.ErrorCode;
 
-import com.mineme.server.common.ResponseDto;
-import com.mineme.server.common.ResponseSuccessDto;
-import com.mineme.server.common.enums.ResponseCode;
+import lombok.RequiredArgsConstructor;
 
 
 @RestController
@@ -23,12 +23,9 @@ public class HelloController {
      */
     @GetMapping
     public ResponseEntity<?> retrieveHello(){
-
-        ResponseSuccessDto<String> response = new ResponseSuccessDto<String>
-            (ResponseCode.STATUS_2001.getCode(), ResponseCode.STATUS_2001.getMessage(), "Hello.");
         
         return ResponseEntity.ok()
-                            .body(response); 
+                            .body(new ResponseDto<>("Hello."));
     }
 
     /** 
@@ -38,14 +35,14 @@ public class HelloController {
      */
     @GetMapping("/fail")
     public ResponseEntity<?> retrieveFail(){
-
-        ResponseDto response = ResponseDto.builder()
-                                        .isSuccess(false)
-                                        .code(ResponseCode.STATUS_4007.getCode())
-                                        .message(ResponseCode.STATUS_4007.getMessage())
-                                        .build();
         
         return ResponseEntity.badRequest()
-                            .body(response); 
+                            .body(ResponseDto.builder()
+                                .success(false)
+                                .error(ExceptionDto.builder()
+                                    .code(ErrorCode.STATUS_4007.getCode())
+                                    .message(ErrorCode.STATUS_4007.getMessage())
+                                    .build())
+                                .build());
     }
 }
