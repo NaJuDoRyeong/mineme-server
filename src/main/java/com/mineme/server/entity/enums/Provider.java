@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Provider {
-    Kakao,
-    Apple
+    KAKAO,
+    APPLE;
 }

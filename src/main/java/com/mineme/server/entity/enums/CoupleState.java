@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum CoupleState {
-    Activated,
-    Deactivated,
-    Pending;
+    ACTIVATED,
+    DEACTIVATED,
+    PENDING;
 }
