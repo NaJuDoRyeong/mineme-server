@@ -1,14 +1,16 @@
 package com.mineme.server.entity;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
-@Data
+@Getter
 @Entity
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USER_EXTEND")
 public class UserExtend {
 
@@ -23,4 +25,10 @@ public class UserExtend {
 
     @Column(name = "EXTRA_VALUES")
     private String extraValues;
+
+    @Builder
+    public UserExtend(String phoneNumber, String extraValues) {
+        this.phoneNumber = phoneNumber;
+        this.extraValues = extraValues;
+    }
 }

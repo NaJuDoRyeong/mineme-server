@@ -1,15 +1,13 @@
 package com.mineme.server.entity;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @Entity
-@RequiredArgsConstructor
 public class Terms {
 
     @Id

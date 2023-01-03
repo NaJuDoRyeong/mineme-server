@@ -1,12 +1,12 @@
 package com.mineme.server.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @Entity
 @RequiredArgsConstructor
 public class Photo {

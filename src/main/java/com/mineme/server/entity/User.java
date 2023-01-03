@@ -1,17 +1,19 @@
 package com.mineme.server.entity;
 
-import lombok.Builder;
-import lombok.Data;
+
+import com.mineme.server.entity.enums.Provider;
+import com.mineme.server.entity.enums.UserState;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @Entity
-@RequiredArgsConstructor
 public class User {
 
     @Id
@@ -20,8 +22,8 @@ public class User {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User userId;
+    @JoinColumn(name = "COUPLE_ID")
+    private Couple coupleId;
 
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
@@ -30,7 +32,7 @@ public class User {
     private LocalDateTime modifiedAt;
 
     @Column(name = "USER_CODE")
-    @Size(max = 8)
+    @Size(min = 8, max = 8)
     private String userCode;
 
     @Column(name = "USERNAME")
@@ -41,14 +43,11 @@ public class User {
     @Size(max = 64)
     private String nickname;
 
-    /* ENUM을 통해 저장 */
     @Column(name = "USER_STATE")
-    @Size(max = 8)
-    private String userState;
+    private UserState userState;
 
     @Column(name = "PROVIDER")
-    @Size(max = 8)
-    private String provider;
+    private Provider provider;
 
     /* EMAIL 길이 조정 필요 */
     @Column(name = "PROFILE_IMAGE_URL")
@@ -67,6 +66,7 @@ public class User {
     @Column(name = "COMMENT")
     private String comment;
 
+    /* ENUM */
     @Column(name = "GENDER", length = 1)
     private Character gender;
 
@@ -81,4 +81,13 @@ public class User {
     @Column(name = "DEVICE")
     @Size(max = 128)
     private String device;
+
+    @Column(name = "NOTICE_FEED")
+    private Boolean noticeFeed;
+
+    @Column(name = "NOTICE_ANNIVERSARY")
+    private Boolean noticeAnniversary;
+
+    @Column(name = "NOTICE_MARKETING")
+    private Boolean noticeMarketing;
 }
