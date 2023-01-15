@@ -8,18 +8,12 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-public class Terms {
+public class Terms extends BaseEntity{
 
     @Id
     @Column(name = "TEAR_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
-
-    @Column(name = "MODIFIED_AT")
-    private LocalDateTime modifiedAt;
 
     /* 약관 제목 타입, 길이 수정 필요 */
     @Column(name = "TERM_TITLE")

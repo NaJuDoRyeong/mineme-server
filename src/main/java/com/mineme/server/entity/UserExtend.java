@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USER_EXTEND")
-public class UserExtend {
+public class UserExtend extends BaseEntity{
 
     @Id
     @JoinColumn(name = "USER_ID")

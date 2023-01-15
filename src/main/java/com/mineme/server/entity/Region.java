@@ -8,10 +8,11 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
-public class Region {
+public class Region extends BaseEntity{
 
     /* ENUM으로 지정 */
     @Id

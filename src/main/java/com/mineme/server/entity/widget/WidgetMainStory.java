@@ -7,6 +7,7 @@ import lombok.Getter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
 @Getter
 @Entity
 @DiscriminatorValue("MAIN_STORY")

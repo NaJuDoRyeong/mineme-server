@@ -1,6 +1,5 @@
 package com.mineme.server.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -10,18 +9,12 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @RequiredArgsConstructor
-public class Post {
+public class Post extends BaseEntity{
 
     @Id
     @Column(name = "POST_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
-
-    @Column(name = "MODIFIED_AT")
-    private LocalDateTime modifiedAt;
 
     @Column(name = "DATED_AT")
     private LocalDateTime datedAt;

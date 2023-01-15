@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Widget {
+public abstract class Widget{
 
     @Id
     @Column(name = "WIDGET_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Builder.Default
     @OneToMany(mappedBy = "widgetId")
     private List<Widget> widgets = new ArrayList<Widget>();
 

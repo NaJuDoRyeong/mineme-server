@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import lombok.Getter;
 
+
 @Getter
 @Entity
 @DiscriminatorValue("DDAY")

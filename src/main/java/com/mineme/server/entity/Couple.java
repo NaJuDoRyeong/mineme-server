@@ -2,9 +2,8 @@ package com.mineme.server.entity;
 
 import com.mineme.server.entity.enums.CoupleState;
 import com.mineme.server.entity.widget.Widget;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +18,10 @@ import java.util.List;
 
 @Getter
 @Entity
-@RequiredArgsConstructor
-public class Couple {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Couple extends BaseEntity{
 
     @Id
     @Column(name = "COUPLE_ID")
@@ -34,12 +35,6 @@ public class Couple {
     @Builder.Default
     @OneToMany(mappedBy = "widgetId")
     private List<Widget> widgets = new ArrayList<Widget>();
-
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
-
-    @Column(name = "MODIFIED_AT")
-    private LocalDateTime modifiedAt;
 
     @Column(name = "NAME")
     private String name;

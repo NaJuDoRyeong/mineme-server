@@ -4,11 +4,12 @@ import com.mineme.server.entity.widget.Widget;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
 @Table(name = "COUPLE_WIDGET")
-public class CoupleWidget {
+public class CoupleWidget extends BaseEntity{
 
     @Id
     @Column(name = "COUPLE_WIDGET_ID")

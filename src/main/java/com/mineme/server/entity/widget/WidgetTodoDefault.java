@@ -1,10 +1,12 @@
 package com.mineme.server.entity.widget;
 
+
 import lombok.Getter;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
+
 
 @Getter
 @Entity

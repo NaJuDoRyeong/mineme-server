@@ -4,7 +4,6 @@ package com.mineme.server.entity;
 import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-public class User {
+public class User extends BaseEntity{
 
     @Id
     @Column(name = "USER_ID")
@@ -24,12 +23,6 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "COUPLE_ID")
     private Couple coupleId;
-
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
-
-    @Column(name = "MODIFIED_AT")
-    private LocalDateTime modifiedAt;
 
     @Column(name = "USER_CODE")
     @Size(min = 8, max = 8)

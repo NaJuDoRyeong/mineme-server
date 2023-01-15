@@ -9,18 +9,12 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @RequiredArgsConstructor
-public class Photo {
+public class Photo extends BaseEntity{
 
     @Id
     @Column(name = "PHOTO_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
-
-    @Column(name = "MODIFIED_AT")
-    private LocalDateTime modifiedAt;
 
     @Column(name = "PHOTO_URL")
     private String photoUrl;
