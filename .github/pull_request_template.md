@@ -23,14 +23,15 @@ PR 요약 작성, 대상 이슈번호 작성.
 미해결 이슈, 발견한 이슈
 
 ## Test
-- [ ] Unit Test
-- [ ] Build Test
+- [ ] 유닛 테스트
+- [ ] 빌드 테스트 (통합 테스트)
+- [ ] 기타 유효성 테스트
 
 ## Proof Check
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] I have added tests that prove my feature, policy, or fix is effective and works
-- [ ] New and existing tests pass locally with my changes
-- [ ] Any dependent changes have been merged and published in downstream modules
+- [ ] 코드가 이 프로젝트의 스타일 지침을 따릅니다.
+- [ ] 코드에 대한 자체 리뷰를 수행했습니다.
+- [ ] 변경 내역에 대해 주석을 작성했습니다.
+- [ ] 해당 PR에 대한 문서를 변경했습니다.
+- [ ] 기능, 정책 또는 수정 사항에 대한 테스트 코드를 추가했습니다.
+- [ ] 변경 내용이 로컬 개발환경에서의 테스트를 통과했습니다.
+- [ ] 모든 종속 변경 사항이 병합되어 다운스트림 모듈에 게시되었습니다.
