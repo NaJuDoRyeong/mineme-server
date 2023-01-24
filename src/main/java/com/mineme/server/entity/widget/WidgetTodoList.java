@@ -1,7 +1,6 @@
 package com.mineme.server.entity.widget;
 
 
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -15,7 +14,6 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "WIDGET_ID")
 public class WidgetTodoList extends Widget{
 
-    @Builder.Default
     @OneToMany(mappedBy = "widgetId")
     private List<WidgetTodoListEntity> todoListId = new ArrayList<>();
 }

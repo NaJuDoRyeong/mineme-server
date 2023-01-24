@@ -1,21 +1,17 @@
 package com.mineme.server.entity;
 
 import com.mineme.server.entity.enums.RegionCode;
-import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import javax.persistence.*;
 
 @Getter
 @Entity
-public class Region extends BaseEntity{
+public class Region{
 
     /* ENUM으로 지정 */
     @Id
+    @Enumerated(EnumType.STRING)
     @Column(name = "REGION_CODE")
     private RegionCode regionCode;
 

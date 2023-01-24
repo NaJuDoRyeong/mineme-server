@@ -1,7 +1,6 @@
 package com.mineme.server.entity.history;
 
 import com.mineme.server.entity.Couple;
-import com.mineme.server.entity.CoupleAnniversary;
 import com.mineme.server.entity.User;
 import lombok.Getter;
 
@@ -19,11 +18,11 @@ public class UserCoupleHistory {
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "COUPLE_ID")
     private Couple coupleId;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "USER_ID")
     private User userId;
 
     @Column(name = "CREATED_AT")

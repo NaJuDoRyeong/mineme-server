@@ -16,9 +16,9 @@ public class WidgetTodoListEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TODO_ID")
+    @JoinColumn(name = "WIDGET_ID")
     private WidgetTodoList widgetId;
 
-    @Column(name = "TODO_CONTENT")
+    @Column(name = "TODO_CONTENT", columnDefinition = "TEXT")
     private String todoContent;
 }

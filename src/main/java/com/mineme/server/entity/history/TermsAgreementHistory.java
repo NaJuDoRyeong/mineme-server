@@ -1,6 +1,7 @@
 package com.mineme.server.entity.history;
 
-import com.mineme.server.entity.Couple;
+
+import com.mineme.server.entity.Terms;
 import com.mineme.server.entity.User;
 import lombok.Getter;
 
@@ -18,11 +19,11 @@ public class TermsAgreementHistory {
     private Long id;
 
     @ManyToOne
-    @JoinColumn
-    private Couple coupleId;
+    @JoinColumn(name = "TERM_ID")
+    private Terms termId;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "USER_ID")
     private User userId;
 
     @Column(name = "CREATED_AT")

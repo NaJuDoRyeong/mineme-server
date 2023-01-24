@@ -2,6 +2,7 @@ package com.mineme.server.entity.widget;
 
 
 import com.mineme.server.entity.BaseEntity;
+import com.mineme.server.entity.CoupleWidget;
 import com.mineme.server.entity.enums.WidgetType;
 import com.mineme.server.entity.enums.WidgetXPos;
 import com.mineme.server.entity.enums.WidgetYPos;
@@ -23,7 +24,7 @@ public abstract class Widget extends BaseEntity {
     private Long id;
 
     @OneToMany(mappedBy = "widgetId")
-    private List<Widget> widgets = new ArrayList<>();
+    private List<CoupleWidget> coupleWidgetId = new ArrayList<>();
 
     @Column(name = "WIDGET_TYPE")
     @Enumerated(EnumType.STRING)

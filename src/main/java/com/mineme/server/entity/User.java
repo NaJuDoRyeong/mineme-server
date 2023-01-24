@@ -36,9 +36,11 @@ public class User extends BaseEntity{
     @Size(max = 64)
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "USER_STATE")
     private UserState userState;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "PROVIDER")
     private Provider provider;
 
@@ -67,13 +69,20 @@ public class User extends BaseEntity{
     @Size(max = 128)
     private String instaId;
 
-    @Column(name = "DEVICE_PUSH_TOKEN")
+    @Column(name = "DEVICE_TOKEN")
     @Size(max = 128)
     private String deviceToken;
 
     @Column(name = "DEVICE")
     @Size(max = 128)
     private String device;
+
+    @Column(name = "PHONE_NUMBER")
+    @Size(max = 16)
+    private String phoneNumber;
+
+    @Column(name = "EXTRA_VALUES", columnDefinition = "TEXT")
+    private String extraValues;
 
     @Column(name = "NOTICE_FEED")
     private Boolean noticeFeed;

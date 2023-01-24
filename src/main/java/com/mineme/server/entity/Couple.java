@@ -1,15 +1,12 @@
 package com.mineme.server.entity;
 
 import com.mineme.server.entity.enums.CoupleState;
-import com.mineme.server.entity.widget.Widget;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +28,13 @@ public class Couple extends BaseEntity{
     private List<User> users = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "widgetId")
-    private List<Widget> widgets = new ArrayList<>();
+    @OneToMany(mappedBy = "coupleId")
+    private List<CoupleWidget> coupleWidgets = new ArrayList<>();
 
     @Column(name = "NAME")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "COUPLE_STATE")
     private CoupleState coupleState;
 

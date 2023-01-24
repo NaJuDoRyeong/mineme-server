@@ -4,7 +4,6 @@ import com.mineme.server.entity.widget.Widget;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -24,6 +23,6 @@ public class CoupleWidget extends BaseEntity{
     @JoinColumn(name = "COUPLE_ID")
     private Couple coupleId;
 
-    @Column(name = "POSITION")
-    private String position;
+    @Column(name = "ORDER")
+    private int order;
 }

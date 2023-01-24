@@ -13,5 +13,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @DiscriminatorValue("TODO_DEFAULT")
 @PrimaryKeyJoinColumn(name = "WIDGET_ID")
 public class WidgetMemo extends Widget {
-    private WidgetTodoItem widgetMemo;
+    private String name;
+    private Character isDone;
 }
