@@ -3,6 +3,7 @@ package com.mineme.server.entity.widget;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+import com.mineme.server.entity.enums.FontStyleDday;
 import lombok.Getter;
 
 
@@ -15,6 +16,7 @@ public class WidgetDday extends Widget{
     private Character hasBaseDate;
     private LocalDate baseDate;
     private int dday;
-
-    private Character Style;
+    @Enumerated(EnumType.STRING)
+    private FontStyleDday fontStyle;
+    private String ddayBg;
 }

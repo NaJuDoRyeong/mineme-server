@@ -3,7 +3,6 @@ package com.mineme.server.entity;
 import com.mineme.server.entity.enums.CoupleState;
 import com.mineme.server.entity.widget.Widget;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +28,11 @@ public class Couple extends BaseEntity{
 
     @Builder.Default
     @OneToMany(mappedBy = "coupleId")
-    private List<User> users = new ArrayList<User>();
+    private List<User> users = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "widgetId")
-    private List<Widget> widgets = new ArrayList<Widget>();
+    private List<Widget> widgets = new ArrayList<>();
 
     @Column(name = "NAME")
     private String name;

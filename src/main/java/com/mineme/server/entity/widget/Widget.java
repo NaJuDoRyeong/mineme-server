@@ -1,11 +1,13 @@
 package com.mineme.server.entity.widget;
 
-import lombok.Builder;
+
+import com.mineme.server.entity.BaseEntity;
+import com.mineme.server.entity.enums.WidgetType;
+import com.mineme.server.entity.enums.WidgetXPos;
+import com.mineme.server.entity.enums.WidgetYPos;
 import lombok.Getter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Widget{
+public abstract class Widget extends BaseEntity {
 
     @Id
     @Column(name = "WIDGET_ID")
@@ -21,30 +23,26 @@ public abstract class Widget{
     private Long id;
 
     @OneToMany(mappedBy = "widgetId")
-    private List<Widget> widgets = new ArrayList<Widget>();
-
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
-
-    @Column(name = "MODIFIED_AT")
-    private LocalDateTime modifiedAt;
+    private List<Widget> widgets = new ArrayList<>();
 
     @Column(name = "WIDGET_TYPE")
-    @Size(max = 16)
-    private String widgetType;
+    @Enumerated(EnumType.STRING)
+    private WidgetType widgetType;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private WidgetXPos width;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private WidgetYPos height;
+
+    @Column(name = "WIDGET_COLOR")
+    private String widgetColor;
 
     @Column(name = "HAS_TITLE")
     private Character hasTitle;
 
     @Column(name = "WIDGET_TITLE")
     private String widgetTitle;
-
-    @Column(name = "WIDGET_COLOR")
-    private String widgetColor;
-
-    @Column
-    private int width;
-
-    @Column
-    private int height;
 }

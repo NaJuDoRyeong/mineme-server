@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum RegionCode {
 
     /* Seoul */
-    SEOUL_GWANAK(02001, "Seoul_Gwanak"),
+    SEOUL_GWANAK(02001, "SEOUL_GWANAK"),
 
     /* Incheon */
 
@@ -39,7 +39,7 @@ public enum RegionCode {
     /* Gyeonbuk */
 
     /* Gyeongnam */
-    GYEONGNAM_CHANGWON(05301, "Gyeongnam_Changwon");
+    GYEONGNAM_CHANGWON(05301, "GYEONGNAM_CHANGWON");
 
     /* Jeju */
 

@@ -1,13 +1,12 @@
 package com.mineme.server.entity.widget;
 
 
+import lombok.Builder;
 import lombok.Getter;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -16,5 +15,7 @@ import java.util.Map;
 @PrimaryKeyJoinColumn(name = "WIDGET_ID")
 public class WidgetTodoList extends Widget{
 
-    Map<String, WidgetTodoItem> widgetTodo = new HashMap<String, WidgetTodoItem>();
+    @Builder.Default
+    @OneToMany(mappedBy = "widgetId")
+    private List<WidgetTodoListEntity> todoListId = new ArrayList<>();
 }

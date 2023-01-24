@@ -12,6 +12,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @Entity
 @DiscriminatorValue("TODO_DEFAULT")
 @PrimaryKeyJoinColumn(name = "WIDGET_ID")
-public class WidgetTodoDefault extends Widget {
-    private WidgetTodoItem widgetTodo;
+public class WidgetMemo extends Widget {
+    private WidgetTodoItem widgetMemo;
 }
