@@ -18,11 +18,9 @@ public class Couple extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Builder.Default
     @OneToMany(mappedBy = "coupleId")
     private List<User> users = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "coupleId")
     private List<CoupleWidget> coupleWidgets = new ArrayList<>();
 
