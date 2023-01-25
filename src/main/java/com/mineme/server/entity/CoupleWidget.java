@@ -1,13 +1,17 @@
 package com.mineme.server.entity;
 
 import com.mineme.server.entity.widget.Widget;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
 @Table(name = "COUPLE_WIDGET")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CoupleWidget extends BaseEntity{
 
     @Id
@@ -25,4 +29,12 @@ public class CoupleWidget extends BaseEntity{
 
     @Column(name = "ORDER")
     private int order;
+
+    public CoupleWidget(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, Widget widgetId, Couple coupleId, int order) {
+        super(createdAt, modifiedAt);
+        this.id = id;
+        this.widgetId = widgetId;
+        this.coupleId = coupleId;
+        this.order = order;
+    }
 }

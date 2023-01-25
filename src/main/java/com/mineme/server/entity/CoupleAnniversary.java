@@ -1,6 +1,8 @@
 package com.mineme.server.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "COUPLE_ANNIVERSARY")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CoupleAnniversary extends BaseEntity{
 
     @Id
@@ -27,4 +30,11 @@ public class CoupleAnniversary extends BaseEntity{
 
     @Column(name = "NAME")
     private String name;
+
+    public CoupleAnniversary(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String anniversaryType, String name) {
+        super(createdAt, modifiedAt);
+        this.id = id;
+        this.anniversaryType = anniversaryType;
+        this.name = name;
+    }
 }

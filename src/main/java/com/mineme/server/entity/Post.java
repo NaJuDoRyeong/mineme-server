@@ -1,14 +1,15 @@
 package com.mineme.server.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity{
 
     @Id
@@ -24,4 +25,12 @@ public class Post extends BaseEntity{
 
     @Column(name = "CONTENT", columnDefinition = "TEXT")
     private String content;
+
+    public Post(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, LocalDateTime datedAt, String title, String content) {
+        super(createdAt, modifiedAt);
+        this.id = id;
+        this.datedAt = datedAt;
+        this.title = title;
+        this.content = content;
+    }
 }

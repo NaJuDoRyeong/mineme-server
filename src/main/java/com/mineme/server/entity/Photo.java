@@ -1,14 +1,15 @@
 package com.mineme.server.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Photo extends BaseEntity{
 
     @Id
@@ -18,4 +19,10 @@ public class Photo extends BaseEntity{
 
     @Column(name = "PHOTO_URL")
     private String photoUrl;
+
+    public Photo(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String photoUrl) {
+        super(createdAt, modifiedAt);
+        this.id = id;
+        this.photoUrl = photoUrl;
+    }
 }

@@ -3,13 +3,13 @@ package com.mineme.server.entity;
 import com.mineme.server.entity.enums.RegionCode;
 import lombok.Getter;
 
+
 import javax.persistence.*;
 
 @Getter
 @Entity
 public class Region{
 
-    /* ENUM으로 지정 */
     @Id
     @Enumerated(EnumType.STRING)
     @Column(name = "REGION_CODE")

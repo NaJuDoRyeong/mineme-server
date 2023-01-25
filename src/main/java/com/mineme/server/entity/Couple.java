@@ -1,10 +1,7 @@
 package com.mineme.server.entity;
 
 import com.mineme.server.entity.enums.CoupleState;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,9 +10,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Couple extends BaseEntity{
 
     @Id
@@ -40,4 +35,21 @@ public class Couple extends BaseEntity{
 
     @Column(name = "BEGIN_DATE")
     private LocalDate beginDate;
+
+
+    @Builder
+    public Couple(Long id,
+                  List<User> users,
+                  List<CoupleWidget> coupleWidgets,
+                  String name,
+                  CoupleState coupleState,
+                  LocalDate beginDate
+    ) {
+        this.id = id;
+        this.users = users;
+        this.coupleWidgets = coupleWidgets;
+        this.name = name;
+        this.coupleState = coupleState;
+        this.beginDate = beginDate;
+    }
 }

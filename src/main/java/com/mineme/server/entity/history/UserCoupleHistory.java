@@ -2,7 +2,9 @@ package com.mineme.server.entity.history;
 
 import com.mineme.server.entity.Couple;
 import com.mineme.server.entity.User;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "USER_COUPLE_HISTORY")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserCoupleHistory {
 
     @Id
@@ -30,4 +33,12 @@ public class UserCoupleHistory {
 
     @Column(name = "OPERATION")
     private String operation;
+
+    public UserCoupleHistory(Long id, Couple coupleId, User userId, LocalDateTime createdAt, String operation) {
+        this.id = id;
+        this.coupleId = coupleId;
+        this.userId = userId;
+        this.createdAt = createdAt;
+        this.operation = operation;
+    }
 }

@@ -1,6 +1,8 @@
 package com.mineme.server.entity.widget;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -8,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "WIDGET_TODOLIST")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class WidgetTodoListEntity {
 
     @Id
@@ -21,4 +24,10 @@ public class WidgetTodoListEntity {
 
     @Column(name = "TODO_CONTENT", columnDefinition = "TEXT")
     private String todoContent;
+
+    public WidgetTodoListEntity(Long id, WidgetTodoList widgetId, String todoContent) {
+        this.id = id;
+        this.widgetId = widgetId;
+        this.todoContent = todoContent;
+    }
 }
