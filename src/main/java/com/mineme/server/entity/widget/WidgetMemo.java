@@ -12,7 +12,6 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 
 @Getter
@@ -26,8 +25,8 @@ public class WidgetMemo extends Widget {
     @Size(max = 1)
     private Character isDone;
 
-    public WidgetMemo(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, WidgetType widgetType, WidgetXPos width, WidgetYPos height, String widgetColor, Character hasTitle, String widgetTitle, String name, Character isDone) {
-        super(createdAt, modifiedAt, id, widgetType, width, height, widgetColor, hasTitle, widgetTitle);
+    public WidgetMemo(WidgetType widgetType, WidgetXPos width, WidgetYPos height, String widgetColor, Character hasTitle, String widgetTitle, String name, Character isDone) {
+        super(widgetType, width, height, widgetColor, hasTitle, widgetTitle);
         this.name = name;
         this.isDone = isDone;
     }

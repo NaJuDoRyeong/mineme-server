@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 
 @Getter
@@ -47,18 +46,13 @@ public abstract class Widget extends BaseEntity {
     @Column(name = "WIDGET_TITLE")
     private String widgetTitle;
 
-    protected Widget(LocalDateTime createdAt,
-                  LocalDateTime modifiedAt,
-                  Long id,
-                  WidgetType widgetType,
+    protected Widget(WidgetType widgetType,
                   WidgetXPos width,
                   WidgetYPos height,
                   String widgetColor,
                   Character hasTitle,
                   String widgetTitle
     ) {
-        super(createdAt, modifiedAt);
-        this.id = id;
         this.widgetType = widgetType;
         this.width = width;
         this.height = height;

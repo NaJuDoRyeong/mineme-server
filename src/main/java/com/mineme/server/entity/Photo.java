@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
 
 @Getter
 @Entity
@@ -20,9 +20,7 @@ public class Photo extends BaseEntity{
     @Column(name = "PHOTO_URL")
     private String photoUrl;
 
-    public Photo(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String photoUrl) {
-        super(createdAt, modifiedAt);
-        this.id = id;
+    public Photo(String photoUrl) {
         this.photoUrl = photoUrl;
     }
 }

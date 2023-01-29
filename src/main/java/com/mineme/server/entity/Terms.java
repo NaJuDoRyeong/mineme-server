@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+
 
 @Getter
 @Entity
@@ -32,9 +32,7 @@ public class Terms extends BaseEntity{
     @Size(max = 8)
     private String version;
 
-    public Terms(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String termTitle, String termDetail, Character isRequired, String version) {
-        super(createdAt, modifiedAt);
-        this.id = id;
+    public Terms(String termTitle, String termDetail, Character isRequired, String version) {
         this.termTitle = termTitle;
         this.termDetail = termDetail;
         this.isRequired = isRequired;

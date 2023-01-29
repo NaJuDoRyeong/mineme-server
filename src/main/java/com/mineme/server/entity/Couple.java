@@ -36,14 +36,12 @@ public class Couple extends BaseEntity{
 
 
     @Builder
-    public Couple(Long id,
-                  List<User> users,
+    public Couple(List<User> users,
                   List<CoupleWidget> coupleWidgets,
                   String name,
                   CoupleState coupleState,
                   LocalDate beginDate
     ) {
-        this.id = id;
         this.users = users;
         this.coupleWidgets = coupleWidgets;
         this.name = name;

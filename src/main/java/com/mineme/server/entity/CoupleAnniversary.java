@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+
 
 @Getter
 @Entity
@@ -31,9 +31,7 @@ public class CoupleAnniversary extends BaseEntity{
     @Column(name = "NAME")
     private String name;
 
-    public CoupleAnniversary(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String anniversaryType, String name) {
-        super(createdAt, modifiedAt);
-        this.id = id;
+    public CoupleAnniversary(String anniversaryType, String name) {
         this.anniversaryType = anniversaryType;
         this.name = name;
     }

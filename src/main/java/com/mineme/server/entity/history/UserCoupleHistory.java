@@ -34,8 +34,7 @@ public class UserCoupleHistory {
     @Column(name = "OPERATION")
     private String operation;
 
-    public UserCoupleHistory(Long id, Couple coupleId, User userId, LocalDateTime createdAt, String operation) {
-        this.id = id;
+    public UserCoupleHistory(Couple coupleId, User userId, LocalDateTime createdAt, String operation) {
         this.coupleId = coupleId;
         this.userId = userId;
         this.createdAt = createdAt;

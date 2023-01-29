@@ -25,8 +25,7 @@ public class WidgetTodoListEntity {
     @Column(name = "TODO_CONTENT", columnDefinition = "TEXT")
     private String todoContent;
 
-    public WidgetTodoListEntity(Long id, WidgetTodoList widgetId, String todoContent) {
-        this.id = id;
+    public WidgetTodoListEntity(WidgetTodoList widgetId, String todoContent) {
         this.widgetId = widgetId;
         this.todoContent = todoContent;
     }

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -30,9 +29,7 @@ public class CoupleWidget extends BaseEntity{
     @Column(name = "ORDER")
     private int order;
 
-    public CoupleWidget(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, Widget widgetId, Couple coupleId, int order) {
-        super(createdAt, modifiedAt);
-        this.id = id;
+    public CoupleWidget(Widget widgetId, Couple coupleId, int order) {
         this.widgetId = widgetId;
         this.coupleId = coupleId;
         this.order = order;

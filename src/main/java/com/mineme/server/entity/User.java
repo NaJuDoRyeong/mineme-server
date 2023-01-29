@@ -95,8 +95,7 @@ public class User extends BaseEntity{
     @Column(name = "NOTICE_MARKETING")
     private Boolean noticeMarketing;
 
-    public User(Long id, Couple coupleId, String userCode, String username, String nickname, UserState userState, Provider provider, String profileImageUrl, String email, LocalDateTime lastLogin, LocalDate birthday, String comment, Character gender, String instaId, String deviceToken, String device, String phoneNumber, String extraValues, Boolean noticeFeed, Boolean noticeAnniversary, Boolean noticeMarketing) {
-        this.id = id;
+    public User(Couple coupleId, String userCode, String username, String nickname, UserState userState, Provider provider, String profileImageUrl, String email, LocalDateTime lastLogin, LocalDate birthday, String comment, Character gender, String instaId, String deviceToken, String device, String phoneNumber, String extraValues, Boolean noticeFeed, Boolean noticeAnniversary, Boolean noticeMarketing) {
         this.coupleId = coupleId;
         this.userCode = userCode;
         this.username = username;

@@ -26,9 +26,7 @@ public class Post extends BaseEntity{
     @Column(name = "CONTENT", columnDefinition = "TEXT")
     private String content;
 
-    public Post(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, LocalDateTime datedAt, String title, String content) {
-        super(createdAt, modifiedAt);
-        this.id = id;
+    public Post(LocalDateTime datedAt, String title, String content) {
         this.datedAt = datedAt;
         this.title = title;
         this.content = content;

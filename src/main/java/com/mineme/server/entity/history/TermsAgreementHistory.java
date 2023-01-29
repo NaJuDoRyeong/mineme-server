@@ -40,8 +40,7 @@ public class TermsAgreementHistory {
     @Size(max = 1)
     private Character isAgree;
 
-    public TermsAgreementHistory(Long id, Terms termId, User userId, LocalDateTime createdAt, LocalDateTime modifiedAt, Character isAgree) {
-        this.id = id;
+    public TermsAgreementHistory(Terms termId, User userId, LocalDateTime createdAt, LocalDateTime modifiedAt, Character isAgree) {
         this.termId = termId;
         this.userId = userId;
         this.createdAt = createdAt;
