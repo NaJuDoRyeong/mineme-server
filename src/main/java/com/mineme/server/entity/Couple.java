@@ -4,6 +4,7 @@ import com.mineme.server.entity.enums.CoupleState;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,11 @@ public class Couple extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "COUPLE_STATE")
+    @NotNull
     private CoupleState coupleState;
 
     @Column(name = "BEGIN_DATE")
+    @NotNull
     private LocalDate beginDate;
 
 

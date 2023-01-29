@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -33,18 +34,22 @@ public class User extends BaseEntity{
 
     @Column(name = "USERNAME")
     @Size(max = 32)
+    @NotNull
     private String username;
 
     @Column(name = "NICKNAME")
     @Size(max = 64)
+    @NotNull
     private String nickname;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "USER_STATE")
+    @NotNull
     private UserState userState;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "PROVIDER")
+    @NotNull
     private Provider provider;
 
     @Column(name = "PROFILE_IMAGE_URL")
@@ -55,6 +60,7 @@ public class User extends BaseEntity{
     private String email;
 
     @Column(name = "LAST_LOGIN")
+    @NotNull
     private LocalDateTime lastLogin;
 
     @Column(name = "BIRTHDAY")
@@ -87,12 +93,15 @@ public class User extends BaseEntity{
     private String extraValues;
 
     @Column(name = "NOTICE_FEED")
+    @NotNull
     private Boolean noticeFeed;
 
     @Column(name = "NOTICE_ANNIVERSARY")
+    @NotNull
     private Boolean noticeAnniversary;
 
     @Column(name = "NOTICE_MARKETING")
+    @NotNull
     private Boolean noticeMarketing;
 
     public User(Couple coupleId, String userCode, String username, String nickname, UserState userState, Provider provider, String profileImageUrl, String email, LocalDateTime lastLogin, LocalDate birthday, String comment, Character gender, String instaId, String deviceToken, String device, String phoneNumber, String extraValues, Boolean noticeFeed, Boolean noticeAnniversary, Boolean noticeMarketing) {

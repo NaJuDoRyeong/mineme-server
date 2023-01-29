@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -26,6 +27,7 @@ public class CoupleAnniversary extends BaseEntity{
 
     @Column(name = "ANNIVERSARY_TYPE")
     @Size(max = 16)
+    @NotNull
     private String anniversaryType;
 
     @Column(name = "NAME")

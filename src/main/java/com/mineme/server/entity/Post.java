@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,9 +22,11 @@ public class Post extends BaseEntity{
     private LocalDateTime datedAt;
 
     @Column(name = "TITLE")
+    @NotNull
     private String title;
 
     @Column(name = "CONTENT", columnDefinition = "TEXT")
+    @NotNull
     private String content;
 
     public Post(LocalDateTime datedAt, String title, String content) {

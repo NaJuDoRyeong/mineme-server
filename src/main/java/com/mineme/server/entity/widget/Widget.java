@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -26,21 +27,26 @@ public abstract class Widget extends BaseEntity {
 
     @Column(name = "WIDGET_TYPE")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private WidgetType widgetType;
 
     @Column
     @Enumerated(EnumType.STRING)
+    @NotNull
     private WidgetXPos width;
 
     @Column
     @Enumerated(EnumType.STRING)
+    @NotNull
     private WidgetYPos height;
 
     @Column(name = "WIDGET_COLOR")
+    @NotNull
     private String widgetColor;
 
     @Column(name = "HAS_TITLE")
     @Size(max = 1)
+    @NotNull
     private Character hasTitle;
 
     @Column(name = "WIDGET_TITLE")

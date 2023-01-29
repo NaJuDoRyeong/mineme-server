@@ -5,6 +5,7 @@ import lombok.Getter;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Entity
@@ -16,6 +17,7 @@ public class Region{
     private RegionCode regionCode;
 
     @Column(name = "REGION_NAME")
+    @NotNull
     private String regionName;
 
     @Column(name = "SUB_REGION_NAME")

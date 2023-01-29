@@ -5,6 +5,7 @@ import com.mineme.server.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,16 +29,16 @@ public class UserCoupleHistory {
     @JoinColumn(name = "USER_ID")
     private User userId;
 
+    @CreatedDate
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
     @Column(name = "OPERATION")
     private String operation;
 
-    public UserCoupleHistory(Couple coupleId, User userId, LocalDateTime createdAt, String operation) {
+    public UserCoupleHistory(Couple coupleId, User userId, String operation) {
         this.coupleId = coupleId;
         this.userId = userId;
-        this.createdAt = createdAt;
         this.operation = operation;
     }
 }

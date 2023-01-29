@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Getter
@@ -18,6 +19,7 @@ public class Photo extends BaseEntity{
     private Long id;
 
     @Column(name = "PHOTO_URL")
+    @NotNull
     private String photoUrl;
 
     public Photo(String photoUrl) {

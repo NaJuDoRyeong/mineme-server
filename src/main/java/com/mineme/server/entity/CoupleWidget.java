@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Entity
@@ -27,6 +28,7 @@ public class CoupleWidget extends BaseEntity{
     private Couple coupleId;
 
     @Column(name = "ORDER")
+    @NotNull
     private int order;
 
     public CoupleWidget(Widget widgetId, Couple coupleId, int order) {

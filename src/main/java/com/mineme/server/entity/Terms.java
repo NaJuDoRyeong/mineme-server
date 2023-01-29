@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -19,17 +20,21 @@ public class Terms extends BaseEntity{
     private Long id;
 
     @Column(name = "TERM_TITLE")
+    @NotNull
     private String termTitle;
 
     @Column(name = "TERM_DETAIL", columnDefinition = "TEXT")
+    @NotNull
     private String termDetail;
 
     @Column(name = "IS_REQUIRED")
     @Size(max = 1)
+    @NotNull
     private Character isRequired;
 
     @Column(name = "VERSION")
     @Size(max = 8)
+    @NotNull
     private String version;
 
     public Terms(String termTitle, String termDetail, Character isRequired, String version) {
