@@ -19,7 +19,7 @@ public class DummyMainInfoResponse {
 			.startDate(LocalDate.of(2022, 12, 25))
 			.me(
 				Couple.Person.builder()
-					.profileImage("https://cdn-icons-png.flaticon.com/512/3048/3048122.png")
+					.profileImage("https://upload3.inven.co.kr/upload/2022/03/15/bbs/i16343629296.jpg?MW=800")
 					.nickname("윈터")
 					.description("나는 윈터")
 					.instaId("ol_i0_")
@@ -29,7 +29,7 @@ public class DummyMainInfoResponse {
 			)
 			.mine(
 				Couple.Person.builder()
-					.profileImage("https://cdn-icons-png.flaticon.com/512/9408/9408258.png")
+					.profileImage("https://mblogthumb-phinf.pstatic.net/MjAyMjA4MDdfMzQg/MDAxNjU5ODA4NDg3NDk2.8HhF0w7-181YY123fVFGM6GbUpjT56nCSp7Vc5-5RkIg.3wEL822sJQDFf8tJrhaRFIYaXB8FL8PFqCCNCWR3yAkg.JPEG.niceguy00/Seul_%EC%97%90%EC%8A%A4%ED%8C%8C_%EB%8F%84%EA%B9%A8%EB%B9%84%EB%B6%88_%EC%B9%B4%EB%A6%AC%EB%82%9879.jpg?type=w800")
 					.nickname("카리나")
 					.description("나는 카리나")
 					.instaId("ol_i0_")
