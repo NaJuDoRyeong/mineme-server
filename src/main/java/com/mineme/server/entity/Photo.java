@@ -18,6 +18,11 @@ public class Photo extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "POST_ID")
+    private Post postId;
+
+
     @Column(name = "PHOTO_URL")
     @NotNull
     private String photoUrl;

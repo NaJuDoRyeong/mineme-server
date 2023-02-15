@@ -6,7 +6,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Getter
 @Entity
@@ -18,20 +21,18 @@ public class Post extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "DATED_AT")
-    private LocalDateTime datedAt;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "postId")
+    private List<Photo> photoId = new ArrayList<>();
 
-    @Column(name = "TITLE")
-    @NotNull
-    private String title;
+    @Column(name = "DATED_AT")
+    private LocalDate datedAt;
 
     @Column(name = "CONTENT", columnDefinition = "TEXT")
     @NotNull
     private String content;
 
-    public Post(LocalDateTime datedAt, String title, String content) {
+    public Post(LocalDate datedAt, String content) {
         this.datedAt = datedAt;
-        this.title = title;
         this.content = content;
     }
 }
