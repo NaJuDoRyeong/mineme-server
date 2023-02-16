@@ -3,7 +3,10 @@ package com.mineme.server.entity;
 
 import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
+import com.mineme.server.user.dto.UserSignRequestDto;
+import com.mineme.server.user.util.UserUtil;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -117,6 +120,41 @@ public class User implements UserDetails{
     @NotNull
     private Boolean noticeMarketing;
 
+
+    public static User toPendingUserEntity(String username, UserSignRequestDto dto){
+        return User.builder()
+                .userCode(UserUtil.createUserCode())
+                .username(username)
+                .nickname(dto.getUsername())
+                .provider(Provider.valueOf(dto.getProviderType()))
+                .userState(UserState.PENDING)
+                .noticeFeed(false)
+                .noticeAnniversary(false)
+                .noticeMarketing(false)
+                .build();
+    }
+
+    @Builder
+    private User(String userCode,
+                 String username,
+                 String nickname,
+                 UserState userState,
+                 Provider provider,
+                 Boolean noticeFeed,
+                 Boolean noticeAnniversary,
+                 Boolean noticeMarketing
+    ) {
+        this.userCode = userCode;
+        this.username = username;
+        this.nickname = nickname;
+        this.userState = userState;
+        this.provider = provider;
+        this.lastLogin = LocalDateTime.now();
+        this.noticeFeed = noticeFeed;
+        this.noticeAnniversary = noticeAnniversary;
+        this.noticeMarketing = noticeMarketing;
+    }
+
     public User(Couple coupleId,
                 String userCode,
                 String username,
@@ -136,7 +174,8 @@ public class User implements UserDetails{
                 String extraValues,
                 Boolean noticeFeed,
                 Boolean noticeAnniversary,
-                Boolean noticeMarketing) {
+                Boolean noticeMarketing
+    ) {
         this.coupleId = coupleId;
         this.userCode = userCode;
         this.username = username;
