@@ -4,10 +4,8 @@ package com.mineme.server.security.handler;
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
-import com.mineme.server.entity.enums.UserState;
 import com.mineme.server.security.service.CustomUserDetailsService;
 import com.mineme.server.security.token.UserJwtAuthenticationToken;
-import com.mineme.server.security.token.UserToken;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,18 +28,15 @@ public class JwtTokenProvider {
 
     private final CustomUserDetailsService userDetailsService;
 
-    public UserToken create(String username, UserState state, String key) {
+    public String create(String username, String key) {
         Date now = new Date();
 
-        String accessToken = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(username)
-                .claim("userstate", state)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + EXPIREDTIME))
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
-
-        return new UserToken(accessToken, null);
     }
 
     public Claims getClaims(String token, String key){

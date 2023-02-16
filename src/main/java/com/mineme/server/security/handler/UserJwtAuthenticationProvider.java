@@ -5,6 +5,7 @@ import com.mineme.server.entity.User;
 import com.mineme.server.security.service.CustomUserDetailsService;
 import com.mineme.server.security.token.UserJwtAuthenticationToken;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserJwtAuthenticationProvider implements AuthenticationProvider {
@@ -21,8 +23,9 @@ public class UserJwtAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        User principal = (User) authentication.getPrincipal();
-        UserDetails user = userDetailsService.loadUserByUsername(principal.getUsername());
+        String principal = (String) authentication.getPrincipal();
+        log.info(principal);
+        UserDetails user = userDetailsService.loadUserByUsername(principal);
 
         return new UserJwtAuthenticationToken(user);
     }

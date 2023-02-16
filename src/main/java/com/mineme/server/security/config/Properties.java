@@ -24,4 +24,5 @@ public class Properties {
         this.secret = environment.getProperty("JWT_SECRET");
         log.info("JWT_SECRET is " + this.secret);
     }
+
 }
