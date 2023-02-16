@@ -1,4 +1,4 @@
-package com.mineme.server.security.token;
+package com.mineme.server.user.dto;
 
 
 import lombok.AccessLevel;
