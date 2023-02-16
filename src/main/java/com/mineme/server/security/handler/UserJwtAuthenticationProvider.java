@@ -1,11 +1,11 @@
 package com.mineme.server.security.handler;
 
-
-import com.mineme.server.entity.User;
 import com.mineme.server.security.service.CustomUserDetailsService;
 import com.mineme.server.security.token.UserJwtAuthenticationToken;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,25 +13,24 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserJwtAuthenticationProvider implements AuthenticationProvider {
 
-    private final CustomUserDetailsService userDetailsService;
+	private final CustomUserDetailsService userDetailsService;
 
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String principal = (String) authentication.getPrincipal();
-        log.info(principal);
-        UserDetails user = userDetailsService.loadUserByUsername(principal);
+	@Override
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+		String principal = (String)authentication.getPrincipal();
+		log.info(principal);
+		UserDetails user = userDetailsService.loadUserByUsername(principal);
 
-        return new UserJwtAuthenticationToken(user);
-    }
+		return new UserJwtAuthenticationToken(user);
+	}
 
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
-    }
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return authentication.equals(UsernamePasswordAuthenticationToken.class);
+	}
 }
