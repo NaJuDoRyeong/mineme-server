@@ -46,6 +46,7 @@ public class User implements UserDetails{
 
     @Column(name = "USER_CODE")
     @Size(min = 8, max = 8)
+    @NotNull
     private String userCode;
 
     @Column(name = "USERNAME")
@@ -85,20 +86,18 @@ public class User implements UserDetails{
     @Column(name = "COMMENT")
     private String comment;
 
-    @Column(name = "GENDER")
-    @Size(max = 1)
+    @Column(name = "GENDER", length = 1)
     private Character gender;
 
-    @Column(name = "INSTA_ID")
-    @Size(max = 128)
+    @Column(name = "INSTA_ID", length = 128)
     private String instaId;
 
-    @Column(name = "DEVICE_TOKEN")
-    @Size(max = 128)
+    /* 이후 @Size, @NotNull로 validation 예정 */
+    @Column(name = "DEVICE_TOKEN", length = 128)
     private String deviceToken;
 
-    @Column(name = "DEVICE")
-    @Size(max = 128)
+    /* 이후 @Size, @NotNull로 validation 예정 */
+    @Column(name = "DEVICE", length = 128)
     private String device;
 
     @Column(name = "PHONE_NUMBER")
@@ -149,6 +148,7 @@ public class User implements UserDetails{
         this.nickname = nickname;
         this.userState = userState;
         this.provider = provider;
+        this.gender = 'n';
         this.lastLogin = LocalDateTime.now();
         this.noticeFeed = noticeFeed;
         this.noticeAnniversary = noticeAnniversary;
