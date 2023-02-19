@@ -11,7 +11,7 @@ public class UserJwtAuthenticationToken extends AbstractAuthenticationToken {
 
 	public UserJwtAuthenticationToken(Object principal) {
 		super(null);
-		super.setAuthenticated(false);
+		super.setAuthenticated(true);
 		this.principal = principal;
 	}
 

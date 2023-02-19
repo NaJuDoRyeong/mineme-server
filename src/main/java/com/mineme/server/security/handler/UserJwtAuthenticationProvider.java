@@ -23,10 +23,11 @@ public class UserJwtAuthenticationProvider implements AuthenticationProvider {
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String principal = (String)authentication.getPrincipal();
-		log.info(principal);
 		UserDetails user = userDetailsService.loadUserByUsername(principal);
+		log.info("Principal - {}", principal);
+		log.info("Principal User - {}", user.getUsername());
 
-		return new UserJwtAuthenticationToken(user);
+		return new UserJwtAuthenticationToken(user.getUsername());
 	}
 
 	@Override

@@ -1,24 +1,28 @@
 package com.mineme.server.security.handler;
 
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.security.service.CustomUserDetailsService;
 import com.mineme.server.security.token.UserJwtAuthenticationToken;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -63,19 +67,16 @@ public class JwtTokenProvider {
 		return null;
 	}
 
-	public String getUsername() {
-		SecurityContext context = SecurityContextHolder.getContext();
+	public Authentication getAuthentication(String token, String key) {
+		String username = this.getClaims(token, key).getSubject();
+		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-		return ((User)context.getAuthentication()
-			.getPrincipal())
-			.getUsername();
+		return new UserJwtAuthenticationToken(userDetails);
 	}
 
-	public Authentication getAuthentication() {
-
-		UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername());
-
-		return new UserJwtAuthenticationToken(userDetails.getAuthorities(), userDetails);
+	public String getUsername() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return ((User)principal).getUsername();
 	}
 
 	public boolean validate(String token, String key) {
