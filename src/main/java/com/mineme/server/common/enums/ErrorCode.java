@@ -22,6 +22,8 @@ public enum ErrorCode {
 
 	STATUS_4007(4007, HttpStatus.BAD_REQUEST,"Invalid Data recevied."),
 
+	STATUS_4008(4008, HttpStatus.UNAUTHORIZED,"Invalid User."),
+
 	/* Server Error. */
 	STATUS_5001(5001, HttpStatus.INTERNAL_SERVER_ERROR,"Server busy."),
 
