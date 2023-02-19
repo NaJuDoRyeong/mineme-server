@@ -1,5 +1,7 @@
 package com.mineme.server.user.service;
 
+import javax.validation.ConstraintViolationException;
+
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
@@ -17,8 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import reactor.core.publisher.Mono;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -30,19 +30,17 @@ public class KakaoAuthService {
 
 	@Transactional
 	public UserJwtDto getKakaoUserDetails(UserSignRequestDto dto) {
-		try{
+		try {
 			KakaoUserDto user = HttpClientUtil.getMonoUser(dto).block();
 			User signedUser = userRepository.findByUsername(user.getId())
 				.orElse(userRepository.save(User.toPendingUserEntity(user.getId(), dto)));
 
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), properties.getSecret());
 			return new UserJwtDto(accessToken, signedUser.getUserCode());
-		}
-		catch (NullPointerException e){
+		} catch (ConstraintViolationException e) {
+			throw new CustomException(ErrorCode.STATUS_4009);
+		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.STATUS_4008);
 		}
-
-
-
 	}
 }
