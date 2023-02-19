@@ -41,6 +41,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
 
+	// DatatypeConverter
+	implementation 'javax.xml.bind:jaxb-api:2.3.0'
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
