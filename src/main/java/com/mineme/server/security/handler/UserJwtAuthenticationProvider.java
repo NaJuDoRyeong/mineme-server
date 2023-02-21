@@ -24,7 +24,7 @@ public class UserJwtAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String principal = (String)authentication.getPrincipal();
 		UserDetails user = userDetailsService.loadUserByUsername(principal);
-		log.info("Principal - {}", principal);
+
 		log.info("Principal User - {}", user.getUsername());
 
 		return new UserJwtAuthenticationToken(user.getUsername());

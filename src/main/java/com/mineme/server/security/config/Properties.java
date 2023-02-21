@@ -19,10 +19,12 @@ public class Properties {
 	@Getter
 	private String secret;
 
+	/**
+	 * @Todo 추후 배포 단계에서 로깅 제거
+	 */
 	@PostConstruct
 	public void jwtInit() {
 		this.secret = environment.getProperty("JWT_SECRET");
 		log.info("JWT_SECRET is " + this.secret);
 	}
-
 }
