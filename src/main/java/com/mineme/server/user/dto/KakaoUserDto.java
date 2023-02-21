@@ -4,12 +4,18 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
+/**
+ * @Todo 요청을 받는 Nested Class에 대해 카멜 케이스로 변경할 것인지 확인하기.
+ */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class KakaoUserDto {
-	private String id;
 
-	private KakaoAccount kakao_account;
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class User {
+		private String id;
+		private KakaoAccount kakao_account;
+	}
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
