@@ -8,8 +8,7 @@ import com.mineme.server.entity.User;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.handler.JwtTokenProvider;
 import com.mineme.server.user.dto.KakaoUserDto;
-import com.mineme.server.user.dto.UserJwtDto;
-import com.mineme.server.user.dto.UserSignRequestDto;
+import com.mineme.server.user.dto.UserDto;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.HttpClientUtil;
 
@@ -29,18 +28,19 @@ public class KakaoAuthService {
 	private final Properties properties;
 
 	@Transactional
-	public UserJwtDto getKakaoUserDetails(UserSignRequestDto dto) {
+	public UserDto.Jwt getKakaoUserDetails(UserDto.SignRequest dto) {
 		try {
-			KakaoUserDto user = HttpClientUtil.getMonoUser(dto).block();
+			KakaoUserDto.User user = HttpClientUtil.getMonoUser(dto).block();
 			User signedUser = userRepository.findByUsername(user.getId())
 				.orElse(userRepository.save(User.toPendingUserEntity(user.getId(), dto)));
 
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), properties.getSecret());
-			return new UserJwtDto(accessToken, signedUser.getUserCode());
+
+			return new UserDto.Jwt(accessToken, signedUser.getUserCode());
 		} catch (ConstraintViolationException e) {
-			throw new CustomException(ErrorCode.STATUS_4009);
+			throw new CustomException(ErrorCode.USER_EXISTED);
 		} catch (NullPointerException e) {
-			throw new CustomException(ErrorCode.STATUS_4008);
+			throw new CustomException(ErrorCode.INVALID_USER);
 		}
 	}
 }

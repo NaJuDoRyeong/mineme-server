@@ -1,7 +1,7 @@
 package com.mineme.server.user.util;
 
 import com.mineme.server.user.dto.KakaoUserDto;
-import com.mineme.server.user.dto.UserSignRequestDto;
+import com.mineme.server.user.dto.UserDto;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -21,13 +21,13 @@ public class HttpClientUtil {
 			.build();
 	}
 
-	public static Mono<KakaoUserDto> getMonoUser(UserSignRequestDto dto) {
+	public static Mono<KakaoUserDto.User> getMonoUser(UserDto.SignRequest dto) {
 		return HttpClientUtil.getClient("https://kapi.kakao.com")
 			.get()
 			.uri("/v2/user/me")
 			.header(HttpHeaders.AUTHORIZATION, "Bearer " + dto.getAccessToken())
 			.header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
 			.retrieve()
-			.bodyToMono(KakaoUserDto.class);
+			.bodyToMono(KakaoUserDto.User.class);
 	}
 }
