@@ -115,6 +115,6 @@ public class JwtTokenProvider {
 		if (authorization.startsWith("token "))
 			return authorization.substring(6);
 
-		throw new CustomException(ErrorCode.STATUS_4002);
+		throw new CustomException(ErrorCode.INVALID_TOKEN);
 	}
 }
