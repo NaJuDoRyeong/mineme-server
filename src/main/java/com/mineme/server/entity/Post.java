@@ -21,7 +21,7 @@ public class Post extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "postId")
+    @OneToMany(mappedBy = "postId")
     private List<Photo> photoId = new ArrayList<>();
 
     @Column(name = "DATED_AT")
