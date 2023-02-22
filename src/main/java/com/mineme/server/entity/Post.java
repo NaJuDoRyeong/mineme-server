@@ -1,6 +1,7 @@
 package com.mineme.server.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,8 +32,10 @@ public class Post extends BaseEntity {
 	@NotNull
 	private String content;
 
-	public Post(LocalDate datedAt, String content) {
-		this.datedAt = datedAt;
-		this.content = content;
-	}
+    @Builder
+    public Post(LocalDateTime datedAt, String title, String content) {
+        this.datedAt = datedAt;
+        this.title = title;
+        this.content = content;
+    }
 }
