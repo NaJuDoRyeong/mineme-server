@@ -10,8 +10,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,22 +24,14 @@ import java.util.Collection;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User implements UserDetails {
+public class User extends BaseEntity implements UserDetails {
 
 	@Id
 	@Column(name = "USER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@CreatedDate
-	@Column(name = "CREATED_AT")
-	private LocalDateTime createdAt;
-
-	@LastModifiedDate
-	@Column(name = "MODIFIED_AT")
-	private LocalDateTime modifiedAt;
-
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "COUPLE_ID")
 	private Couple coupleId;
 
