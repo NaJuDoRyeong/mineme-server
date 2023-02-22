@@ -10,22 +10,28 @@ import lombok.Getter;
 public enum ErrorCode {
 
 	/* Invalid Request */
-	STATUS_4001(4001, HttpStatus.UNAUTHORIZED,"Expired."),
+	TOKEN_EXPIRED(4001, HttpStatus.UNAUTHORIZED,"Expired."),
 
-	STATUS_4002(4002, HttpStatus.BAD_REQUEST,"Invalid Image format."),
+	INVALID_IMAGE_FORMAT(4002, HttpStatus.BAD_REQUEST,"Invalid Image format."),
 
-	STATUS_4003(4003, HttpStatus.UNAUTHORIZED,"Invalid Token."),
+	INVALID_TOKEN(4003, HttpStatus.UNAUTHORIZED,"Invalid Token."),
 
-	STATUS_4004(4004, HttpStatus.BAD_REQUEST,"Request invalid data."),
+	INVALID_REQUEST(4004, HttpStatus.BAD_REQUEST,"Request invalid data."),
 
-	STATUS_4005(4005, HttpStatus.BAD_REQUEST,"Data missing."),
+	DATA_MISSING(4005, HttpStatus.BAD_REQUEST,"Data missing."),
 
-	STATUS_4007(4007, HttpStatus.BAD_REQUEST,"Invalid Data recevied."),
+	INVALID_DATA(4007, HttpStatus.BAD_REQUEST,"Invalid Data received."),
+
+	INVALID_USER(4008, HttpStatus.UNAUTHORIZED,"Invalid User."),
+	USER_EXISTED(4009, HttpStatus.BAD_REQUEST,"User existed ."),
 
 	/* Server Error. */
-	STATUS_5001(5001, HttpStatus.INTERNAL_SERVER_ERROR,"Server busy."),
+	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR,"Server busy."),
 
-	STATUS_5100(5100, HttpStatus.INTERNAL_SERVER_ERROR,"Unknown error.");
+	/**
+	* @See 서버 에러 중 아직 명시되지 않은 예외 발생 시에 사용
+	* */
+	SERVER_ERROR(5100, HttpStatus.INTERNAL_SERVER_ERROR,"Unknown error.");
 
 	private final int code;
 	private final HttpStatus httpStatus;

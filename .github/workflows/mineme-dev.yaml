@@ -28,10 +28,14 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       
       - name: Docker build
-        run: docker build -t ${{ secrets.DOCKER_REPO }}/mineme-api .
+        run: |
+          DATE=$(date "+%y.%m.%d")
+          docker build -t ${{ secrets.DOCKER_REPO }}/mineme-api:$DATE .
       
       - name: Docker push
-        run: docker push ${{ secrets.DOCKER_REPO }}/mineme-api
+        run: |
+          DATE=$(date "+%y.%m.%d")
+          docker push ${{ secrets.DOCKER_REPO }}/mineme-api:$DATE
 
       - name: Deploy
         uses: appleboy/ssh-action@master
@@ -41,10 +45,11 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
+            DATE=$(date "+%y.%m.%d")
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker stop MINEME_DEV
             docker rm -f MINEME_DEV
-            docker pull ${{ secrets.DOCKER_REPO }}/mineme-api
-            docker-compose up -d
+            docker pull ${{ secrets.DOCKER_REPO }}/mineme-api:$DATE
+            docker-compose up -d dev
             docker image prune -f
       

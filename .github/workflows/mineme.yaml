@@ -3,8 +3,6 @@ name: MINEME-PROD CI/CD
 on:
   push:
     branches: ['main']
-  pull_request:
-    branches: ['main']
 
 jobs:
   build:
@@ -45,5 +43,5 @@ jobs:
             docker stop MINEME_PROD
             docker rm -f MINEME_PROD
             docker pull ${{ secrets.DOCKER_REPO }}/mineme-api
-            docker-compose up -d
+            docker-compose up -d app
             docker image prune -f

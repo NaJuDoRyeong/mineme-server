@@ -40,6 +40,6 @@ public class ResponseDto<T> {
 			.body(ResponseDto.builder()
 				.success(false)
 				.data(null)
-				.error(new ExceptionDto(ErrorCode.STATUS_5100)).build());
+				.error(new ExceptionDto(ErrorCode.SERVER_ERROR)).build());
 	}
 }
