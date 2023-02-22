@@ -1,4 +1,4 @@
-package com.mineme.server.security.handler;
+package com.mineme.server.security.provider;
 
 import java.util.Date;
 
@@ -46,10 +46,7 @@ public class JwtTokenProvider {
 
 	public Claims getClaims(String token, String key) {
 		try {
-			return Jwts.parser()
-				.setSigningKey(key)
-				.parseClaimsJws(token)
-				.getBody();
+			return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 		} catch (SecurityException e) {
 			log.info("Invalid JWT signature", e);
 		} catch (MalformedJwtException e) {
@@ -81,9 +78,7 @@ public class JwtTokenProvider {
 
 	public boolean validate(String token, String key) {
 		try {
-			Jwts.parser()
-				.setSigningKey(key)
-				.parseClaimsJws(token);
+			Jwts.parser().setSigningKey(key).parseClaimsJws(token);
 			return true;
 		} catch (SecurityException e) {
 			log.info("Invalid JWT signature", e);

@@ -13,8 +13,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.mineme.server.security.filter.JwtAuthenticationFilter;
-import com.mineme.server.security.handler.JwtTokenProvider;
-import com.mineme.server.security.handler.UserJwtAuthenticationProvider;
+import com.mineme.server.security.provider.JwtTokenProvider;
+import com.mineme.server.security.provider.UserJwtAuthenticationProvider;
 import com.mineme.server.security.service.CustomUserDetailsService;
 
 @Configuration
@@ -41,11 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 
-		http.httpBasic().disable()
+		http.httpBasic()
+			.disable()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-			.authorizeRequests().antMatchers("/**").permitAll()
+			.authorizeRequests()
+			.antMatchers("/**")
+			.permitAll()    // @Todo URI 결정 후 접근 제어 변경
 			.and()
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, properties),
 				UsernamePasswordAuthenticationFilter.class);

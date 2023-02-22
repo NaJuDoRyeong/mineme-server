@@ -1,4 +1,4 @@
-package com.mineme.server.security.handler;
+package com.mineme.server.security.provider;
 
 import com.mineme.server.security.service.CustomUserDetailsService;
 import com.mineme.server.security.token.UserJwtAuthenticationToken;

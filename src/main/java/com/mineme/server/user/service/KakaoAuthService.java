@@ -6,7 +6,7 @@ import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.security.config.Properties;
-import com.mineme.server.security.handler.JwtTokenProvider;
+import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.user.dto.KakaoUserDto;
 import com.mineme.server.user.dto.UserDto;
 import com.mineme.server.user.repository.UserRepository;

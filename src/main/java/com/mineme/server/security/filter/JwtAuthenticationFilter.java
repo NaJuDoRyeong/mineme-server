@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.mineme.server.security.config.Properties;
-import com.mineme.server.security.handler.JwtTokenProvider;
+import com.mineme.server.security.provider.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,8 +23,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final Properties properties;
 
 	@Override
-	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-		throws IOException, ServletException {
+	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws
+		IOException,
+		ServletException {
 
 		String token = jwtTokenProvider.resolve(request);
 
