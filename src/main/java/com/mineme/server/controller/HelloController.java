@@ -40,8 +40,8 @@ public class HelloController {
                             .body(ResponseDto.builder()
                                 .success(false)
                                 .error(ExceptionDto.builder()
-                                    .code(ErrorCode.STATUS_4007.getCode())
-                                    .message(ErrorCode.STATUS_4007.getMessage())
+                                    .code(ErrorCode.INVALID_DATA.getCode())
+                                    .message(ErrorCode.INVALID_DATA.getMessage())
                                     .build())
                                 .build());
     }

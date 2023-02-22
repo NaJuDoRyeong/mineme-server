@@ -6,32 +6,33 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post extends BaseEntity{
+public class Post extends BaseEntity {
 
-    @Id
-    @Column(name = "POST_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@Column(name = "POST_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "DATED_AT")
-    private LocalDateTime datedAt;
+	@OneToMany(mappedBy = "postId")
+	private List<Photo> photos = new ArrayList<>();
 
-    @Column(name = "TITLE")
-    @NotNull
-    private String title;
+	@Column(name = "DATED_AT")
+	private LocalDate datedAt;
 
-    @Column(name = "CONTENT", columnDefinition = "TEXT")
-    @NotNull
-    private String content;
+	@Column(name = "CONTENT", columnDefinition = "TEXT")
+	@NotNull
+	private String content;
 
-    public Post(LocalDateTime datedAt, String title, String content) {
-        this.datedAt = datedAt;
-        this.title = title;
-        this.content = content;
-    }
+	public Post(LocalDate datedAt, String content) {
+		this.datedAt = datedAt;
+		this.content = content;
+	}
 }
