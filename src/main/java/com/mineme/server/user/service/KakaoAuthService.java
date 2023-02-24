@@ -8,7 +8,7 @@ import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.user.dto.KakaoUserDto;
 import com.mineme.server.user.dto.UserDto;
 import com.mineme.server.user.repository.UserRepository;
-import com.mineme.server.user.util.HttpClientUtil;
+import com.mineme.server.user.util.AuthUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,16 +20,17 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class KakaoAuthService {
+public class KakaoAuthService implements AuthService {
 
 	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final Properties properties;
 
 	@Transactional
-	public UserDto.Jwt getKakaoUserDetails(UserDto.SignRequest dto) {
+	@Override
+	public UserDto.Jwt getUserDetails(UserDto.SignRequest dto) {
 		try {
-			KakaoUserDto.User user = HttpClientUtil.getMonoUser(dto).block();
+			KakaoUserDto.User user = AuthUtil.getKakaoUser(dto).block();
 			User signedUser = userRepository.findByUsername(user.getId()).orElse(null);
 
 			if (signedUser == null)

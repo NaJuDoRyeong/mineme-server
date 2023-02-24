@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
-public class AuthController {
+@RequestMapping("/api/v1")
+public class KakaoAuthController {
 
 	private final KakaoAuthService kakaoAuthService;
 
 	@PostMapping("user")
 	public ResponseDto<UserDto.Jwt> kakaoUserDetails(@RequestBody UserDto.SignRequest dto) {
-		UserDto.Jwt response = kakaoAuthService.getKakaoUserDetails(dto);
+		UserDto.Jwt response = kakaoAuthService.getUserDetails(dto);
 
 		return new ResponseDto<>(response);
 	}

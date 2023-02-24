@@ -12,9 +12,13 @@ public class KakaoUserDto {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class User {
-		private String id;
+	public static class User extends UserDto.Auth {
 		private KakaoAccount kakao_account;
+
+		public User(String id, KakaoAccount account) {
+			super(id);
+			this.kakao_account = account;
+		}
 	}
 
 	@Getter
