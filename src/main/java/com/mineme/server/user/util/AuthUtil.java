@@ -26,7 +26,7 @@ import com.mineme.server.user.dto.UserDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AccessLevel;
-import lombok.NoArgsConstructor;;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
@@ -103,12 +103,13 @@ public class AuthUtil {
 	/** Apple
 	 * step 1. get Public Key for validation.
 	 **/
-	public static Mono<AppleUserDto.KeyResponse> getApplePublicKey(UserDto.AppleSignRequest dto) {
+	public static Mono<AppleUserDto.KeyResponse> getApplePublicKey(Properties properties,
+		UserDto.AppleSignRequest dto) {
 
-		String appleClientSecret = AuthUtil.getAuthJws(Properties.getAppleTid(), Properties.getAppleCid(),
-			Properties.getAppleKid(), Properties.getAppleKeyPath());
-		UserDto.AppleAuth appleAuth = new UserDto.AppleAuth(Properties.getAppleCid(), appleClientSecret,
-			dto.getAuthorizationCode(), Properties.getAppleCallback());
+		String appleClientSecret = AuthUtil.getAuthJws(properties.getAppleTid(), properties.getAppleCid(),
+			properties.getAppleKid(), properties.getAppleKeyPath());
+		UserDto.AppleAuth appleAuth = new UserDto.AppleAuth(properties.getAppleCid(), appleClientSecret,
+			dto.getAuthorizationCode(), properties.getAppleCallback());
 
 		return HttpClientUtil.getClient("https://appleid.apple.com")
 			.post()
@@ -122,12 +123,12 @@ public class AuthUtil {
 	/** Apple
 	 * step 2. get Auth by Public Key.
 	 **/
-	public static Mono<?> getAppleAuth(UserDto.AppleSignRequest dto) {
+	public static Mono<AppleUserDto.Auth> getAppleAuth(UserDto.AppleSignRequest dto) {
 		return HttpClientUtil.getClient("https://appleid.apple.com")
 			.get()
 			.uri("/auth/keys")
 			.header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
 			.retrieve()
-			.bodyToMono(Object.class);
+			.bodyToMono(AppleUserDto.Auth.class);
 	}
 }

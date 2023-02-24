@@ -17,6 +17,7 @@ import com.mineme.server.security.token.UserJwtAuthenticationToken;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,6 +25,9 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @Todo 애플 인가 작업 후 일괄 예외처리 핸들러로 넘길 예정
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -95,6 +99,10 @@ public class JwtTokenProvider {
 		}
 
 		return false;
+	}
+
+	public JwsHeader getJwtHeader(String token) {
+		return null;
 	}
 
 	public String resolve(HttpServletRequest request) {
