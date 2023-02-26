@@ -1,7 +1,10 @@
 package com.mineme.server.user.dto;
 
+import com.mineme.server.security.config.Properties;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -63,11 +66,21 @@ public class UserDto {
 		private String refresh_token;
 		private String redirect_uri;
 
+		@Builder
 		public AppleAuth(String clientId, String clientSecret, String code, String redirectUri) {
 			this.client_id = clientId;
 			this.client_secret = clientSecret;
 			this.code = code;
 			this.redirect_uri = redirectUri;
+		}
+
+		public static AppleAuth toAppleAuth(Properties properties, String authCode, String secret) {
+			return AppleAuth.builder()
+				.clientId(properties.getAppleCid())
+				.clientSecret(secret)
+				.code(authCode)
+				.redirectUri(properties.getAppleCallback())
+				.build();
 		}
 	}
 

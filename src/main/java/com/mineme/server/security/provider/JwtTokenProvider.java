@@ -1,5 +1,6 @@
 package com.mineme.server.security.provider;
 
+import java.security.PublicKey;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,6 +82,27 @@ public class JwtTokenProvider {
 	}
 
 	public boolean validate(String token, String key) {
+		try {
+			Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+			return true;
+		} catch (SecurityException e) {
+			log.info("Invalid JWT signature", e);
+		} catch (MalformedJwtException e) {
+			log.info("Invalid JWT token", e);
+		} catch (ExpiredJwtException e) {
+			log.info("Expired JWT Token", e);
+		} catch (UnsupportedJwtException e) {
+			log.info("Unsupported JWT Token", e);
+		} catch (IllegalArgumentException e) {
+			log.info("JWT claims string is empty", e);
+		} catch (Exception e) {
+			log.info("Error occur on JWT", e);
+		}
+
+		return false;
+	}
+
+	public boolean validate(String token, PublicKey key) {
 		try {
 			Jwts.parser().setSigningKey(key).parseClaimsJws(token);
 			return true;

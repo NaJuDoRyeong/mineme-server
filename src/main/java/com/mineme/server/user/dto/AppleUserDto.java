@@ -12,6 +12,12 @@ public class AppleUserDto {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class User {
+		private String id;
+	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class Auth {
 
 	}
