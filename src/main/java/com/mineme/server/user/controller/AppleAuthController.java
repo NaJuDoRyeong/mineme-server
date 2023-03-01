@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mineme.server.common.dto.ResponseDto;
+import com.mineme.server.user.dto.Apple;
 import com.mineme.server.user.dto.UserDto;
 import com.mineme.server.user.service.AppleAuthService;
 
@@ -13,14 +14,21 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/auth")
 public class AppleAuthController {
 
 	private final AppleAuthService appleAuthService;
 
-	@PostMapping("/auth/apple")
-	public ResponseDto<UserDto.Jwt> appleUserDetails(@RequestBody UserDto.AppleSignRequest dto) {
+	@PostMapping("/apple")
+	public ResponseDto<UserDto.Jwt> appleUserDetails(@RequestBody Apple.SignRequest dto) {
 		UserDto.Jwt response = appleAuthService.getUserDetails(dto);
+
+		return new ResponseDto<>(response);
+	}
+
+	@PostMapping("/apple/refresh")
+	public ResponseDto appleTokenDetails(@RequestBody Apple.SignRequest dto) {
+		Apple.TokenResponse response = appleAuthService.getSession(dto);
 
 		return new ResponseDto<>(response);
 	}

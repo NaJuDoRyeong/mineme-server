@@ -3,7 +3,6 @@ package com.mineme.server.user.service;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +13,11 @@ import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
-import com.mineme.server.user.dto.AppleUserDto;
+import com.mineme.server.security.util.JwtUtil;
+import com.mineme.server.user.dto.Apple;
 import com.mineme.server.user.dto.UserDto;
 import com.mineme.server.user.repository.UserRepository;
+import com.mineme.server.user.util.AuthClientUtil;
 import com.mineme.server.user.util.AuthUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -29,25 +30,19 @@ public class AppleAuthService {
 	private final Properties properties;
 
 	@Transactional
-	public UserDto.Jwt getUserDetails(UserDto.AppleSignRequest dto) {
+	public UserDto.Jwt getUserDetails(Apple.SignRequest dto) {
 		try {
-			/* 공개 키를 통한 access token 유효성 검증 */
-			List<PublicKey> keys = AuthUtil.getApplePublicKeys(properties, dto);
-			boolean isValid = false;
-			for (PublicKey key : keys)
-				if (isValid = jwtTokenProvider.validate(dto.getAccessToken(), key))
-					break;
+			/* 공개 키 가져오기 */
+			PublicKey key = AuthUtil.getApplePublicKeys(dto);
 
-			if (!isValid)
+			/* 공개 키를 통한 Identity Token 검증 */
+			if (jwtTokenProvider.validate(dto.getAccessToken(), key))
 				throw new CustomException(ErrorCode.INVALID_TOKEN);
 
-			/* @Todo Step 2 지정 후 함께 적용 */
-			AppleUserDto.Auth auth = AuthUtil.getAppleAuth(dto).block();
-			AppleUserDto.User user = AuthUtil.getAppleUser(auth);
-			User signedUser = userRepository.findByUsername(null).orElse(null);
+			User signedUser = userRepository.findByUsername(jwtTokenProvider.getUsername()).orElse(null);
 
 			if (signedUser == null)
-				signedUser = userRepository.save(User.toPendingUserEntity(user.getId(), dto));
+				signedUser = userRepository.save(User.toPendingUserEntity(jwtTokenProvider.getUsername(), dto));
 
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), properties.getSecret());
 
@@ -61,5 +56,18 @@ public class AppleAuthService {
 		} catch (NoSuchAlgorithmException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
 		}
+	}
+
+	public Apple.TokenResponse getSession(Apple.SignRequest dto) {
+
+		String clientSecret = JwtUtil.getAppleClientSecret(properties.getAppleTid(), properties.getAppleCid(),
+			properties.getAppleKid(), properties.getAppleKeyPath());
+
+		Apple.TokenRequest authDto = Apple.TokenRequest.toAppleAuth(properties, dto.getAuthorizationCode(),
+			clientSecret);
+
+		/* @Todo Refresh Token을 이용한 로직 추가해야 함. */
+
+		return AuthClientUtil.generateAndValidateIdToken(authDto).block();
 	}
 }

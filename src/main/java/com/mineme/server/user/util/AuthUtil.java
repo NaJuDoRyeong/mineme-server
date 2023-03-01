@@ -39,7 +39,7 @@ public class AuthUtil {
 	/** Apple
 	 * step 1. get Public Key for validation.
 	 **/
-	public static PublicKey getApplePublicKeys(Properties properties, Apple.SignRequest dto) throws
+	public static PublicKey getApplePublicKeys(Apple.SignRequest dto) throws
 		NoSuchAlgorithmException,
 		InvalidKeySpecException {
 
