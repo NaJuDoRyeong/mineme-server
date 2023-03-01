@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
+import com.mineme.server.user.util.AuthUtil;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -47,45 +48,38 @@ public class JwtUtil {
 		}
 	}
 
-	public static String getAuthJws(String teamId, String clientId, String keyId, String keyPath) {
+	public static String getAppleClientSecret(String teamId, String clientId, String keyId, String keyPath) {
 		try {
-			final String privateKey = readPrivateKey(keyPath);
-			PrivateKey ecPrivateKey = getPrivateKey(privateKey);
-
 			return Jwts.builder()
 				.setHeaderParam("kid", keyId)
 				.setIssuer(teamId)
 				.setSubject(clientId)
 				.setIssuedAt(new Date(Calendar.getInstance().getTimeInMillis()))
 				.setExpiration(new Date(Calendar.getInstance().getTimeInMillis() + EXPIRED_TIME))
-				.setAudience("appstoreconnect-v1")
+				.setAudience("https://appleid.apple.com")
 				.claim("bid", "com.mineme.ios.mineme")
-				.signWith(SignatureAlgorithm.ES256, ecPrivateKey)
+				.signWith(SignatureAlgorithm.ES256, AuthUtil.getPrivateKey())
 				.compact();
 
 			/**
 			 * @Todo 테스트 후 예외 처리 상세화 예정
 			 */
-		} catch (NoSuchAlgorithmException e) {
-			log.error("ES256 Signature Not Found. {}", e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
 		} catch (JsonEOFException e) {
 			log.error("JsonEOFException. {}", e.getMessage());
 			throw new CustomException(ErrorCode.SERVER_ERROR);
 		} catch (IOException e) {
 			log.error("IOException. {}", e.getMessage());
 			throw new CustomException(ErrorCode.SERVER_ERROR);
-		} catch (InvalidKeySpecException e) {
-			log.error("InvalidKeySpecException. {}", e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
 		}
 	}
 
+	@Deprecated
 	private static PrivateKey getPrivateKey(String key) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		byte[] encoded = org.apache.tomcat.util.codec.binary.Base64.decodeBase64(key);
 		return KeyFactory.getInstance("EC").generatePrivate(new PKCS8EncodedKeySpec(encoded));
 	}
 
+	@Deprecated
 	private static String readPrivateKey(String filePath) throws IOException {
 
 		BufferedReader br = new BufferedReader(new FileReader(filePath));

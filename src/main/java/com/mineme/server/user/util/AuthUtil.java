@@ -1,109 +1,85 @@
 package com.mineme.server.user.util;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.http.HttpHeaders;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.springframework.core.io.ClassPathResource;
 
-import com.mineme.server.common.utils.HttpClientUtil;
+import com.mineme.server.common.enums.ErrorCode;
+import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.util.JwtUtil;
-import com.mineme.server.user.dto.AppleUserDto;
-import com.mineme.server.user.dto.KakaoUserDto;
-import com.mineme.server.user.dto.UserDto;
+import com.mineme.server.user.dto.Apple;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthUtil {
 
-	public static Mono<KakaoUserDto.User> getKakaoUser(UserDto.SignRequest dto) {
-		return HttpClientUtil.getClient("https://kapi.kakao.com")
-			.get()
-			.uri("/v2/user/me")
-			.header(HttpHeaders.AUTHORIZATION, "Bearer " + dto.getAccessToken())
-			.header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
-			.retrieve()
-			.bodyToMono(KakaoUserDto.User.class);
-	}
-
 	/** Apple
 	 * step 1. get Public Key for validation.
 	 **/
-	public static List<PublicKey> getApplePublicKeys(Properties properties, UserDto.AppleSignRequest dto) throws
+	public static PublicKey getApplePublicKeys(Properties properties, Apple.SignRequest dto) throws
 		NoSuchAlgorithmException,
 		InvalidKeySpecException {
 
-		/* 1. Client 비밀 값 생성 */
-		String appleClientSecret = JwtUtil.getAuthJws(properties.getAppleTid(), properties.getAppleCid(),
-			properties.getAppleKid(), properties.getAppleKeyPath());
+		/* 공개키 요청 */
+		List<Apple.Key> keys = AuthClientUtil.getPublicKeys().block();
 
-		UserDto.AppleAuth appleAuth = UserDto.AppleAuth.toAppleAuth(properties, dto.getAuthorizationCode(),
-			appleClientSecret);
-
-		/* 공개키 생성을 위한 인자 요청 */
-		List<AppleUserDto.Key> keys = HttpClientUtil.getClient("https://appleid.apple.com")
-			.post()
-			.uri("/auth/token")
-			.header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-			.body(Mono.just(appleAuth), UserDto.AppleAuth.class)
-			.retrieve()
-			.bodyToMono(List.class)
-			.block();
-
-		/* 공개 키 생성 */
+		/* 공개 키 확인 */
 		Map<String, String> header = JwtUtil.getHeader(dto.getAccessToken());
-		List<PublicKey> pks = new ArrayList<>();
-		for (AppleUserDto.Key key : keys) {
-			if (header.get("kid").equals(key.getKid()) && header.get("alg").equals(key.getAlg())) {
+		Apple.Key validKey = getValidKey(keys, header.get("kid"), header.get("alg")).orElseThrow(
+			() -> new CustomException(ErrorCode.INVALID_TOKEN));
 
-				byte[] nBytes = java.util.Base64.getUrlDecoder().decode(key.getN());
-				byte[] eBytes = Base64.getUrlDecoder().decode(key.getE());
-
-				BigInteger n = new BigInteger(1, nBytes);
-				BigInteger e = new BigInteger(1, eBytes);
-
-				RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(n, e);
-				KeyFactory keyFactory = KeyFactory.getInstance(key.getKty());
-				PublicKey applePublicKey = keyFactory.generatePublic(publicKeySpec);
-
-				pks.add(applePublicKey);
-				break;
-			}
-		}
-
-		return pks;
+		return getDecodedKey(validKey);
 	}
 
-	/** Apple
-	 * step 2. get Auth by Public Key.
-	 **/
-	public static Mono<AppleUserDto.Auth> getAppleAuth(UserDto.AppleSignRequest dto) {
-		return HttpClientUtil.getClient("https://appleid.apple.com")
-			.get()
-			.uri("/auth/keys")
-			.header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-			.retrieve()
-			.bodyToMono(AppleUserDto.Auth.class);
+	private static Optional<Apple.Key> getValidKey(List<Apple.Key> keys, String kid, String alg) {
+		return keys.stream().filter(key -> key.getKid().equals(kid) && key.getAlg().equals(alg)).findFirst();
 	}
 
-	/** Apple
-	 * step 3. get ID from verified Token.
-	 */
-	public static AppleUserDto.User getAppleUser(AppleUserDto.Auth auth) {
+	private static PublicKey getDecodedKey(Apple.Key validKey) throws
+		InvalidKeySpecException,
+		NoSuchAlgorithmException {
 
-		return null;
+		byte[] nBytes = java.util.Base64.getUrlDecoder().decode(validKey.getN());
+		byte[] eBytes = Base64.getUrlDecoder().decode(validKey.getE());
+
+		BigInteger n = new BigInteger(1, nBytes);
+		BigInteger e = new BigInteger(1, eBytes);
+
+		RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(n, e);
+		KeyFactory keyFactory = KeyFactory.getInstance(validKey.getKty());
+		return keyFactory.generatePublic(publicKeySpec);
+	}
+
+	public static PrivateKey getPrivateKey() throws IOException {
+		ClassPathResource resource = new ClassPathResource("static/.p8");
+		String privateKey = new String(Files.readAllBytes(Paths.get(resource.getURI())));
+		Reader pemReader = new StringReader(privateKey);
+		PEMParser pemParser = new PEMParser(pemReader);
+		JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
+		PrivateKeyInfo object = (PrivateKeyInfo)pemParser.readObject();
+		return converter.getPrivateKey(object);
 	}
 }
