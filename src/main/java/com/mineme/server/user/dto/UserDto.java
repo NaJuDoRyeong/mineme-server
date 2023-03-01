@@ -1,10 +1,8 @@
 package com.mineme.server.user.dto;
 
-import com.mineme.server.security.config.Properties;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,11 +13,7 @@ public class UserDto {
 	@AllArgsConstructor
 	public static class Jwt {
 		private String jwt;
-
-		/**
-		 * @See 사용자 커플 매칭 코드
-		 */
-		private String code;
+		private String code; // @see 커플 매칭 코드
 	}
 
 	@Getter
@@ -29,59 +23,6 @@ public class UserDto {
 		private String accessToken; // @Todo 제네릭으로 Kakao, Apple 구분할 것인지 파악하기
 		private String providerType;
 		private String username;
-	}
-
-	@Getter
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class AppleSignRequest extends SignRequest {
-
-		private String authorizationCode;
-
-		/**
-		 * @See Access Token == Identity Token
-		 */
-		public AppleSignRequest(String accessToken, String providerType, String username, String authorizationCode) {
-			super(accessToken, providerType, username);
-			this.authorizationCode = authorizationCode;
-		}
-
-		public AppleUserDto.Key getPublicKeyFromHeader() {
-			return null;
-		}
-	}
-
-	@Getter
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class AppleAuth {
-		private String client_id;
-		private String client_secret;
-
-		/**
-		 * @See authorization_code
-		 */
-		private String code;
-
-		private static String grant_type = "authorization_code";
-
-		private String refresh_token;
-		private String redirect_uri;
-
-		@Builder
-		public AppleAuth(String clientId, String clientSecret, String code, String redirectUri) {
-			this.client_id = clientId;
-			this.client_secret = clientSecret;
-			this.code = code;
-			this.redirect_uri = redirectUri;
-		}
-
-		public static AppleAuth toAppleAuth(Properties properties, String authCode, String secret) {
-			return AppleAuth.builder()
-				.clientId(properties.getAppleCid())
-				.clientSecret(secret)
-				.code(authCode)
-				.redirectUri(properties.getAppleCallback())
-				.build();
-		}
 	}
 
 	@Getter
