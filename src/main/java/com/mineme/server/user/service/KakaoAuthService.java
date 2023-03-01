@@ -5,10 +5,10 @@ import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
-import com.mineme.server.user.dto.KakaoUserDto;
+import com.mineme.server.user.dto.Kakao;
 import com.mineme.server.user.dto.UserDto;
 import com.mineme.server.user.repository.UserRepository;
-import com.mineme.server.user.util.AuthUtil;
+import com.mineme.server.user.util.AuthClientUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class KakaoAuthService implements AuthService {
 	@Override
 	public UserDto.Jwt getUserDetails(UserDto.SignRequest dto) {
 		try {
-			KakaoUserDto.User user = AuthUtil.getKakaoUser(dto).block();
+			Kakao.User user = AuthClientUtil.getKakaoUser(dto).block();
 			User signedUser = userRepository.findByUsername(user.getId()).orElse(null);
 
 			if (signedUser == null)
