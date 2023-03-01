@@ -32,6 +32,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.64'
+
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
