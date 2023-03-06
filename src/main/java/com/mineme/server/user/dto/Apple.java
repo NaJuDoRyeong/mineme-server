@@ -65,7 +65,7 @@ public class Apple {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class SignRequest extends UserDto.SignRequest {
+	public static class SignRequest extends Auth.SignRequest {
 
 		private String authorizationCode;
 

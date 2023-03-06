@@ -1,8 +1,8 @@
 package com.mineme.server.user.service;
 
-import com.mineme.server.user.dto.UserDto;
+import com.mineme.server.user.dto.Auth;
 
 public interface AuthService {
 
-	UserDto.Jwt getUserDetails(UserDto.SignRequest dto);
+	Auth.Jwt getUserDetails(Auth.SignRequest dto);
 }

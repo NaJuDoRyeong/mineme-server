@@ -2,7 +2,7 @@ package com.mineme.server.entity;
 
 import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
-import com.mineme.server.user.dto.UserDto;
+import com.mineme.server.user.dto.Auth;
 import com.mineme.server.user.util.UserUtil;
 
 import lombok.AccessLevel;
@@ -114,7 +114,7 @@ public class User extends BaseEntity implements UserDetails {
 	@NotNull
 	private Boolean noticeMarketing;
 
-	public static User toPendingUserEntity(String username, UserDto.SignRequest dto) {
+	public static User toPendingUserEntity(String username, Auth.SignRequest dto) {
 		return User.builder()
 			.userCode(UserUtil.createUserCode())
 			.username(username)

@@ -15,7 +15,7 @@ import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.security.util.JwtUtil;
 import com.mineme.server.user.dto.Apple;
-import com.mineme.server.user.dto.UserDto;
+import com.mineme.server.user.dto.Auth;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.AuthClientUtil;
 import com.mineme.server.user.util.AuthUtil;
@@ -30,7 +30,7 @@ public class AppleAuthService {
 	private final Properties properties;
 
 	@Transactional
-	public UserDto.Jwt getUserDetails(Apple.SignRequest dto) {
+	public Auth.Jwt getUserDetails(Apple.SignRequest dto) {
 		try {
 			/* 공개 키 가져오기 */
 			PublicKey key = AuthUtil.getApplePublicKeys(dto);
@@ -46,7 +46,7 @@ public class AppleAuthService {
 
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), properties.getSecret());
 
-			return new UserDto.Jwt(accessToken, signedUser.getUserCode());
+			return new Auth.Jwt(accessToken, signedUser.getUserCode());
 		} catch (NullPointerException e) { // @Todo - 추후 orElse() 로직 변경 시 함께 조정해야 함.
 			throw new CustomException(ErrorCode.INVALID_USER);
 		} catch (WebClientResponseException e) {

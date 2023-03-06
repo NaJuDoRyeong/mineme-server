@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserDto {
+public class Auth {
 
 	@Getter
 	@AllArgsConstructor
@@ -27,10 +27,10 @@ public class UserDto {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class Auth {
+	public static class Info {
 		private String id;
 
-		public Auth(String id) {
+		public Info(String id) {
 			this.id = id;
 		}
 	}

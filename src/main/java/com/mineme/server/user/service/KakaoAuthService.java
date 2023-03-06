@@ -6,7 +6,7 @@ import com.mineme.server.entity.User;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.user.dto.Kakao;
-import com.mineme.server.user.dto.UserDto;
+import com.mineme.server.user.dto.Auth;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.AuthClientUtil;
 
@@ -28,7 +28,7 @@ public class KakaoAuthService implements AuthService {
 
 	@Transactional
 	@Override
-	public UserDto.Jwt getUserDetails(UserDto.SignRequest dto) {
+	public Auth.Jwt getUserDetails(Auth.SignRequest dto) {
 		try {
 			Kakao.User user = AuthClientUtil.getKakaoUser(dto).block();
 			User signedUser = userRepository.findByUsername(user.getId()).orElse(null);
@@ -38,7 +38,7 @@ public class KakaoAuthService implements AuthService {
 
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), properties.getSecret());
 
-			return new UserDto.Jwt(accessToken, signedUser.getUserCode());
+			return new Auth.Jwt(accessToken, signedUser.getUserCode());
 		} catch (NullPointerException e) { // @Todo - 추후 orElse() 로직 변경 시 함께 조정해야 함.
 			throw new CustomException(ErrorCode.INVALID_USER);
 		} catch (WebClientResponseException e) {

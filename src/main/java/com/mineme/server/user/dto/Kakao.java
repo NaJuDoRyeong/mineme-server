@@ -12,7 +12,7 @@ public class Kakao {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class User extends UserDto.Auth {
+	public static class User extends Auth.Info {
 		private KakaoAccount kakao_account;
 
 		public User(String id, KakaoAccount account) {
