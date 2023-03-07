@@ -11,7 +11,9 @@ import com.mineme.server.user.dto.Auth;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.AuthClientUtil;
 import com.mineme.server.user.util.AuthUtil;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -22,12 +24,13 @@ import java.security.spec.InvalidKeySpecException;
 
 @Service
 @RequiredArgsConstructor
-public class AppleAuthService {
+public class AppleAuthService implements AuthService<Apple.SignRequest> {
 	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final Properties properties;
 
 	@Transactional
+	@Override
 	public Auth.Jwt getUserDetails(Apple.SignRequest dto) {
 		try {
 			/* 공개 키 가져오기 */
@@ -65,8 +68,15 @@ public class AppleAuthService {
 		Apple.TokenRequest authDto = Apple.TokenRequest.toAppleAuth(properties, dto.getAuthorizationCode(),
 			clientSecret);
 
-		/* @Todo Refresh Token을 이용한 로직 추가해야 함. */
+		/* @Todo Refresh Token 을 이용한 로직 추가해야 함. */
 
 		return AuthClientUtil.generateAndValidateIdToken(authDto).block();
+	}
+
+	@Override
+	public User getCurrentUser() {
+		return jwtTokenProvider.getUsername()
+			.flatMap(username -> userRepository.findByUsername(username))
+			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
 	}
 }

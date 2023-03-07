@@ -9,14 +9,16 @@ import com.mineme.server.user.dto.Auth;
 import com.mineme.server.user.dto.Kakao;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.AuthClientUtil;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 @RequiredArgsConstructor
-public class KakaoAuthService implements AuthService {
+public class KakaoAuthService implements AuthService<Auth.SignRequest> {
 
 	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -40,5 +42,12 @@ public class KakaoAuthService implements AuthService {
 		} catch (WebClientResponseException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
 		}
+	}
+
+	@Override
+	public User getCurrentUser() {
+		return jwtTokenProvider.getUsername()
+			.flatMap(username -> userRepository.findByUsername(username))
+			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
 	}
 }
