@@ -1,16 +1,12 @@
 package com.mineme.server.user.util;
 
-import java.util.List;
-
-import org.springframework.http.HttpHeaders;
-
 import com.mineme.server.common.utils.HttpClientUtil;
 import com.mineme.server.user.dto.Apple;
-import com.mineme.server.user.dto.Kakao;
 import com.mineme.server.user.dto.Auth;
-
+import com.mineme.server.user.dto.Kakao;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import reactor.core.publisher.Mono;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,13 +26,13 @@ public class AuthClientUtil {
 	}
 
 	/** Apple get Public Key. **/
-	public static Mono<List> getPublicKeys() {
+	public static Mono<Apple.Keys> getPublicKeys() {
 		return HttpClientUtil.getClient(APPLE_ID_BASE_API)
 			.get()
 			.uri("/auth/keys")
 			.header(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_FORM_URL_ENCODED)
 			.retrieve()
-			.bodyToMono(List.class);
+			.bodyToMono(Apple.Keys.class);
 	}
 
 	public static Mono<Apple.TokenResponse> generateAndValidateIdToken(Apple.TokenRequest appleAuth) {

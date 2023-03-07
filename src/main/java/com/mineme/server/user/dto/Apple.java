@@ -1,12 +1,9 @@
 package com.mineme.server.user.dto;
 
 import com.mineme.server.security.config.Properties;
+import lombok.*;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Apple {
@@ -45,6 +42,13 @@ public class Apple {
 		public String getTokenType() {
 			return token_type;
 		}
+	}
+
+	@Getter
+	@AllArgsConstructor
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class Keys {
+		private List<Key> keys;
 	}
 
 	@Getter

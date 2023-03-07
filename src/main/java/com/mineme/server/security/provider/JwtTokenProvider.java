@@ -1,30 +1,21 @@
 package com.mineme.server.security.provider;
 
-import java.security.PublicKey;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.security.service.CustomUserDetailsService;
 import com.mineme.server.security.token.UserJwtAuthenticationToken;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwsHeader;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.PublicKey;
+import java.util.Date;
 
 /**
  * @Todo 애플 인가 작업 후 일괄 예외처리 핸들러로 넘길 예정
@@ -34,112 +25,132 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class JwtTokenProvider {
 
-	private static final long EXPIREDTIME = 3 * 24 * 60 * 60 * 1000L;
+    private static final long EXPIREDTIME = 3 * 24 * 60 * 60 * 1000L;
 
-	private final CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
-	public String create(String username, String key) {
-		Date now = new Date();
+    public String create(String username, String key) {
+        Date now = new Date();
 
-		return Jwts.builder()
-			.setSubject(username)
-			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + EXPIREDTIME))
-			.signWith(SignatureAlgorithm.HS256, key)
-			.compact();
-	}
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + EXPIREDTIME))
+                .signWith(SignatureAlgorithm.HS256, key)
+                .compact();
+    }
 
-	public Claims getClaims(String token, String key) {
-		try {
-			return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
-		} catch (SecurityException e) {
-			log.info("Invalid JWT signature", e);
-		} catch (MalformedJwtException e) {
-			log.info("Invalid JWT token", e);
-		} catch (ExpiredJwtException e) {
-			log.info("Expired JWT Token", e);
-		} catch (UnsupportedJwtException e) {
-			log.info("Unsupported JWT Token", e);
-		} catch (IllegalArgumentException e) {
-			log.info("JWT claims string is empty", e);
-		} catch (Exception e) {
-			log.info("Error occur on JWT", e);
-		}
+    public Claims getClaims(String token, String key) {
+        try {
+            return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+        } catch (SecurityException e) {
+            log.info("Invalid JWT signature", e);
+        } catch (MalformedJwtException e) {
+            log.info("Invalid JWT token", e);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT Token", e);
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT Token", e);
+        } catch (IllegalArgumentException e) {
+            log.info("JWT claims string is empty", e);
+        } catch (Exception e) {
+            log.info("Error occur on JWT", e);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public Authentication getAuthentication(String token, String key) {
-		String username = this.getClaims(token, key).getSubject();
-		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    public Claims getClaims(String token, PublicKey key) {
+        try {
+            return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+        } catch (SecurityException e) {
+            log.info("Invalid JWT signature", e);
+        } catch (MalformedJwtException e) {
+            log.info("Invalid JWT token", e);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT Token", e);
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT Token", e);
+        } catch (IllegalArgumentException e) {
+            log.info("JWT claims string is empty", e);
+        } catch (Exception e) {
+            log.info("Error occur on JWT", e);
+        }
 
-		return new UserJwtAuthenticationToken(userDetails);
-	}
+        return null;
+    }
 
-	public String getUsername() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ((User)principal).getUsername();
-	}
+    public Authentication getAuthentication(String token, String key) {
+        String username = this.getClaims(token, key).getSubject();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-	public boolean validate(String token, String key) {
-		try {
-			Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-			return true;
-		} catch (SecurityException e) {
-			log.info("Invalid JWT signature", e);
-		} catch (MalformedJwtException e) {
-			log.info("Invalid JWT token", e);
-		} catch (ExpiredJwtException e) {
-			log.info("Expired JWT Token", e);
-		} catch (UnsupportedJwtException e) {
-			log.info("Unsupported JWT Token", e);
-		} catch (IllegalArgumentException e) {
-			log.info("JWT claims string is empty", e);
-		} catch (Exception e) {
-			log.info("Error occur on JWT", e);
-		}
+        return new UserJwtAuthenticationToken(userDetails);
+    }
 
-		return false;
-	}
+    public String getUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ((User) principal).getUsername();
+    }
 
-	public boolean validate(String token, PublicKey key) {
-		try {
-			Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-			return true;
-		} catch (SecurityException e) {
-			log.info("Invalid JWT signature", e);
-		} catch (MalformedJwtException e) {
-			log.info("Invalid JWT token", e);
-		} catch (ExpiredJwtException e) {
-			log.info("Expired JWT Token", e);
-		} catch (UnsupportedJwtException e) {
-			log.info("Unsupported JWT Token", e);
-		} catch (IllegalArgumentException e) {
-			log.info("JWT claims string is empty", e);
-		} catch (Exception e) {
-			log.info("Error occur on JWT", e);
-		}
+    public boolean validate(String token, String key) {
+        try {
+            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            return true;
+        } catch (SecurityException e) {
+            log.info("Invalid JWT signature", e);
+        } catch (MalformedJwtException e) {
+            log.info("Invalid JWT token", e);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT Token", e);
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT Token", e);
+        } catch (IllegalArgumentException e) {
+            log.info("JWT claims string is empty", e);
+        } catch (Exception e) {
+            log.info("Error occur on JWT", e);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public JwsHeader getJwtHeader(String token) {
-		return null;
-	}
+    public boolean validate(String token, PublicKey key) {
+        try {
+            Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+            return true;
+        } catch (SecurityException e) {
+            log.info("Invalid JWT signature", e);
+        } catch (MalformedJwtException e) {
+            log.info("Invalid JWT token", e);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT Token", e);
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT Token", e);
+        } catch (IllegalArgumentException e) {
+            log.info("JWT claims string is empty", e);
+        } catch (Exception e) {
+            log.info("Error occur on JWT", e);
+        }
 
-	public String resolve(HttpServletRequest request) {
+        return false;
+    }
 
-		String authorization = request.getHeader("Authorization");
+    public JwsHeader getJwtHeader(String token) {
+        return null;
+    }
 
-		if (authorization == null)
-			return null;
+    public String resolve(HttpServletRequest request) {
 
-		if (authorization.startsWith("Bearer "))
-			return authorization.substring(7);
+        String authorization = request.getHeader("Authorization");
 
-		if (authorization.startsWith("token "))
-			return authorization.substring(6);
+        if (authorization == null)
+            return null;
 
-		throw new CustomException(ErrorCode.INVALID_TOKEN);
-	}
+        if (authorization.startsWith("Bearer "))
+            return authorization.substring(7);
+
+        if (authorization.startsWith("token "))
+            return authorization.substring(6);
+
+        throw new CustomException(ErrorCode.INVALID_TOKEN);
+    }
 }

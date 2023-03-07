@@ -4,19 +4,16 @@ import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
 import com.mineme.server.user.dto.Auth;
 import com.mineme.server.user.util.UserUtil;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -40,8 +37,11 @@ public class User extends BaseEntity implements UserDetails {
 	@NotNull
 	private String userCode;
 
+	/**
+	 * @Todo Apple의 경우 username이 32 byte 길이를 초과함. ERD의 변경이 필요.
+	 */
 	@Column(name = "USERNAME")
-	@Size(max = 32)
+	@Size(max = 255)
 	@NotNull
 	private String username;
 
@@ -119,7 +119,7 @@ public class User extends BaseEntity implements UserDetails {
 			.userCode(UserUtil.createUserCode())
 			.username(username)
 			.nickname(dto.getUsername())
-			.provider(Provider.valueOf(dto.getProviderType()))
+			.provider(Provider.of(dto.getProviderType()))
 			.userState(UserState.PENDING)
 			.noticeFeed(false)
 			.noticeAnniversary(false)

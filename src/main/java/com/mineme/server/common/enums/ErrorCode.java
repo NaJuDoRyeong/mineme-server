@@ -1,9 +1,8 @@
 package com.mineme.server.common.enums;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @Getter
@@ -11,19 +10,14 @@ public enum ErrorCode {
 
 	/* Invalid Request */
 	TOKEN_EXPIRED(4001, HttpStatus.UNAUTHORIZED,"Expired."),
-
 	INVALID_IMAGE_FORMAT(4002, HttpStatus.BAD_REQUEST,"Invalid Image format."),
-
 	INVALID_TOKEN(4003, HttpStatus.UNAUTHORIZED,"Invalid Token."),
-
 	INVALID_REQUEST(4004, HttpStatus.BAD_REQUEST,"Request invalid data."),
-
 	DATA_MISSING(4005, HttpStatus.BAD_REQUEST,"Data missing."),
-
 	INVALID_DATA(4007, HttpStatus.BAD_REQUEST,"Invalid Data received."),
-
 	INVALID_USER(4008, HttpStatus.UNAUTHORIZED,"Invalid User."),
-	USER_EXISTED(4009, HttpStatus.BAD_REQUEST,"User existed ."),
+	USER_EXISTED(4009, HttpStatus.BAD_REQUEST,"User existed."),
+	INVALID_PROVIDER(4010, HttpStatus.BAD_REQUEST, "Invalid Provider."),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR,"Server busy."),
