@@ -72,8 +72,8 @@ public class AuthUtil {
         return keyFactory.generatePublic(publicKeySpec);
     }
 
-    public static PrivateKey getPrivateKey() throws IOException {
-        ClassPathResource resource = new ClassPathResource("static/AuthKey_73CQ9APWV9.p8");
+    public static PrivateKey getPrivateKey(String keyPath) throws IOException {
+        ClassPathResource resource = new ClassPathResource(keyPath);
         String privateKey = new String(Files.readAllBytes(Paths.get(resource.getURI())));
         Reader pemReader = new StringReader(privateKey);
         PEMParser pemParser = new PEMParser(pemReader);

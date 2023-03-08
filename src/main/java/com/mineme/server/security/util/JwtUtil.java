@@ -58,7 +58,7 @@ public class JwtUtil {
 				.setExpiration(new Date(Calendar.getInstance().getTimeInMillis() + EXPIRED_TIME))
 				.setAudience("https://appleid.apple.com")
 				.claim("bid", "com.mineme.ios.mineme")
-				.signWith(SignatureAlgorithm.ES256, AuthUtil.getPrivateKey())
+				.signWith(SignatureAlgorithm.ES256, AuthUtil.getPrivateKey(keyPath))
 				.compact();
 
 			/**

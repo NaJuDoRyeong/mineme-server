@@ -61,9 +61,13 @@ public class Apple {
 		private String n;
 		private String e;
 
-		public Key(String kid, String alg) {
+		public Key(String kty, String kid, String use, String alg, String n, String e) {
+			this.kty = kty;
 			this.kid = kid;
+			this.use = use;
 			this.alg = alg;
+			this.n = n;
+			this.e = e;
 		}
 	}
 
