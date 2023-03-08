@@ -6,18 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
+import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
+
 import com.mineme.server.user.dto.Auth;
 import com.mineme.server.user.repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
-public class UserService implements AuthService {
-
-	private final UserRepository userRepository;
-	private final JwtTokenProvider jwtTokenProvider;
+public class UserService extends AuthService<Object> {
 
 	@Transactional
 	public void removeUser() {
@@ -30,15 +26,12 @@ public class UserService implements AuthService {
 		userRepository.delete(user);
 	}
 
-	@Override
-	public Auth.Jwt getUserDetails(Object dto) {
-		return null;
+	public UserService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, Properties properties) {
+		super(jwtTokenProvider, userRepository, properties);
 	}
 
 	@Override
-	public User getCurrentUser() {
-		return jwtTokenProvider.getUsername()
-			.flatMap(username -> userRepository.findByUsername(username))
-			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
+	public Auth.Jwt getUserDetails(Object dto) {
+		return null;
 	}
 }

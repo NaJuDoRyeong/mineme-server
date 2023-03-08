@@ -10,19 +10,12 @@ import com.mineme.server.user.dto.Kakao;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.AuthClientUtil;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
-@RequiredArgsConstructor
-public class KakaoAuthService implements AuthService<Auth.SignRequest> {
-
-	private final UserRepository userRepository;
-	private final JwtTokenProvider jwtTokenProvider;
-	private final Properties properties;
+public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 
 	@Transactional
 	@Override
@@ -34,7 +27,8 @@ public class KakaoAuthService implements AuthService<Auth.SignRequest> {
 			if (signedUser == null)
 				signedUser = userRepository.save(User.toPendingUserEntity(user.getId(), dto));
 
-			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), properties.getSecret());
+			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
+				properties.getSecret());
 
 			return new Auth.Jwt(accessToken, signedUser.getUserCode());
 		} catch (NullPointerException e) { // @Todo - 추후 orElse() 로직 변경 시 함께 조정해야 함.
@@ -44,10 +38,7 @@ public class KakaoAuthService implements AuthService<Auth.SignRequest> {
 		}
 	}
 
-	@Override
-	public User getCurrentUser() {
-		return jwtTokenProvider.getUsername()
-			.flatMap(username -> userRepository.findByUsername(username))
-			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
+	public KakaoAuthService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, Properties properties) {
+		super(jwtTokenProvider, userRepository, properties);
 	}
 }
