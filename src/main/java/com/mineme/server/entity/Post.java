@@ -22,18 +22,32 @@ public class Post extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "USER_ID")
+	private User userId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "COUPLE_ID")
+	private Couple coupleId;
+
 	@OneToMany(mappedBy = "postId")
 	private List<Photo> photos = new ArrayList<>();
 
 	@Column(name = "DATED_AT")
 	private LocalDate datedAt;
 
+	@Column(name = "TITLE")
+	@NotNull
+	private String title;
+
 	@Column(name = "CONTENT", columnDefinition = "TEXT")
 	@NotNull
 	private String content;
 
     @Builder
-    public Post(LocalDateTime datedAt, String title, String content) {
+    public Post(User user, LocalDate datedAt, String title, String content) {
+		this.userId = user;
+		this.coupleId = user.getCoupleId();
         this.datedAt = datedAt;
         this.title = title;
         this.content = content;
