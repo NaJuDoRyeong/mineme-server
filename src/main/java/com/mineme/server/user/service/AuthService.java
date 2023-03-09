@@ -1,5 +1,7 @@
 package com.mineme.server.user.service;
 
+import org.springframework.stereotype.Component;
+
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
@@ -11,6 +13,7 @@ import com.mineme.server.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+@Component
 @RequiredArgsConstructor
 public abstract class AuthService<T> {
 
