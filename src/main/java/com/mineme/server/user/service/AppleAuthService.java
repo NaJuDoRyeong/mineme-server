@@ -8,6 +8,7 @@ import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.security.util.JwtUtil;
 import com.mineme.server.user.dto.Apple;
 import com.mineme.server.user.dto.Auth;
+import com.mineme.server.user.repository.UserMatchingCodeRepository;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.AuthClientUtil;
 import com.mineme.server.user.util.AuthUtil;
@@ -19,7 +20,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,13 +41,16 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 			String username = jwtTokenProvider.getClaims(dto.getAccessToken(), key).getSubject();
 			User signedUser = userRepository.findByUsername(username).orElse(null);
 
-			if (signedUser == null)
-				signedUser = userRepository.save(User.toPendingUserEntity(username, dto));
+			if (signedUser == null) {
+				User pendingUser = User.toPendingUserEntity(username, dto);
+				pendingUser.setUserCode(getUserMatchingCode());
+				signedUser = userRepository.save(pendingUser);
+			}
 
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 				properties.getSecret());
 
-			return new Auth.Jwt(accessToken, signedUser.getUserCode());
+			return new Auth.Jwt(accessToken, signedUser.getUserCode().getEncodedCode());
 		} catch (NullPointerException e) { // @Todo - 추후 orElse() 로직 변경 시 함께 조정 해야 함.
 			throw new CustomException(ErrorCode.INVALID_USER);
 		} catch (WebClientResponseException e) {
@@ -72,7 +75,8 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 		return AuthClientUtil.generateAndValidateIdToken(authDto).block();
 	}
 
-	public AppleAuthService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, Properties properties) {
-		super(jwtTokenProvider, userRepository, properties);
+	public AppleAuthService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository,
+		UserMatchingCodeRepository userMatchingCodeRepository, Properties properties) {
+		super(jwtTokenProvider, userRepository, userMatchingCodeRepository, properties);
 	}
 }

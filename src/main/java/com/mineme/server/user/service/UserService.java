@@ -8,8 +8,8 @@ import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
-
 import com.mineme.server.user.dto.Auth;
+import com.mineme.server.user.repository.UserMatchingCodeRepository;
 import com.mineme.server.user.repository.UserRepository;
 
 @Service
@@ -26,12 +26,13 @@ public class UserService extends AuthService<Object> {
 		userRepository.delete(user);
 	}
 
-	public UserService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, Properties properties) {
-		super(jwtTokenProvider, userRepository, properties);
-	}
-
 	@Override
 	public Auth.Jwt getUserDetails(Object dto) {
 		return null;
+	}
+
+	public UserService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository,
+		UserMatchingCodeRepository userMatchingCodeRepository, Properties properties) {
+		super(jwtTokenProvider, userRepository, userMatchingCodeRepository, properties);
 	}
 }
