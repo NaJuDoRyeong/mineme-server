@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Date;
 import java.util.Optional;
@@ -35,6 +36,18 @@ public class JwtTokenProvider {
 	private final CustomUserDetailsService userDetailsService;
 
 	public String create(String username, UserState state, String key) {
+		Date now = new Date();
+
+		return Jwts.builder()
+			.setSubject(username)
+			.claim("state", state)
+			.setIssuedAt(now)
+			.setExpiration(new Date(now.getTime() + EXPIREDTIME))
+			.signWith(SignatureAlgorithm.HS256, key)
+			.compact();
+	}
+
+	public String create(String username, UserState state, PrivateKey key) {
 		Date now = new Date();
 
 		return Jwts.builder()
