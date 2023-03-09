@@ -27,7 +27,7 @@ public class StoryController {
 	 * TODO Paging 에 따라 파라미터가 필요할 수도 있음.
 	 * @return Story 목록 및 페이징 정보
 	 */
-	@GetMapping("/")
+	@GetMapping
 	public ResponseDto<Stories> storyList() {
 		return new ResponseDto<>(storyService.getStories());
 	}
@@ -48,9 +48,14 @@ public class StoryController {
 	 * @param request 작성할 스토리 정보
 	 * @return data null
 	 */
-	@PostMapping("/")
+	@PostMapping
 	public ResponseDto storyAdd(@RequestBody SaveRequest request) {
 		storyService.addStory(request);
+		return new ResponseDto(null);
+	}
+
+	@PostMapping("/image")
+	public ResponseDto imageUpload() {
 		return new ResponseDto(null);
 	}
 }
