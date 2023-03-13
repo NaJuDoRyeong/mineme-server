@@ -19,7 +19,9 @@ import javax.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Entity
@@ -34,6 +36,9 @@ public class User extends BaseEntity implements UserDetails {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "COUPLE_ID")
 	private Couple coupleId;
+
+	@OneToMany(mappedBy = "userId")
+	private List<Post> posts = new ArrayList<>();
 
 	@Column(name = "USER_CODE")
 	@Size(min = 8, max = 8)
