@@ -82,7 +82,7 @@ public class Story {
 		@Getter
 		static class StoryDetail {
 			private RegionCode region;
-			private char isAnniversary;
+			private Character isAnniversary;
 			private Anniversary anniversary;
 			private LocalDate date;
 			private List<String> images;
@@ -94,7 +94,7 @@ public class Story {
 			static class Anniversary {
 				// TODO Type 을 String 으로 할지, ENUM 으로 처리할지
 				private String type;
-				private int day;
+				private Integer day;
 			}
 
 			public StoryDetail(Post post) {
@@ -130,7 +130,7 @@ public class Story {
 		// TODO Validation 검증
 		private LocalDate date;
 		private List<String> images;
-		private int thumbnail;
+		private Integer thumbnail;
 		private String title;
 		private String content;
 		private RegionCode region;
