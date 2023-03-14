@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,8 +35,14 @@ public class KakaoAuthServiceTest {
 	@Mock
 	private Properties properties;
 
-	private final static String ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1bmlxdWVfa2FrYW9fdXNlciIsIm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTUxNjIzOTAyMn0.j2kXdHDtPs9qkAkIjITdJxZ2RQN52wHBpEYb1DFioKo";
-	private final static String JWT_SECRET = "testtest";
+	/*
+	 * @todo 추후 `Value`를 통한 필드 주입이 적절한지 확인하고 수정이 필요한 경우 수정하기
+	 * */
+	@Value("${test.auth.kakao.access_token}")
+	private String ACCESS_TOKEN;
+
+	@Value("${test.auth.kakao.jwt_secret}")
+	private String JWT_SECRET;
 
 	@Test
 	public void kakaoJwtTest() throws IOException, NullPointerException {

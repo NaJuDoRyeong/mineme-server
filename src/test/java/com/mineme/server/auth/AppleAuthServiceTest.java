@@ -14,6 +14,8 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,8 +33,14 @@ import com.mineme.server.user.util.AuthUtil;
 @RestClientTest(AppleAuthService.class)
 public class AppleAuthServiceTest {
 
+	@Autowired
+	private AppleAuthService appleAuthService;
 	private JwtTokenProvider jwtTokenProvider;
 
+	/*
+	 * @todo 추후 `Value`를 통한 필드 주입이 적절한지 확인하고 수정이 필요한 경우 수정하기
+	 * */
+	@Value("${test.auth.apple.access_token}")
 	private String ACCESS_TOKEN;
 
 	private PublicKey getPublicKey(String keyPath) throws
@@ -48,7 +56,6 @@ public class AppleAuthServiceTest {
 	@Test
 	public void appleHeaderValidateTest() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 		//given
-		ACCESS_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZoNkJzOEMifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiIxMjM0NTY3ODkwIiwic3RhdGUiOiJQRU5ESU5HIiwiaWF0IjoxNTE2MjM5MDIyfQ.X3KI1_9wamehFJmFJj6iBFhmUVQuqzjrS6Y6whFvqXyFUXL5eWjtIiUkCjOY0spdCM4foF-w5x8Z0SqOZt7eaAY2qPzgEE_a7Vfsc9pOC-QHDfDY0olMvAAn4NV2FGzz9gdIl4GriTgZXdL8rcH86K9ey43ZR0CElX3D8x1XLyvxgvsajq8I1JiKa1MIRYO2NvMYezyzjgJ7_UWiylkzUi2FxhUsVJNy4wAHywhZnwv1zPl5ugzRM2ToZuSM_8f6gtQJm1OQG442e0xdpZCZZs9UI8MyB8L42naMULjgaAQI--GKfY_godCCx_nhA5he5w2CRSK1DyIYwGv6RBg1VA";
 		Apple.SignRequest dto = new Apple.SignRequest(ACCESS_TOKEN, Provider.APPLE.toString(), "appleuser",
 			"authCodeSample");
 
@@ -71,9 +78,9 @@ public class AppleAuthServiceTest {
 		PrivateKey privateKey = AuthUtil.getPrivateKey("/auth/PrivateKeyForTest2.notrealkey");
 
 		//when
-		ACCESS_TOKEN = jwtTokenProvider.create("appleuser", UserState.PENDING, privateKey);
+		String JWS_ACCESS_TOKEN = jwtTokenProvider.create("appleuser", UserState.PENDING, privateKey);
 
 		//then
-		Assertions.assertTrue(jwtTokenProvider.validate(ACCESS_TOKEN, publicKey));
+		Assertions.assertTrue(jwtTokenProvider.validate(JWS_ACCESS_TOKEN, publicKey));
 	}
 }
