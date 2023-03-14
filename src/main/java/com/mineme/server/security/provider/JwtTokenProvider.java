@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.Optional;
 
 /**
- * @Todo 애플 인가 작업 후 일괄 예외처리 핸들러로 넘길 예정
+ * @todo 애플 인가 작업 후 일괄 예외처리 핸들러로 넘길 예정
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -156,10 +156,6 @@ public class JwtTokenProvider {
 		}
 
 		return false;
-	}
-
-	public JwsHeader getJwtHeader(String token) {
-		return null;
 	}
 
 	public String resolve(HttpServletRequest request) {
