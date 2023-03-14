@@ -32,7 +32,7 @@ public abstract class AuthService<T> {
 			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
 	}
 
-	public void getCurrentUserState(UserState userState) {
+	public void isValidCurrentUserState(UserState userState) {
 		if (getCurrentUser().getUserState() != userState)
 			throw new CustomException(ErrorCode.INVALID_USER);
 	}
