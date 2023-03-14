@@ -37,8 +37,8 @@ public abstract class AuthService<T> {
 			throw new CustomException(ErrorCode.INVALID_USER);
 	}
 
-	public UserMatchingCode getUserMatchingCode() {
-		return userMatchingCodeRepository.findByRawCode()
-			.orElseThrow(() -> new CustomException(ErrorCode.SERVER_ERROR));
-	}
+	// public UserMatchingCode getUserMatchingCode() {
+	// 	return userMatchingCodeRepository.findByRawCode()
+	// 		.orElseThrow(() -> new CustomException(ErrorCode.SERVER_ERROR));
+	// }
 }

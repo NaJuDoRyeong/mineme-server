@@ -43,7 +43,7 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 
 			if (signedUser == null) {
 				User pendingUser = User.toPendingUserEntity(username, dto);
-				pendingUser.setUserCode(getUserMatchingCode());
+				// pendingUser.setUserCode(getUserMatchingCode());
 				signedUser = userRepository.save(pendingUser);
 			}
 

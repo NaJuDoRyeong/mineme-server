@@ -27,7 +27,7 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 
 			if (signedUser == null) {
 				User pendingUser = User.toPendingUserEntity(user.getId(), dto);
-				pendingUser.setUserCode(getUserMatchingCode());
+				// pendingUser.setUserCode(getUserMatchingCode());
 				signedUser = userRepository.save(pendingUser);
 			}
 
