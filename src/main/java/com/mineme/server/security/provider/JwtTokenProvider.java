@@ -63,17 +63,17 @@ public class JwtTokenProvider {
 		try {
 			return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 		} catch (SecurityException e) {
-			log.info("Invalid JWT signature", e);
+			log.error("Invalid JWT signature", e);
 		} catch (MalformedJwtException e) {
-			log.info("Invalid JWT token", e);
+			log.error("Invalid JWT token", e);
 		} catch (ExpiredJwtException e) {
-			log.info("Expired JWT Token", e);
+			log.error("Expired JWT Token", e);
 		} catch (UnsupportedJwtException e) {
-			log.info("Unsupported JWT Token", e);
+			log.error("Unsupported JWT Token", e);
 		} catch (IllegalArgumentException e) {
-			log.info("JWT claims string is empty", e);
+			log.error("JWT claims string is empty", e);
 		} catch (Exception e) {
-			log.info("Error occur on JWT", e);
+			log.error("Error occur on JWT", e);
 		}
 
 		return null;
@@ -83,17 +83,17 @@ public class JwtTokenProvider {
 		try {
 			return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 		} catch (SecurityException e) {
-			log.info("Invalid JWT signature", e);
+			log.error("Invalid JWT signature", e);
 		} catch (MalformedJwtException e) {
-			log.info("Invalid JWT token", e);
+			log.error("Invalid JWT token", e);
 		} catch (ExpiredJwtException e) {
-			log.info("Expired JWT Token", e);
+			log.error("Expired JWT Token", e);
 		} catch (UnsupportedJwtException e) {
-			log.info("Unsupported JWT Token", e);
+			log.error("Unsupported JWT Token", e);
 		} catch (IllegalArgumentException e) {
-			log.info("JWT claims string is empty", e);
+			log.error("JWT claims string is empty", e);
 		} catch (Exception e) {
-			log.info("Error occur on JWT", e);
+			log.error("Error occur on JWT", e);
 		}
 
 		return null;
@@ -121,17 +121,17 @@ public class JwtTokenProvider {
 			Jwts.parser().setSigningKey(key).parseClaimsJws(token);
 			return true;
 		} catch (SecurityException e) {
-			log.info("Invalid JWT signature", e);
+			log.error("Invalid JWT signature", e);
 		} catch (MalformedJwtException e) {
-			log.info("Invalid JWT token", e);
+			log.error("Invalid JWT token", e);
 		} catch (ExpiredJwtException e) {
-			log.info("Expired JWT Token", e);
+			log.error("Expired JWT Token", e);
 		} catch (UnsupportedJwtException e) {
-			log.info("Unsupported JWT Token", e);
+			log.error("Unsupported JWT Token", e);
 		} catch (IllegalArgumentException e) {
-			log.info("JWT claims string is empty", e);
+			log.error("JWT claims string is empty", e);
 		} catch (Exception e) {
-			log.info("Error occur on JWT", e);
+			log.error("Error occur on JWT", e);
 		}
 
 		return false;
@@ -142,17 +142,17 @@ public class JwtTokenProvider {
 			Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 			return true;
 		} catch (SecurityException e) {
-			log.info("Invalid JWT signature", e);
+			log.error("Invalid JWT signature", e);
 		} catch (MalformedJwtException e) {
-			log.info("Invalid JWT token", e);
+			log.error("Invalid JWT token", e);
 		} catch (ExpiredJwtException e) {
-			log.info("Expired JWT Token", e);
+			log.error("Expired JWT Token", e);
 		} catch (UnsupportedJwtException e) {
-			log.info("Unsupported JWT Token", e);
+			log.error("Unsupported JWT Token", e);
 		} catch (IllegalArgumentException e) {
-			log.info("JWT claims string is empty", e);
+			log.error("JWT claims string is empty", e);
 		} catch (Exception e) {
-			log.info("Error occur on JWT", e);
+			log.error("Error occur on JWT", e);
 		}
 
 		return false;
