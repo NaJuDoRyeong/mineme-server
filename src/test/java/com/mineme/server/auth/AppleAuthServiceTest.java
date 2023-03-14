@@ -14,7 +14,6 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,8 +31,6 @@ import com.mineme.server.user.util.AuthUtil;
 @RestClientTest(AppleAuthService.class)
 public class AppleAuthServiceTest {
 
-	@Autowired
-	private AppleAuthService appleAuthService;
 	private JwtTokenProvider jwtTokenProvider;
 
 	private String ACCESS_TOKEN;
@@ -70,8 +67,8 @@ public class AppleAuthServiceTest {
 		NoSuchAlgorithmException,
 		InvalidKeySpecException {
 		//given
-		PublicKey publicKey = getPublicKey("/auth/PublicKeyForTest2.p8");
-		PrivateKey privateKey = AuthUtil.getPrivateKey("/auth/PrivateKeyForTest2.p8");
+		PublicKey publicKey = getPublicKey("/auth/PublicKeyForTest2.notrealkey");
+		PrivateKey privateKey = AuthUtil.getPrivateKey("/auth/PrivateKeyForTest2.notrealkey");
 
 		//when
 		ACCESS_TOKEN = jwtTokenProvider.create("appleuser", UserState.PENDING, privateKey);
