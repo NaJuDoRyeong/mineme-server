@@ -2,13 +2,13 @@ package com.mineme.server.entity;
 
 import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
-import com.mineme.server.user.dto.UserDto;
-import com.mineme.server.user.util.UserUtil;
+import com.mineme.server.user.dto.Auth;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,13 +40,16 @@ public class User extends BaseEntity implements UserDetails {
 	@OneToMany(mappedBy = "userId")
 	private List<Post> posts = new ArrayList<>();
 
-	@Column(name = "USER_CODE")
-	@Size(min = 8, max = 8)
-	@NotNull
-	private String userCode;
+	@Setter
+	@JoinColumn(name = "USER_MATCHING_CODE")
+	@OneToOne(fetch = FetchType.LAZY)
+	private UserMatchingCode userCode;
 
+	/**
+	 * @Todo Apple의 경우 username이 32 byte 길이를 초과함. ERD의 변경이 필요.
+	 */
 	@Column(name = "USERNAME")
-	@Size(max = 32)
+	@Size(max = 255)
 	@NotNull
 	private String username;
 
@@ -119,12 +122,12 @@ public class User extends BaseEntity implements UserDetails {
 	@NotNull
 	private Boolean noticeMarketing;
 
-	public static User toPendingUserEntity(String username, UserDto.SignRequest dto) {
+	public static User toPendingUserEntity(String username, Auth.SignRequest dto) {
 		return User.builder()
-			.userCode(UserUtil.createUserCode())
+			.userCode(null)
 			.username(username)
 			.nickname(dto.getUsername())
-			.provider(Provider.valueOf(dto.getProviderType()))
+			.provider(Provider.of(dto.getProviderType()))
 			.userState(UserState.PENDING)
 			.noticeFeed(false)
 			.noticeAnniversary(false)
@@ -133,7 +136,7 @@ public class User extends BaseEntity implements UserDetails {
 	}
 
 	@Builder
-	private User(String userCode, String username, String nickname, UserState userState, Provider provider,
+	private User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider,
 		Boolean noticeFeed, Boolean noticeAnniversary, Boolean noticeMarketing) {
 		this.userCode = userCode;
 		this.username = username;
@@ -147,7 +150,7 @@ public class User extends BaseEntity implements UserDetails {
 		this.noticeMarketing = noticeMarketing;
 	}
 
-	public User(Couple coupleId, String userCode, String username, String nickname, UserState userState,
+	public User(Couple coupleId, UserMatchingCode userCode, String username, String nickname, UserState userState,
 		Provider provider, String profileImageUrl, String email, LocalDateTime lastLogin, LocalDate birthday,
 		String comment, Character gender, String instaId, String deviceToken, String device, String phoneNumber,
 		String extraValues, Boolean noticeFeed, Boolean noticeAnniversary, Boolean noticeMarketing) {
