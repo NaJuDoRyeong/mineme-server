@@ -34,7 +34,7 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 				properties.getSecret());
 
-			return new Auth.Jwt(accessToken, null);
+			return new Auth.Jwt(accessToken, "TESTTEST");
 		} catch (NullPointerException e) { // @Todo - 추후 orElse() 로직 변경 시 함께 조정해야 함.
 			throw new CustomException(ErrorCode.INVALID_USER);
 		} catch (WebClientResponseException e) {
