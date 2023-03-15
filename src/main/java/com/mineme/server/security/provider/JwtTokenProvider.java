@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * @todo 애플 인가 작업 후 일괄 예외처리 핸들러로 넘길 예정
@@ -114,14 +113,14 @@ public class JwtTokenProvider {
 		return new UserJwtAuthenticationToken(userDetails);
 	}
 
-	public Optional<String> getUsername() {
+	public String getUsername() {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		if (authentication == null) {
-			return Optional.empty();
+			return null;
 		}
 
-		return Optional.ofNullable(((User)authentication.getPrincipal()).getUsername());
+		return ((User)authentication.getPrincipal()).getUsername();
 	}
 
 	public boolean validate(String token, String key) {
