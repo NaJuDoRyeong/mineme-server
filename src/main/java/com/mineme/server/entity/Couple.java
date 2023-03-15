@@ -25,6 +25,9 @@ public class Couple extends BaseEntity {
 	private List<User> users = new ArrayList<>();
 
 	@OneToMany(mappedBy = "coupleId")
+	private List<Post> posts = new ArrayList<>();
+
+	@OneToMany(mappedBy = "coupleId")
 	private List<CoupleWidget> coupleWidgets = new ArrayList<>();
 
 	@Column(name = "NAME")
