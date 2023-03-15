@@ -5,43 +5,45 @@ import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
-import com.mineme.server.user.dto.KakaoUserDto;
-import com.mineme.server.user.dto.UserDto;
+import com.mineme.server.user.dto.Auth;
+import com.mineme.server.user.dto.Kakao;
+import com.mineme.server.user.repository.UserMatchingCodeRepository;
 import com.mineme.server.user.repository.UserRepository;
-import com.mineme.server.user.util.HttpClientUtil;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.mineme.server.user.util.AuthClientUtil;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
-@Slf4j
-@RequiredArgsConstructor
-public class KakaoAuthService {
-
-	private final UserRepository userRepository;
-	private final JwtTokenProvider jwtTokenProvider;
-	private final Properties properties;
+public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 
 	@Transactional
-	public UserDto.Jwt getKakaoUserDetails(UserDto.SignRequest dto) {
+	@Override
+	public Auth.Jwt getUserDetails(Auth.SignRequest dto) {
 		try {
-			KakaoUserDto.User user = HttpClientUtil.getMonoUser(dto).block();
+			Kakao.User user = AuthClientUtil.getKakaoUser(dto).block();
 			User signedUser = userRepository.findByUsername(user.getId()).orElse(null);
 
-			if (signedUser == null)
-				signedUser = userRepository.save(User.toPendingUserEntity(user.getId(), dto));
+			if (signedUser == null) {
+				User pendingUser = User.toPendingUserEntity(user.getId(), dto);
+				// pendingUser.setUserCode(getUserMatchingCode());
+				signedUser = userRepository.save(pendingUser);
+			}
 
-			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), properties.getSecret());
+			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
+				properties.getSecret());
 
-			return new UserDto.Jwt(accessToken, signedUser.getUserCode());
+			return new Auth.Jwt(accessToken, signedUser.getUserCode().getEncodedCode());
 		} catch (NullPointerException e) { // @Todo - 추후 orElse() 로직 변경 시 함께 조정해야 함.
 			throw new CustomException(ErrorCode.INVALID_USER);
 		} catch (WebClientResponseException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
 		}
+	}
+
+	public KakaoAuthService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository,
+		UserMatchingCodeRepository userMatchingCodeRepository, Properties properties) {
+		super(jwtTokenProvider, userRepository, userMatchingCodeRepository, properties);
 	}
 }

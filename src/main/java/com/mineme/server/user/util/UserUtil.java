@@ -6,11 +6,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserUtil {
 
-	/**
-	 * 수정 필요(Floodnut)
-	 * @// FIXME: 2023/02/16
-	 */
-	public static String createUserCode() {
-		return "TESTTEST";
+	public static String createUserCode(Long rawCode) {
+		Base62 base62 = Base62.createInstance();
+		final byte[] encoded = base62.encode(rawCode.toString().getBytes());
+
+		return new String(encoded);
 	}
 }

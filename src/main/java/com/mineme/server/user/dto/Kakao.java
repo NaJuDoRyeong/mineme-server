@@ -8,13 +8,17 @@ import lombok.NoArgsConstructor;
  * @Todo 요청을 받는 Nested Class에 대해 카멜 케이스로 변경할 것인지 확인하기.
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class KakaoUserDto {
+public class Kakao {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class User {
-		private String id;
+	public static class User extends Auth.Info {
 		private KakaoAccount kakao_account;
+
+		public User(String id, KakaoAccount account) {
+			super(id);
+			this.kakao_account = account;
+		}
 	}
 
 	@Getter
