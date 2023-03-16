@@ -51,6 +51,9 @@ public class Properties {
 		this.appleCid = environment.getProperty("APPLE_CLIENT_ID");
 		log.info("APPLE_CLIENT_ID is " + this.appleCid);
 
+		this.appleKeyPath = environment.getProperty("APPLE_KEY_PATH");
+		log.info("APPLE_KEY_PATH is " + this.appleKeyPath);
+
 		this.appleCallback = environment.getProperty("APPLE_CALLBACK");
 		log.info("APPLE_CALLBACK is " + this.appleCallback);
 	}
