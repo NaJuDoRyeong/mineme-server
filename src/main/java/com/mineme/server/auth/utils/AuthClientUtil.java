@@ -1,9 +1,8 @@
-package com.mineme.server.user.util;
+package com.mineme.server.auth.utils;
 
-import com.mineme.server.common.utils.HttpClientUtil;
-import com.mineme.server.user.dto.Apple;
-import com.mineme.server.user.dto.Auth;
-import com.mineme.server.user.dto.Kakao;
+import com.mineme.server.auth.dto.Apple;
+import com.mineme.server.auth.dto.Auth;
+import com.mineme.server.auth.dto.Kakao;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;

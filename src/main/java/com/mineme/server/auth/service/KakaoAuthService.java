@@ -1,21 +1,20 @@
-package com.mineme.server.user.service;
-
-import com.mineme.server.common.enums.ErrorCode;
-import com.mineme.server.common.exception.CustomException;
-import com.mineme.server.entity.User;
-import com.mineme.server.security.config.Properties;
-import com.mineme.server.security.provider.JwtTokenProvider;
-import com.mineme.server.user.dto.Auth;
-import com.mineme.server.user.dto.Kakao;
-import com.mineme.server.user.repository.UserMatchingCodeRepository;
-import com.mineme.server.user.repository.UserRepository;
-import com.mineme.server.user.util.AuthClientUtil;
+package com.mineme.server.auth.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import com.mineme.server.auth.dto.Auth;
+import com.mineme.server.auth.dto.Kakao;
+import com.mineme.server.auth.utils.AuthClientUtil;
+import com.mineme.server.common.enums.ErrorCode;
+import com.mineme.server.common.exception.CustomException;
+import com.mineme.server.entity.User;
+
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 
 	@Transactional
@@ -40,10 +39,5 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 		} catch (WebClientResponseException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
 		}
-	}
-
-	public KakaoAuthService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository,
-		UserMatchingCodeRepository userMatchingCodeRepository, Properties properties) {
-		super(jwtTokenProvider, userRepository, userMatchingCodeRepository, properties);
 	}
 }

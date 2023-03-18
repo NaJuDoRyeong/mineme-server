@@ -1,4 +1,4 @@
-package com.mineme.server.user.controller;
+package com.mineme.server.auth.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mineme.server.common.dto.ResponseDto;
-import com.mineme.server.user.dto.Apple;
-import com.mineme.server.user.dto.Auth;
-import com.mineme.server.user.service.AppleAuthService;
+import com.mineme.server.auth.dto.Apple;
+import com.mineme.server.auth.dto.Auth;
+import com.mineme.server.auth.service.AppleAuthService;
 
 import lombok.RequiredArgsConstructor;
 

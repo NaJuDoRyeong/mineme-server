@@ -1,4 +1,4 @@
-package com.mineme.server.common.utils;
+package com.mineme.server.auth.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

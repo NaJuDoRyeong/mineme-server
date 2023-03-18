@@ -1,8 +1,8 @@
-package com.mineme.server.user.controller;
+package com.mineme.server.auth.controller;
 
 import com.mineme.server.common.dto.ResponseDto;
-import com.mineme.server.user.dto.Auth;
-import com.mineme.server.user.service.KakaoAuthService;
+import com.mineme.server.auth.dto.Auth;
+import com.mineme.server.auth.service.KakaoAuthService;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,17 +1,13 @@
-package com.mineme.server.user.service;
+package com.mineme.server.auth.service;
 
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
-import com.mineme.server.security.config.Properties;
-import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.security.util.JwtUtil;
-import com.mineme.server.user.dto.Apple;
-import com.mineme.server.user.dto.Auth;
-import com.mineme.server.user.repository.UserMatchingCodeRepository;
-import com.mineme.server.user.repository.UserRepository;
-import com.mineme.server.user.util.AuthClientUtil;
-import com.mineme.server.user.util.AuthUtil;
+import com.mineme.server.auth.dto.Apple;
+import com.mineme.server.auth.dto.Auth;
+import com.mineme.server.auth.utils.AuthClientUtil;
+import com.mineme.server.auth.utils.AuthUtil;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +17,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AppleAuthService extends AuthService<Apple.SignRequest> {
 
 	@Transactional
@@ -73,10 +71,5 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 		/* @Todo Refresh Token 을 이용한 로직 추가해야 함. */
 
 		return AuthClientUtil.generateAndValidateIdToken(authDto).block();
-	}
-
-	public AppleAuthService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository,
-		UserMatchingCodeRepository userMatchingCodeRepository, Properties properties) {
-		super(jwtTokenProvider, userRepository, userMatchingCodeRepository, properties);
 	}
 }

@@ -1,4 +1,4 @@
-package com.mineme.server.user.dto;
+package com.mineme.server.auth.dto;
 
 import com.mineme.server.security.config.Properties;
 import lombok.*;

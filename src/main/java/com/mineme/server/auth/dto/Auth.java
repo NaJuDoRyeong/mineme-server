@@ -1,4 +1,4 @@
-package com.mineme.server.user.dto;
+package com.mineme.server.auth.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.mineme.server.user.service;
+package com.mineme.server.auth.service;
 
 import org.springframework.stereotype.Component;
 
@@ -8,20 +8,18 @@ import com.mineme.server.entity.User;
 import com.mineme.server.entity.enums.UserState;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
-import com.mineme.server.user.dto.Auth;
-import com.mineme.server.user.repository.UserMatchingCodeRepository;
+import com.mineme.server.auth.dto.Auth;
 import com.mineme.server.user.repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
+@NoArgsConstructor
 public abstract class AuthService<T> {
 
-	protected final JwtTokenProvider jwtTokenProvider;
-	protected final UserRepository userRepository;
-	protected final UserMatchingCodeRepository userMatchingCodeRepository;
-	protected final Properties properties;
+	protected JwtTokenProvider jwtTokenProvider;
+	protected UserRepository userRepository;
+	protected Properties properties;
 
 	public abstract Auth.Jwt getUserDetails(T dto);
 
@@ -37,9 +35,4 @@ public abstract class AuthService<T> {
 		if (getCurrentUser().getUserState() != userState)
 			throw new CustomException(ErrorCode.INVALID_USER);
 	}
-
-	// public UserMatchingCode getUserMatchingCode() {
-	// 	return userMatchingCodeRepository.findByRawCode()
-	// 		.orElseThrow(() -> new CustomException(ErrorCode.SERVER_ERROR));
-	// }
 }
