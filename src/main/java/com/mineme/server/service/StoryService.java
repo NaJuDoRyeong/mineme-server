@@ -14,7 +14,6 @@ import com.mineme.server.dto.Story.SaveRequest;
 import com.mineme.server.dto.Story.Stories;
 import com.mineme.server.entity.Post;
 import com.mineme.server.entity.User;
-import com.mineme.server.entity.enums.UserState;
 import com.mineme.server.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;

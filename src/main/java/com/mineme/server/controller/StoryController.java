@@ -1,5 +1,7 @@
 package com.mineme.server.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,11 +49,12 @@ public class StoryController {
 	 * 스토리 작성
 	 * @param request 작성할 스토리 정보
 	 * @return data null
+	 * TODO CREATED status DTO 생성 후 변경
 	 */
 	@PostMapping
-	public ResponseDto storyAdd(@RequestBody SaveRequest request) {
+	public ResponseEntity<ResponseDto> storyAdd(@RequestBody SaveRequest request) {
 		storyService.addStory(request);
-		return new ResponseDto(null);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(null));
 	}
 
 	@PostMapping("/image")
