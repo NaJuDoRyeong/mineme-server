@@ -1,5 +1,7 @@
 package com.mineme.server.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,9 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mineme.server.common.dto.ResponseDto;
+import com.mineme.server.dto.Story;
 import com.mineme.server.dto.Story.Detail;
 import com.mineme.server.dto.Story.SaveRequest;
 import com.mineme.server.dto.Story.Stories;
@@ -50,6 +55,7 @@ public class StoryController {
 	 * @param request 작성할 스토리 정보
 	 * @return data null
 	 * TODO CREATED status DTO 생성 후 변경
+	 * TODO 업로드한 이미지 추가 및 썸네일 설정 구현
 	 */
 	@PostMapping
 	public ResponseEntity<ResponseDto> storyAdd(@RequestBody SaveRequest request) {
@@ -58,7 +64,7 @@ public class StoryController {
 	}
 
 	@PostMapping("/image")
-	public ResponseDto imageUpload() {
-		return new ResponseDto(null);
+	public ResponseDto<Story.Urls> imageUpload(@RequestParam("image") List<MultipartFile> files) {
+		return new ResponseDto(storyService.uploadImage(files));
 	}
 }

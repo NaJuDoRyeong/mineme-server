@@ -6,9 +6,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
+import com.mineme.server.common.file.S3Uploader;
+import com.mineme.server.dto.Story;
 import com.mineme.server.dto.Story.Detail;
 import com.mineme.server.dto.Story.SaveRequest;
 import com.mineme.server.dto.Story.Stories;
@@ -26,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class StoryService {
 	private final AuthService authService;
 	private final PostRepository postRepository;
+	private final S3Uploader s3Uploader;
 
 	public Stories getStories() {
 		// TODO 현재 유저가 커플인지 검증 (ACTIVATED)
@@ -51,7 +55,13 @@ public class StoryService {
 		postRepository.save(request.toEntity(authService.getCurrentUser()));
 	}
 
-	public Post getPostAndValidate(Long postId) {
+	public Story.Urls uploadImage(List<MultipartFile> files) {
+		User user = authService.getCurrentUser();
+		List<String> urls = s3Uploader.uploadFiles(files, user.getId().toString());
+		return new Story.Urls(urls);
+	}
+
+	private Post getPostAndValidate(Long postId) {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_REQUEST));
 
