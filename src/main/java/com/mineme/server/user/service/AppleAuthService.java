@@ -50,7 +50,7 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 				properties.getSecret());
 
-			return new Auth.Jwt(accessToken, signedUser.getUserCode().getEncodedCode());
+			return new Auth.Jwt(accessToken, "TESTTEST");
 		} catch (NullPointerException e) { // @Todo - 추후 orElse() 로직 변경 시 함께 조정 해야 함.
 			throw new CustomException(ErrorCode.INVALID_USER);
 		} catch (WebClientResponseException e) {
