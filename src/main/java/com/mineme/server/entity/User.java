@@ -2,13 +2,12 @@ package com.mineme.server.entity;
 
 import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
-import com.mineme.server.user.dto.Auth;
+import com.mineme.server.auth.dto.Auth;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,9 +39,7 @@ public class User extends BaseEntity implements UserDetails {
 	@OneToMany(mappedBy = "userId")
 	private List<Post> posts = new ArrayList<>();
 
-	@Setter
-	@JoinColumn(name = "USER_MATCHING_CODE")
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userId")
 	private UserMatchingCode userCode;
 
 	/**
