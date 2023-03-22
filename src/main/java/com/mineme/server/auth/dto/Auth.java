@@ -28,8 +28,11 @@ public class Auth {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class Info {
-		private String id;
 
+		/**
+		 *  @see Kakao 자원서버에서 관리하는 사용자 고유 ID, DB PK 아님.
+		 **/
+		private String id;
 		public Info(String id) {
 			this.id = id;
 		}
