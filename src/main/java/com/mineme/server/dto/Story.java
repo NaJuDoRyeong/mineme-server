@@ -144,4 +144,16 @@ public class Story {
 				.build();
 		}
 	}
+
+	/**
+	 * 이미지 업로드 Response
+	 */
+	@Getter
+	public static class Urls {
+		private List<String> images;
+
+		public Urls(List<String> images) {
+			this.images = images;
+		}
+	}
 }

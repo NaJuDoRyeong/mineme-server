@@ -23,6 +23,10 @@ public enum ErrorCode {
 	UNSUPPORTED_TOKEN(4012, HttpStatus.UNAUTHORIZED, "Unsupported JWT Token"),
 	EMPTY_TOKEN_CLAIMS(4013, HttpStatus.UNAUTHORIZED, "JWT claims string is empty"),
 
+	/* File Error */
+	FILE_CONVERT(5001, HttpStatus.INTERNAL_SERVER_ERROR, "File conversion failed"),
+	FILE_UPLOAD(5002, HttpStatus.INTERNAL_SERVER_ERROR, "File upload failed"),
+
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
 
