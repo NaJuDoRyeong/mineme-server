@@ -3,11 +3,14 @@ package com.mineme.server.auth.service;
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
+import com.mineme.server.security.config.Properties;
+import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.security.util.JwtUtil;
 import com.mineme.server.auth.dto.Apple;
 import com.mineme.server.auth.dto.Auth;
 import com.mineme.server.auth.utils.AuthClientUtil;
 import com.mineme.server.auth.utils.AuthUtil;
+import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.service.UserService;
 
 import org.springframework.stereotype.Service;
@@ -18,15 +21,19 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class AppleAuthService extends AuthService<Apple.SignRequest> {
 
 	private final UserService userService;
+
+	public AppleAuthService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, Properties properties,
+		UserService userService) {
+		super(jwtTokenProvider, userRepository, properties);
+		this.userService = userService;
+	}
 
 	@Transactional
 	@Override

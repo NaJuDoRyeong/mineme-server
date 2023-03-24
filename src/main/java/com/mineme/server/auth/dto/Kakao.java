@@ -1,6 +1,7 @@
 package com.mineme.server.auth.dto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,26 +10,28 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Kakao {
-
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class User extends Auth.Info {
+	public static class User {
+		private String id;
 		private KakaoAccount kakao_account;
 
 		public User(String id, KakaoAccount account) {
-			super(id);
+			this.id = id;
 			this.kakao_account = account;
 		}
 	}
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@AllArgsConstructor
 	public static class KakaoAccount {
 		private Profile profile;
 	}
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@AllArgsConstructor
 	public static class Profile {
 		private String nickname;
 		private String thumbnail_image_url;

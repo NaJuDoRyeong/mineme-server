@@ -11,16 +11,23 @@ import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.entity.UserMatchingCode;
+import com.mineme.server.security.config.Properties;
+import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.user.repository.UserMatchingCodeRepository;
+import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.UserUtil;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class UserService extends AuthService<Object> {
 
 	private final UserMatchingCodeRepository userMatchingCodeRepository;
+
+	public UserService(JwtTokenProvider jwtTokenProvider,
+		UserRepository userRepository,
+		Properties properties, UserMatchingCodeRepository userMatchingCodeRepository) {
+		super(jwtTokenProvider, userRepository, properties);
+		this.userMatchingCodeRepository = userMatchingCodeRepository;
+	}
 
 	@Transactional
 	public void removeUser() {

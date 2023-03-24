@@ -13,13 +13,14 @@ public class AuthClientUtil {
 
 	private static String APPLE_ID_BASE_API = "https://appleid.apple.com";
 	private static String CONTENT_TYPE_FORM_URL_ENCODED = "application/x-www-form-urlencoded";
+	private static String CONTENT_TYPE_POST_FIX_CHARSET = ";charset=utf-8";
 
 	public static Mono<Kakao.User> getKakaoUser(Auth.SignRequest dto) {
 		return HttpClientUtil.getClient("https://kapi.kakao.com")
 			.get()
 			.uri("/v2/user/me")
 			.header(HttpHeaders.AUTHORIZATION, "Bearer " + dto.getAccessToken())
-			.header(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_FORM_URL_ENCODED + ";charset=utf-8")
+			.header(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_FORM_URL_ENCODED + CONTENT_TYPE_POST_FIX_CHARSET)
 			.retrieve()
 			.bodyToMono(Kakao.User.class);
 	}

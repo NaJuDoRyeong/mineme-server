@@ -17,7 +17,6 @@ public class Auth {
 	}
 
 	@Getter
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	@AllArgsConstructor
 	public static class SignRequest {
 		private String accessToken; // @Todo 제네릭으로 Kakao, Apple 구분할 것인지 파악하기
@@ -26,7 +25,7 @@ public class Auth {
 	}
 
 	@Getter
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@NoArgsConstructor
 	public static class Info {
 
 		/**
@@ -39,7 +38,6 @@ public class Auth {
 	}
 
 	@Getter
-	@AllArgsConstructor
 	public static class Token {
 		private String accessToken;
 		private String refreshToken;

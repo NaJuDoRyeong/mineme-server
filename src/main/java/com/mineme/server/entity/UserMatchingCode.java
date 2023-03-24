@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,21 +15,21 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SequenceGenerator(name = "user_matching_code_seq_generator", sequenceName = "user_matching_code_seq", initialValue = 100000, allocationSize = 100)
 public class UserMatchingCode extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_matching_code_seq_generator")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "USER_MATCHING_CODE_ID")
 	private Long id;
 
 	@OneToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "USER_ID")
 	private User userId;
 
-	@Column
+	@Column(name = "RAW_CODE")
 	private Long rawCode;
 
-	@Column
+	@Column(name = "ENCODED_CODE")
 	private String encodedCode;
 
 	public UserMatchingCode(User userId) {

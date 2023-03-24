@@ -11,15 +11,15 @@ import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.auth.dto.Auth;
 import com.mineme.server.user.repository.UserRepository;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 public abstract class AuthService<T> {
 
-	protected JwtTokenProvider jwtTokenProvider;
-	protected UserRepository userRepository;
-	protected Properties properties;
+	public final JwtTokenProvider jwtTokenProvider;
+	public final UserRepository userRepository;
+	public final Properties properties;
 
 	public abstract Auth.Jwt getUserDetails(T dto);
 
