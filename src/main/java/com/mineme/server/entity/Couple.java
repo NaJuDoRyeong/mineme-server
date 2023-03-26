@@ -43,12 +43,13 @@ public class Couple extends BaseEntity {
 	private LocalDate beginDate;
 
 	@Builder
-	public Couple(List<User> users, List<CoupleWidget> coupleWidgets, String name, CoupleState coupleState,
-		LocalDate beginDate) {
-		this.users = users;
-		this.coupleWidgets = coupleWidgets;
+	public Couple(String name, CoupleState coupleState, LocalDate beginDate) {
 		this.name = name;
 		this.coupleState = coupleState;
 		this.beginDate = beginDate;
+	}
+
+	public static Couple getEmptyCoupleEntity(String name) {
+		return Couple.builder().name(name).coupleState(CoupleState.ACTIVATED).beginDate(LocalDate.now()).build();
 	}
 }

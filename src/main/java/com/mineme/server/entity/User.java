@@ -174,6 +174,10 @@ public class User extends BaseEntity implements UserDetails {
 		this.noticeMarketing = noticeMarketing;
 	}
 
+	public void matchCouple(Couple couple) {
+		this.coupleId = couple;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;

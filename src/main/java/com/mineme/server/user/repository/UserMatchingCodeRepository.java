@@ -14,14 +14,11 @@ import com.mineme.server.entity.UserMatchingCode;
  */
 @Repository
 public interface UserMatchingCodeRepository extends JpaRepository<UserMatchingCode, Long> {
-	Optional<UserMatchingCode> findByEncodedCode(String encoded);
 
 	@Query(value = "SELECT USER_MATCHING_CODE_ID, MIN(RAW_CODE), ENCODED_CODE FROM USER_MATCHING_CODE WHERE RAW_CODE NOT IN (SELECT RAW_CODE FROM USER_MATHCING_CODE)", nativeQuery = true)
 	Optional<UserMatchingCode> findByRawCodeExisted();
 
 	Optional<UserMatchingCode> findByUserId(User user);
 
-	boolean existsByRawCode(Long raw);
-
-	Optional<UserMatchingCode> findFirstByRawCodeOrEncodedCodeOrderByIdDesc(Long rawCode, String encodedCode);
+	Optional<UserMatchingCode> findById(Long raw);
 }

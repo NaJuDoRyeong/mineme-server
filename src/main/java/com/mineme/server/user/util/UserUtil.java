@@ -17,7 +17,14 @@ public class UserUtil {
 		return new String(encoded);
 	}
 
-	public static String createUserCode(Long rawCode) throws NoSuchAlgorithmException {
+	public static String decodeCodeFromBase62(String encodedCode) {
+		Base62 base62 = Base62.createInstance();
+		final byte[] decode = base62.decode(encodedCode.getBytes());
+
+		return new String(decode);
+	}
+
+	public static String createUserCode(Long rawCode) {
 		String encodeStr = encodeCodeToBase62(rawCode);
 		log.info("base62 encode result:" + encodeStr);
 		return encodeStr;
