@@ -22,7 +22,9 @@ public enum ErrorCode {
 	INVALID_TOKEN_SIGNATURE(4011, HttpStatus.UNAUTHORIZED, "Invalid JWT signature."),
 	UNSUPPORTED_TOKEN(4012, HttpStatus.UNAUTHORIZED, "Unsupported JWT Token."),
 	EMPTY_TOKEN_CLAIMS(4013, HttpStatus.UNAUTHORIZED, "JWT claims string is empty."),
-	INVALID_USER_NICKNAME(4013, HttpStatus.UNAUTHORIZED, "User nickname is invalid."),
+	INVALID_USER_NICKNAME(4014, HttpStatus.UNAUTHORIZED, "User nickname is invalid."),
+	INVALID_DATE_FORMAT(4015, HttpStatus.BAD_REQUEST, "Date format is invalid."),
+	INVALID_GENDER_FORMAT(4016, HttpStatus.BAD_REQUEST, "Gender format is invalid."),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),

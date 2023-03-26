@@ -13,6 +13,7 @@ import com.mineme.server.entity.User;
 import com.mineme.server.entity.UserMatchingCode;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
+import com.mineme.server.user.dto.UserInfos;
 import com.mineme.server.user.repository.UserMatchingCodeRepository;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.UserUtil;
@@ -36,6 +37,13 @@ public class UserService extends AuthService<Object> {
 			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
 
 		userRepository.delete(user);
+	}
+
+	public void addUserDetails(UserInfos.Init dto) {
+		User currentUser = getCurrentUser();
+		currentUser = UserInfos.Init.getInitializedUser(currentUser, dto);
+
+		userRepository.save(currentUser);
 	}
 
 	public String getUserMatchingCode(User user) throws NoSuchAlgorithmException {
