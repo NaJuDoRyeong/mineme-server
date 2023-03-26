@@ -11,6 +11,17 @@ public class Auth {
 
 	@Getter
 	@AllArgsConstructor
+	public static class CreatedJwt {
+		private boolean isCreatedNow;
+		private Jwt jwt;
+
+		public static CreatedJwt toCreatedJwtDto(boolean isCreatedNow, String jwt, String code) {
+			return new Auth.CreatedJwt(isCreatedNow, new Auth.Jwt(jwt, code));
+		}
+	}
+
+	@Getter
+	@AllArgsConstructor
 	public static class Jwt {
 		private String jwt;
 		private String code; // @see 커플 매칭 코드
@@ -32,6 +43,7 @@ public class Auth {
 		 *  @see Kakao 자원서버에서 관리하는 사용자 고유 ID, DB PK 아님.
 		 **/
 		private String id;
+
 		public Info(String id) {
 			this.id = id;
 		}

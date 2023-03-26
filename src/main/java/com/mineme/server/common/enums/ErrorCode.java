@@ -19,9 +19,10 @@ public enum ErrorCode {
 	INVALID_USER(4008, HttpStatus.UNAUTHORIZED, "Invalid User."),
 	USER_EXISTED(4009, HttpStatus.BAD_REQUEST, "User existed."),
 	INVALID_PROVIDER(4010, HttpStatus.BAD_REQUEST, "Invalid Provider."),
-	INVALID_TOKEN_SIGNATURE(4011, HttpStatus.UNAUTHORIZED, "Invalid JWT signature"),
-	UNSUPPORTED_TOKEN(4012, HttpStatus.UNAUTHORIZED, "Unsupported JWT Token"),
-	EMPTY_TOKEN_CLAIMS(4013, HttpStatus.UNAUTHORIZED, "JWT claims string is empty"),
+	INVALID_TOKEN_SIGNATURE(4011, HttpStatus.UNAUTHORIZED, "Invalid JWT signature."),
+	UNSUPPORTED_TOKEN(4012, HttpStatus.UNAUTHORIZED, "Unsupported JWT Token."),
+	EMPTY_TOKEN_CLAIMS(4013, HttpStatus.UNAUTHORIZED, "JWT claims string is empty."),
+	INVALID_USER_NICKNAME(4013, HttpStatus.UNAUTHORIZED, "User nickname is invalid."),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),

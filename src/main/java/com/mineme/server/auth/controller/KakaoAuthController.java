@@ -6,6 +6,8 @@ import com.mineme.server.auth.service.KakaoAuthService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,9 +18,12 @@ public class KakaoAuthController {
 	private final KakaoAuthService kakaoAuthService;
 
 	@PostMapping("/kakao")
-	public ResponseDto<Auth.Jwt> kakaoUserDetails(@RequestBody Auth.SignRequest dto) {
-		Auth.Jwt response = kakaoAuthService.getUserDetails(dto);
+	public ResponseEntity<ResponseDto<Auth.Jwt>> kakaoUserDetails(@RequestBody Auth.SignRequest dto) {
+		Auth.CreatedJwt response = kakaoAuthService.getUserDetails(dto);
 
-		return new ResponseDto<>(response);
+		if(response.isCreatedNow())
+			return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(response.getJwt()));
+
+		return ResponseEntity.ok().body(new ResponseDto<>(response.getJwt()));
 	}
 }

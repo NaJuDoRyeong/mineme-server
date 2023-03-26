@@ -21,7 +21,7 @@ public abstract class AuthService<T> {
 	public final UserRepository userRepository;
 	public final Properties properties;
 
-	public abstract Auth.Jwt getUserDetails(T dto);
+	public abstract Auth.CreatedJwt getUserDetails(T dto);
 
 	/**
 	 * @todo 빌드 에러로 임시 수정

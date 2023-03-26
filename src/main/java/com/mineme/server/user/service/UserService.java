@@ -22,9 +22,8 @@ public class UserService extends AuthService<Object> {
 
 	private final UserMatchingCodeRepository userMatchingCodeRepository;
 
-	public UserService(JwtTokenProvider jwtTokenProvider,
-		UserRepository userRepository,
-		Properties properties, UserMatchingCodeRepository userMatchingCodeRepository) {
+	public UserService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, Properties properties,
+		UserMatchingCodeRepository userMatchingCodeRepository) {
 		super(jwtTokenProvider, userRepository, properties);
 		this.userMatchingCodeRepository = userMatchingCodeRepository;
 	}
@@ -39,21 +38,19 @@ public class UserService extends AuthService<Object> {
 		userRepository.delete(user);
 	}
 
-	@Transactional
 	public String getUserMatchingCode(User user) throws NoSuchAlgorithmException {
 		UserMatchingCode tmpCode = userMatchingCodeRepository.findByUserId(user).orElse(null);
 
-		if(tmpCode == null){
+		if (tmpCode == null) {
 			tmpCode = new UserMatchingCode(user);
 			tmpCode = userMatchingCodeRepository.save(tmpCode);
-			tmpCode = new UserMatchingCode(tmpCode.getId(), user, tmpCode.getId(), UserUtil.createUserCode(tmpCode.getId()));
 		}
 
-		return tmpCode.getEncodedCode();
+		return UserUtil.createUserCode(tmpCode.getId());
 	}
 
 	@Override
-	public Auth.Jwt getUserDetails(Object dto) {
+	public Auth.CreatedJwt getUserDetails(Object dto) {
 		return null;
 	}
 }

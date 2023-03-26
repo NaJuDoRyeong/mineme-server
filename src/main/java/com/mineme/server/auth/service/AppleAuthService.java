@@ -37,7 +37,7 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 
 	@Transactional
 	@Override
-	public Auth.Jwt getUserDetails(Apple.SignRequest dto) {
+	public Auth.CreatedJwt getUserDetails(Apple.SignRequest dto) {
 		try {
 			/* 공개 키 가져오기 */
 			PublicKey key = AuthUtil.getApplePublicKeys(dto);
@@ -52,19 +52,21 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 			if (signedUser == null) {
 				User pendingUser = User.toPendingUserEntity(username, dto);
 				signedUser = userRepository.save(pendingUser);
+				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
+					properties.getSecret());
+				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userService.getUserMatchingCode(signedUser));
 			}
+
+			if(!dto.getUsername().equals(signedUser.getNickname()))
+				throw new CustomException(ErrorCode.INVALID_USER_NICKNAME);
 
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 				properties.getSecret());
 
-			return new Auth.Jwt(accessToken, userService.getUserMatchingCode(signedUser));
-		} catch (NullPointerException e) { // @Todo - 추후 orElse() 로직 변경 시 함께 조정 해야 함.
+			return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userService.getUserMatchingCode(signedUser));
+		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);
-		} catch (WebClientResponseException e) {
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
-		} catch (InvalidKeySpecException e) {
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (WebClientResponseException | NoSuchAlgorithmException |InvalidKeySpecException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
 		}
 	}

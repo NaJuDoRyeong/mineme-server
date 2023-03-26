@@ -1,5 +1,7 @@
 package com.mineme.server.auth.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +22,13 @@ public class AppleAuthController {
 	private final AppleAuthService appleAuthService;
 
 	@PostMapping("/apple")
-	public ResponseDto<Auth.Jwt> appleUserDetails(@RequestBody Apple.SignRequest dto) {
-		Auth.Jwt response = appleAuthService.getUserDetails(dto);
+	public ResponseEntity<ResponseDto<Auth.Jwt>> appleUserDetails(@RequestBody Apple.SignRequest dto) {
+		Auth.CreatedJwt response = appleAuthService.getUserDetails(dto);
 
-		return new ResponseDto<>(response);
+		if(response.isCreatedNow())
+			return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(response.getJwt()));
+
+		return ResponseEntity.ok().body(new ResponseDto<>(response.getJwt()));
 	}
 
 	@PostMapping("/apple/refresh")

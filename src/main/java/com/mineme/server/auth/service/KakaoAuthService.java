@@ -33,7 +33,7 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 
 	@Transactional
 	@Override
-	public Auth.Jwt getUserDetails(Auth.SignRequest dto) {
+	public Auth.CreatedJwt getUserDetails(Auth.SignRequest dto) {
 		try {
 			Kakao.User user = AuthClientUtil.getKakaoUser(dto).block();
 
@@ -44,17 +44,21 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 			if (signedUser == null) {
 				User pendingUser = User.toPendingUserEntity(user.getId(), dto);
 				signedUser = userRepository.save(pendingUser);
+				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
+					properties.getSecret());
+				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userService.getUserMatchingCode(signedUser));
 			}
+
+			if (!dto.getUsername().equals(signedUser.getNickname()))
+				throw new CustomException(ErrorCode.INVALID_USER_NICKNAME);
 
 			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 				properties.getSecret());
 
-			return new Auth.Jwt(accessToken, userService.getUserMatchingCode(signedUser));
-		} catch (NullPointerException e) { // @Todo - 추후 orElse() 로직 변경 시 함께 조정해야 함.
+			return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userService.getUserMatchingCode(signedUser));
+		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);
-		} catch (WebClientResponseException e) {
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (WebClientResponseException | NoSuchAlgorithmException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
 		}
 	}
