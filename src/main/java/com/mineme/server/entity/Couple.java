@@ -21,13 +21,13 @@ public class Couple extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToMany(mappedBy = "coupleId")
+	@OneToMany(mappedBy = "coupleId", cascade = CascadeType.ALL)
 	private List<User> users = new ArrayList<>();
 
-	@OneToMany(mappedBy = "coupleId")
+	@OneToMany(mappedBy = "coupleId", cascade = CascadeType.ALL)
 	private List<Post> posts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "coupleId")
+	@OneToMany(mappedBy = "coupleId", cascade = CascadeType.ALL)
 	private List<CoupleWidget> coupleWidgets = new ArrayList<>();
 
 	@Column(name = "NAME")
@@ -43,13 +43,13 @@ public class Couple extends BaseEntity {
 	private LocalDate beginDate;
 
 	@Builder
-	public Couple(String name, CoupleState coupleState, LocalDate beginDate) {
-		this.name = name;
-		this.coupleState = coupleState;
-		this.beginDate = beginDate;
+	public Couple(String me, String mine) {
+		this.name = me + "&" + mine;
+		this.coupleState = CoupleState.ACTIVATED;
+		this.beginDate = LocalDate.now();
 	}
 
-	public static Couple getEmptyCoupleEntity(String name) {
-		return Couple.builder().name(name).coupleState(CoupleState.ACTIVATED).beginDate(LocalDate.now()).build();
+	public static Couple getEmptyCoupleEntity(String me, String mine) {
+		return Couple.builder().me(me).mine(mine).build();
 	}
 }

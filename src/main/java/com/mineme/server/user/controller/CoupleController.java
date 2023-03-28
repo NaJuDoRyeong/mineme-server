@@ -20,7 +20,7 @@ public class CoupleController {
 	@PostMapping
 	public ResponseDto coupleMatchingCode(@RequestBody String dto) {
 
-		coupleService.addCouple(dto);
+		coupleService.addUserRelationByCouple(dto);
 
 		return new ResponseDto<>(null);
 	}

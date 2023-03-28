@@ -30,14 +30,14 @@ public class CoupleService extends AuthService<Object> {
 	}
 
 	@Transactional
-	public void addCouple(String userCode) {
+	public void addUserRelationByCouple(String userCode) {
 		User me = getCurrentUser();
 		Long mineRawCode = Long.parseLong(UserUtil.decodeCodeFromBase62(userCode));
 		User mine = userMatchingCodeRepository.findById(mineRawCode)
 			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER))
 			.getUserId();
 
-		Couple couple = Couple.getEmptyCoupleEntity(me.getNickname() + "와 " + mine.getNickname());
+		Couple couple = Couple.getEmptyCoupleEntity(me.getNickname(), mine.getNickname());
 		couple = coupleRepository.save(couple);
 
 		me.matchCouple(couple);
