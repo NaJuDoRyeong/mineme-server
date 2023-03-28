@@ -1,6 +1,5 @@
 package com.mineme.server.user.dto;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import com.mineme.server.common.enums.ErrorCode;
@@ -33,12 +32,7 @@ public class UserInfos {
 				if (gender != 'M' && gender != 'F')
 					throw new CustomException(ErrorCode.INVALID_GENDER_FORMAT);
 
-				return new User(null, user.getUserCode(), user.getUsername(), init.getNickname(), user.getUserState(),
-					user.getProvider(), user.getProfileImageUrl(), user.getEmail(), user.getLastLogin(),
-					LocalDate.parse(init.getBirthday()), user.getComment(), gender,
-					user.getInstaId(), user.getDeviceToken(), user.getDevice(), user.getPhoneNumber(),
-					user.getExtraValues(), user.getNoticeFeed(), user.getNoticeAnniversary(),
-					user.getNoticeMarketing());
+				return UserBuilder.toInitializedUserEntity(user, init);
 			} catch (DateTimeParseException e) {
 				throw new CustomException(ErrorCode.INVALID_DATE_FORMAT);
 			}

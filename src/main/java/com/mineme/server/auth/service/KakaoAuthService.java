@@ -14,6 +14,7 @@ import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
+import com.mineme.server.user.dto.UserBuilder;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.service.UserService;
 
@@ -42,7 +43,7 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 
 			User signedUser = userRepository.findByUsername(user.getId()).orElse(null);
 			if (signedUser == null) {
-				User pendingUser = User.toPendingUserEntity(user.getId(), dto);
+				User pendingUser = UserBuilder.toPendingUserEntity(user.getId(), dto);
 				signedUser = userRepository.save(pendingUser);
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());

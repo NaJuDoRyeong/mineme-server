@@ -10,6 +10,7 @@ import com.mineme.server.auth.dto.Apple;
 import com.mineme.server.auth.dto.Auth;
 import com.mineme.server.auth.utils.AuthClientUtil;
 import com.mineme.server.auth.utils.AuthUtil;
+import com.mineme.server.user.dto.UserBuilder;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.service.UserService;
 
@@ -50,7 +51,7 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 			User signedUser = userRepository.findByUsername(username).orElse(null);
 
 			if (signedUser == null) {
-				User pendingUser = User.toPendingUserEntity(username, dto);
+				User pendingUser = UserBuilder.toPendingUserEntity(username, dto);
 				signedUser = userRepository.save(pendingUser);
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
