@@ -20,9 +20,6 @@ public class UserBuilder {
 			.nickname(dto.getUsername())
 			.provider(Provider.of(dto.getProviderType()))
 			.userState(UserState.PENDING)
-			.noticeFeed(false)
-			.noticeAnniversary(false)
-			.noticeMarketing(false)
 			.build();
 	}
 
@@ -35,7 +32,7 @@ public class UserBuilder {
 			.provider(user.getProvider())
 			.userState(UserState.PENDING)
 			.birthday(LocalDate.parse(init.getBirthday()))
-			.gender('n')
+			.gender(Character.toUpperCase(init.getGender().charAt(0)))
 			.build();
 	}
 }

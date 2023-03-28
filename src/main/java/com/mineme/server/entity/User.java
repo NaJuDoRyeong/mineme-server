@@ -119,9 +119,8 @@ public class User extends BaseEntity implements UserDetails {
 	@NotNull
 	private Boolean noticeMarketing;
 
-	@Builder(builderMethodName = "userRegisterBuilder")
-	private User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider,
-		Boolean noticeFeed, Boolean noticeAnniversary, Boolean noticeMarketing) {
+	@Builder(builderClassName = "userRegisterBuilder", builderMethodName = "userRegisterBuilder")
+	private User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider) {
 		this.userCode = userCode;
 		this.username = username;
 		this.nickname = nickname;
@@ -129,12 +128,12 @@ public class User extends BaseEntity implements UserDetails {
 		this.provider = provider;
 		this.gender = 'n';
 		this.lastLogin = LocalDateTime.now();
-		this.noticeFeed = noticeFeed;
-		this.noticeAnniversary = noticeAnniversary;
-		this.noticeMarketing = noticeMarketing;
+		this.noticeFeed = false;
+		this.noticeAnniversary = false;
+		this.noticeMarketing = false;
 	}
 
-	@Builder(builderMethodName = "userInitializeBuilder")
+	@Builder(builderClassName = "userInitializeBuilder", builderMethodName = "userInitializeBuilder")
 	public User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider,
 		LocalDateTime lastLogin, LocalDate birthday, Character gender) {
 		this.userCode = userCode;

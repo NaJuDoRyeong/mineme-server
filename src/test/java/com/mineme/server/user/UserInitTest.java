@@ -13,14 +13,31 @@ import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.User;
 import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
+import com.mineme.server.user.dto.UserBuilder;
 import com.mineme.server.user.dto.UserInfos;
 
 @RunWith(SpringRunner.class)
 @DisplayName("유저 초기 설정 테스트")
 public class UserInitTest {
 
-	private final static User testUser = new User(null, null, "123456", "가나다", UserState.PENDING, Provider.APPLE, null,
-		null, LocalDateTime.now(), null, null, null, null, null, null, null, null, false, false, false);
+	private final static User testUser = new User(null, "123456", null, UserState.PENDING, Provider.APPLE, LocalDateTime.now(), null,
+		null);
+
+	@Test
+	@DisplayName("UserBuilder 동작 테스트.")
+	public void validateUserBuilderPassTest() {
+
+		//given
+		UserInfos.Init init = new UserInfos.Init("가나다", "1998-01-10", "M");
+
+		//when
+		User initializedUser = UserBuilder.toInitializedUserEntity(testUser, init);
+
+		//then
+		Assertions.assertEquals("가나다", initializedUser.getNickname());
+		Assertions.assertEquals(LocalDate.parse("1998-01-10"), initializedUser.getBirthday());
+		Assertions.assertEquals('M', initializedUser.getGender());
+	}
 
 	@Test
 	@DisplayName("정상적인 유저를 검증함.")
@@ -30,11 +47,11 @@ public class UserInitTest {
 		UserInfos.Init init = new UserInfos.Init("가나다", "1998-01-10", "M");
 
 		//when
-		User validatedUser = UserInfos.Init.getInitializedUser(testUser, init);
+		User initializedUser = UserInfos.Init.getInitializedUser(testUser, init);
 
 		//then
-		Assertions.assertEquals(LocalDate.parse("1998-01-10"), validatedUser.getBirthday());
-		Assertions.assertEquals('M', validatedUser.getGender());
+		Assertions.assertEquals(LocalDate.parse("1998-01-10"), initializedUser.getBirthday());
+		Assertions.assertEquals('M', initializedUser.getGender());
 	}
 
 	@Test
@@ -45,11 +62,11 @@ public class UserInitTest {
 		UserInfos.Init init = new UserInfos.Init("가나다", "1998-01-10", "MF");
 
 		//when
-		User validatedUser = UserInfos.Init.getInitializedUser(testUser, init);
+		User initializedUser = UserInfos.Init.getInitializedUser(testUser, init);
 
 		//then
-		Assertions.assertEquals(LocalDate.parse("1998-01-10"), validatedUser.getBirthday());
-		Assertions.assertEquals('M', validatedUser.getGender());
+		Assertions.assertEquals(LocalDate.parse("1998-01-10"), initializedUser.getBirthday());
+		Assertions.assertEquals('M', initializedUser.getGender());
 	}
 
 	@Test
