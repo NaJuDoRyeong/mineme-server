@@ -1,6 +1,7 @@
 package com.mineme.server.auth.service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,22 +42,28 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 			if (user == null)
 				throw new CustomException(ErrorCode.INVALID_USER);
 
-			User signedUser = userRepository.findByUsername(user.getId()).orElse(null);
-			if (signedUser == null) {
-				User pendingUser = UserBuilder.toPendingUserEntity(user.getId(), dto);
-				signedUser = userRepository.save(pendingUser);
+			String username = user.getId();
+			Optional<User> userOptional = userRepository.findByUsername(username);
+
+			if (userOptional.isPresent()) {
+				User signedUser = userOptional.get();
+
+				if (!dto.getUsername().equals(signedUser.getNickname()))
+					throw new CustomException(ErrorCode.INVALID_USER_NICKNAME);
+
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
+
+				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userService.getUserMatchingCode(signedUser));
+			} else {
+				User pendingUser = UserBuilder.toPendingUserEntity(username, dto);
+				User signedUser = userRepository.save(pendingUser);
+
+				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
+					properties.getSecret());
+
 				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userService.getUserMatchingCode(signedUser));
 			}
-
-			if (!dto.getUsername().equals(signedUser.getNickname()))
-				throw new CustomException(ErrorCode.INVALID_USER_NICKNAME);
-
-			String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
-				properties.getSecret());
-
-			return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userService.getUserMatchingCode(signedUser));
 		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);
 		} catch (WebClientResponseException | NoSuchAlgorithmException e) {
