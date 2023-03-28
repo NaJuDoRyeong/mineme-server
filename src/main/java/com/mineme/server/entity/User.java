@@ -2,7 +2,6 @@ package com.mineme.server.entity;
 
 import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
-import com.mineme.server.auth.dto.Auth;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -120,20 +119,7 @@ public class User extends BaseEntity implements UserDetails {
 	@NotNull
 	private Boolean noticeMarketing;
 
-	public static User toPendingUserEntity(String username, Auth.SignRequest dto) {
-		return User.builder()
-			.userCode(null)
-			.username(username)
-			.nickname(dto.getUsername())
-			.provider(Provider.of(dto.getProviderType()))
-			.userState(UserState.PENDING)
-			.noticeFeed(false)
-			.noticeAnniversary(false)
-			.noticeMarketing(false)
-			.build();
-	}
-
-	@Builder
+	@Builder(builderMethodName = "userRegisterBuilder")
 	private User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider,
 		Boolean noticeFeed, Boolean noticeAnniversary, Boolean noticeMarketing) {
 		this.userCode = userCode;
@@ -148,34 +134,25 @@ public class User extends BaseEntity implements UserDetails {
 		this.noticeMarketing = noticeMarketing;
 	}
 
-	public User(Couple coupleId, UserMatchingCode userCode, String username, String nickname, UserState userState,
-		Provider provider, String profileImageUrl, String email, LocalDateTime lastLogin, LocalDate birthday,
-		String comment, Character gender, String instaId, String deviceToken, String device, String phoneNumber,
-		String extraValues, Boolean noticeFeed, Boolean noticeAnniversary, Boolean noticeMarketing) {
-		this.coupleId = coupleId;
+	@Builder(builderMethodName = "userInitializeBuilder")
+	public User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider,
+		LocalDateTime lastLogin, LocalDate birthday, Character gender) {
 		this.userCode = userCode;
 		this.username = username;
 		this.nickname = nickname;
 		this.userState = userState;
 		this.provider = provider;
-		this.profileImageUrl = profileImageUrl;
-		this.email = email;
 		this.lastLogin = lastLogin;
 		this.birthday = birthday;
-		this.comment = comment;
 		this.gender = gender;
-		this.instaId = instaId;
-		this.deviceToken = deviceToken;
-		this.device = device;
-		this.phoneNumber = phoneNumber;
-		this.extraValues = extraValues;
-		this.noticeFeed = noticeFeed;
-		this.noticeAnniversary = noticeAnniversary;
-		this.noticeMarketing = noticeMarketing;
+		this.noticeFeed = false;
+		this.noticeAnniversary = false;
+		this.noticeMarketing = false;
 	}
 
 	public void matchCouple(Couple couple) {
 		this.coupleId = couple;
+		couple.getUsers().add(this);
 	}
 
 	@Override
