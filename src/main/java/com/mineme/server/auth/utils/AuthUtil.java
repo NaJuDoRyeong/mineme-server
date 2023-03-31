@@ -1,9 +1,9 @@
-package com.mineme.server.user.util;
+package com.mineme.server.auth.utils;
 
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.security.util.JwtUtil;
-import com.mineme.server.user.dto.Apple;
+import com.mineme.server.auth.dto.Apple;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

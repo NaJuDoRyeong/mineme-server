@@ -25,9 +25,9 @@ import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
 import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.security.util.JwtUtil;
-import com.mineme.server.user.dto.Apple;
-import com.mineme.server.user.service.AppleAuthService;
-import com.mineme.server.user.util.AuthUtil;
+import com.mineme.server.auth.dto.Apple;
+import com.mineme.server.auth.service.AppleAuthService;
+import com.mineme.server.auth.utils.AuthUtil;
 
 @RunWith(SpringRunner.class)
 @RestClientTest(AppleAuthService.class)

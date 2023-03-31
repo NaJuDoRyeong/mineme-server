@@ -1,4 +1,4 @@
-package com.mineme.server.user.dto;
+package com.mineme.server.auth.dto;
 
 import com.mineme.server.security.config.Properties;
 import lombok.*;
@@ -72,7 +72,6 @@ public class Apple {
 	}
 
 	@Getter
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SignRequest extends Auth.SignRequest {
 
 		private String authorizationCode;

@@ -18,10 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mineme.server.entity.User;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
-import com.mineme.server.user.dto.Auth;
-import com.mineme.server.user.dto.Kakao;
-import com.mineme.server.user.service.KakaoAuthService;
-import com.mineme.server.user.util.AuthClientUtil;
+import com.mineme.server.auth.dto.Auth;
+import com.mineme.server.auth.dto.Kakao;
+import com.mineme.server.auth.service.KakaoAuthService;
+import com.mineme.server.auth.utils.AuthClientUtil;
+import com.mineme.server.user.dto.UserBuilder;
 
 import reactor.core.publisher.Mono;
 
@@ -55,7 +56,7 @@ public class KakaoAuthServiceTest {
 		doReturn(monoUser).when(AuthClientUtil.getKakaoUser(dto));
 		doReturn(JWT_SECRET).when(properties).getSecret();
 		Kakao.User user = monoUser.block();
-		User signedUser = User.toPendingUserEntity(user.getId(), dto);
+		User signedUser = UserBuilder.toPendingUserEntity(user.getId(), dto);
 
 		//then
 		String userAccessToken = jwtTokenProvider.create(user.getId(), signedUser.getUserState(),
