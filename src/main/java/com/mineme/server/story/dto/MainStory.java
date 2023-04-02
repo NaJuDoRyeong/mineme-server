@@ -67,9 +67,9 @@ public class MainStory {
 		public static Random toRandomStoryForTest() {
 			int num = (int)((Math.random()*10000)%10);
 
-			if(num < 3) {
+			if(num < 2) {
 				return new Random(RandomStoryStatus.NO_LATEST_DATA);
-			} else if ( 3 <= num && num < 5) {
+			} else if ( 2 <= num && num < 4) {
 				return new Random(RandomStoryStatus.NO_DATA);
 			} else if ( 5 <= num && num < 8) {
 				return new Random(RandomStoryStatus.ANNIVERSARY, null);

@@ -17,6 +17,10 @@ public class MainStoryController {
 
 	private final MainStoryService mainStoryService;
 
+	/**
+	 * 메인 페이지 랜덤 스토리 반환
+	 * @return
+	 */
 	@GetMapping("/random")
 	public ResponseDto<MainStory.Random> randomStoryDetails() {
 		return new ResponseDto<>(mainStoryService.getRandomStory());
