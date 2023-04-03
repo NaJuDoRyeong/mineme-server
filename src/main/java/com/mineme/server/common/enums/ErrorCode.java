@@ -26,6 +26,8 @@ public enum ErrorCode {
 	INVALID_DATE_FORMAT(4015, HttpStatus.BAD_REQUEST, "Date format is invalid."),
 	INVALID_GENDER_FORMAT(4016, HttpStatus.BAD_REQUEST, "Gender format is invalid."),
 
+	INVALID_COUPLE(40017, HttpStatus.BAD_REQUEST, "You can't matching user to couple."),
+
 	/* File Error */
 	FILE_CONVERT(5001, HttpStatus.INTERNAL_SERVER_ERROR, "File conversion failed"),
 	FILE_UPLOAD(5002, HttpStatus.INTERNAL_SERVER_ERROR, "File upload failed"),

@@ -9,6 +9,7 @@ import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.Couple;
 import com.mineme.server.entity.User;
+import com.mineme.server.entity.enums.UserState;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.user.repository.CoupleRepository;
@@ -29,6 +30,11 @@ public class CoupleService extends AuthService<Object> {
 		this.coupleRepository = coupleRepository;
 	}
 
+	/**
+	 * 유저 코드를 기반으로 커플을 연결함.
+	 * 두 커플의 상태가 DEACTIVATED(서로 연결할 수 있는 상태)일 경우 연결 수행
+	 * @Todo 추후, 별도의 검증 과정이 필요함.
+	 */
 	@Transactional
 	public void addUserRelationByCouple(String userCode) {
 		User me = getCurrentUser();
@@ -37,11 +43,16 @@ public class CoupleService extends AuthService<Object> {
 			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER))
 			.getUserId();
 
-		Couple couple = Couple.getEmptyCoupleEntity(me.getNickname(), mine.getNickname());
-		couple = coupleRepository.save(couple);
+		if(me.getUserState() == UserState.DEACTIVATED && mine.getUserState() == UserState.DEACTIVATED) {
 
-		me.matchCouple(couple);
-		mine.matchCouple(couple);
+			Couple couple = Couple.getEmptyCoupleEntity(me.getNickname(), mine.getNickname());
+			couple = coupleRepository.save(couple);
+
+			me.matchCouple(couple);
+			mine.matchCouple(couple);
+		} else {
+			throw new CustomException(ErrorCode.INVALID_COUPLE);
+		}
 
 		/* @Todo 커플매칭코드를 초기화 하는 로직 추가 */
 	}
