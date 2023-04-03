@@ -37,19 +37,16 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 	@Override
 	public Auth.CreatedJwt getUserDetails(Auth.SignRequest dto) {
 		try {
-			Kakao.User user = AuthClientUtil.getKakaoUser(dto).block();
+			Kakao.User kakaoUser = AuthClientUtil.getKakaoUser(dto).block();
 
-			if (user == null)
+			if (kakaoUser == null)
 				throw new CustomException(ErrorCode.INVALID_USER);
 
-			String username = user.getId();
+			String username = kakaoUser.getId();
 			Optional<User> userOptional = userRepository.findByUsername(username);
 
 			if (userOptional.isPresent()) {
 				User signedUser = userOptional.get();
-
-				if (!dto.getUsername().equals(signedUser.getNickname()))
-					throw new CustomException(ErrorCode.INVALID_USER_NICKNAME);
 
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
@@ -66,8 +63,12 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 			}
 		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);
-		} catch (WebClientResponseException | NoSuchAlgorithmException e) {
+		} catch (WebClientResponseException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
+		} catch (NoSuchAlgorithmException e) {
+			throw new CustomException(ErrorCode.CANNOT_CREATE_MATCHING_CODE);
+		} catch (Exception e) {
+			throw new CustomException(ErrorCode.SERVER_ERROR);
 		}
 	}
 }

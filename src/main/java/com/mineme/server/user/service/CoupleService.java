@@ -44,7 +44,6 @@ public class CoupleService extends AuthService<Object> {
 			.getUserId();
 
 		if(me.getUserState() == UserState.DEACTIVATED && mine.getUserState() == UserState.DEACTIVATED) {
-
 			Couple couple = Couple.getEmptyCoupleEntity(me.getNickname(), mine.getNickname());
 			couple = coupleRepository.save(couple);
 

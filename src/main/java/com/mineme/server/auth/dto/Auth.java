@@ -32,7 +32,6 @@ public class Auth {
 	public static class SignRequest {
 		private String accessToken; // @Todo 제네릭으로 Kakao, Apple 구분할 것인지 파악하기
 		private String providerType;
-		private String username;
 	}
 
 	@Getter

@@ -13,11 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserBuilder {
 
+	private final static String PENDING_USER_NICKNAME = "PENDING_USER";
+
 	public static User toPendingUserEntity(String username, Auth.SignRequest dto) {
 		return User.userRegisterBuilder()
 			.userCode(null)
 			.username(username)
-			.nickname(dto.getUsername())
+			.nickname(PENDING_USER_NICKNAME)
 			.provider(Provider.of(dto.getProviderType()))
 			.userState(UserState.PENDING)
 			.build();

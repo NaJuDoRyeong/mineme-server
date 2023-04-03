@@ -34,6 +34,7 @@ public enum ErrorCode {
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
+	CANNOT_CREATE_MATCHING_CODE(5002, HttpStatus.INTERNAL_SERVER_ERROR, "Couldn't create matching code."),
 
 	/**
 	 * @See 서버 에러 중 아직 명시되지 않은 예외 발생 시에 사용
