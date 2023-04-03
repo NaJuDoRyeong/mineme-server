@@ -35,4 +35,19 @@ public abstract class AuthService<T> {
 		if (getCurrentUser().getUserState() != userState)
 			throw new CustomException(ErrorCode.INVALID_USER);
 	}
+
+	/**
+	 * jwt 로부터 현재 커플 매칭 완료 상태, 정상적으로 모든 서비스를 이용할 수 있는 유저를 조회하는 메소드
+	 * @return 현재 접속한 jwt 기반 ACTIVATED 상태인 USER
+	 */
+	public User getCurrentActivatedUser() {
+		User user = userRepository.findByUsername(jwtTokenProvider.getUsername())
+			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
+
+		if (user.getUserState() != UserState.ACTIVATED) {
+			throw new CustomException(ErrorCode.INVALID_USER_STATE);
+		}
+
+		return user;
+	}
 }
