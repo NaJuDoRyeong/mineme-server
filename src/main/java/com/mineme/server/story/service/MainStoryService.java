@@ -10,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainStoryService {
 
-	public MainStory.Random getRandomStory() {
+	public MainStory.RandomStory getRandomStory() {
 		/* 구현 중 */
 
 		/* 테스트 데이터 */
-		return MainStory.Random.toRandomStoryForTest();
+		return MainStory.RandomStory.toRandomStoryForTest();
 	}
 }
