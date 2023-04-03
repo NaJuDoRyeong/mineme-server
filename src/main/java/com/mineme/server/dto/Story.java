@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import com.mineme.server.entity.Photo;
 import com.mineme.server.entity.Post;
-import com.mineme.server.entity.User;
 import com.mineme.server.entity.enums.RegionCode;
 
 import lombok.AllArgsConstructor;
@@ -44,6 +43,7 @@ public class Story {
 					this.region = RegionCode.GYEONGNAM_CHANGWON;
 					this.date = post.getDatedAt();
 					this.thumbnail = post.getPhotos().stream()
+						.filter(Photo::isThumbnail)
 						.map(Photo::getPhotoUrl)
 						.findFirst()
 						.orElse(null);
@@ -52,8 +52,6 @@ public class Story {
 			}
 		}
 
-		// TODO 무한스크롤 관련 구현시 월별 데이터 제공 구현
-		// 지금은 현재 달 데이터만 제공되도록 구현
 		public static Stories of(LocalDate start, List<Post> posts) {
 			return new Stories(
 				List.of(
@@ -131,18 +129,8 @@ public class Story {
 		private LocalDate date;
 		private List<String> images;
 		private Integer thumbnail;
-		private String title;
 		private String content;
 		private RegionCode region;
-
-		public Post toEntity(User user) {
-			return Post.builder()
-				.user(user)
-				.datedAt(date)
-				.title(title)
-				.content(content)
-				.build();
-		}
 	}
 
 	/**
