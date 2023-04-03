@@ -25,6 +25,15 @@ public class ResponseDto<T> {
 		this.error = null;
 	}
 
+	public static ResponseDto<Object> nullableResponseDto() {
+		return new ResponseDto<>(null);
+	}
+
+	public static ResponseEntity<ResponseDto<Object>> createdNullableResponseDto() {
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(nullableResponseDto());
+	}
+
 	// 사용자 정의 Exception 에 따른 ExceptionDto 리턴
 	public static ResponseEntity<Object> toResponseEntity(CustomException e) {
 		return ResponseEntity.status(e.getErrorCode().getHttpStatus())
