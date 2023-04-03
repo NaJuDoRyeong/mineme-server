@@ -79,8 +79,8 @@ public class Apple {
 		/**
 		 * @See Access Token == Identity Token
 		 */
-		public SignRequest(String accessToken, String providerType, String username, String authorizationCode) {
-			super(accessToken, providerType, username);
+		public SignRequest(String accessToken, String providerType, String authorizationCode) {
+			super(accessToken, providerType);
 			this.authorizationCode = authorizationCode;
 		}
 

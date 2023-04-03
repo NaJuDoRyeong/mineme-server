@@ -26,12 +26,15 @@ public enum ErrorCode {
 	INVALID_DATE_FORMAT(4015, HttpStatus.BAD_REQUEST, "Date format is invalid."),
 	INVALID_GENDER_FORMAT(4016, HttpStatus.BAD_REQUEST, "Gender format is invalid."),
 
+	INVALID_COUPLE(40017, HttpStatus.BAD_REQUEST, "You can't matching user to couple."),
+
 	/* File Error */
 	FILE_CONVERT(5001, HttpStatus.INTERNAL_SERVER_ERROR, "File conversion failed"),
 	FILE_UPLOAD(5002, HttpStatus.INTERNAL_SERVER_ERROR, "File upload failed"),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
+	CANNOT_CREATE_MATCHING_CODE(5002, HttpStatus.INTERNAL_SERVER_ERROR, "Couldn't create matching code."),
 
 	/**
 	 * @See 서버 에러 중 아직 명시되지 않은 예외 발생 시에 사용

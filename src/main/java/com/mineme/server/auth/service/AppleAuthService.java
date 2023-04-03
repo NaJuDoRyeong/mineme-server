@@ -54,9 +54,6 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 			if (userOptional.isPresent()) {
 				User signedUser = userOptional.get();
 
-				if (!dto.getUsername().equals(signedUser.getNickname()))
-					throw new CustomException(ErrorCode.INVALID_USER_NICKNAME);
-
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
@@ -72,8 +69,12 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 			}
 		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);
-		} catch (WebClientResponseException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+		} catch (WebClientResponseException | InvalidKeySpecException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
+		} catch (NoSuchAlgorithmException e) {
+			throw new CustomException(ErrorCode.CANNOT_CREATE_MATCHING_CODE);
+		} catch (Exception e) {
+			throw new CustomException(ErrorCode.SERVER_ERROR);
 		}
 	}
 

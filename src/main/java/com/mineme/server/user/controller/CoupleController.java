@@ -17,8 +17,11 @@ public class CoupleController {
 
 	private final CoupleService coupleService;
 
+	/**
+	 * 커플 매칭을 수행함
+	 */
 	@PostMapping
-	public ResponseDto coupleMatchingCode(@RequestBody String dto) {
+	public ResponseDto coupleMatching(@RequestBody String dto) {
 
 		coupleService.addUserRelationByCouple(dto);
 

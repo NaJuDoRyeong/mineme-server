@@ -54,10 +54,9 @@ public class AppleAuthServiceTest {
 	}
 
 	@Test
-	public void appleHeaderValidateTest() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+	public void appleHeaderValidateTest() throws IOException, NoSuchAlgorithmException {
 		//given
-		Apple.SignRequest dto = new Apple.SignRequest(ACCESS_TOKEN, Provider.APPLE.toString(), "appleuser",
-			"authCodeSample");
+		Apple.SignRequest dto = new Apple.SignRequest(ACCESS_TOKEN, Provider.APPLE.toString(), "authCodeSample");
 
 		//when
 		Apple.Keys keys = new ObjectMapper().readValue(new ClassPathResource("/auth/apple_publickey.json").getFile(),
