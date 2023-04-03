@@ -59,6 +59,6 @@ jobs:
             docker stop MINEME_DEV
             docker rm -f MINEME_DEV
             docker pull ${{ secrets.DOCKER_REPO }}/mineme-api:$DATE
-            docker-compose up -d dev
+            ./server_start.sh
             docker image prune -f
       
