@@ -50,7 +50,7 @@ public class KakaoAuthServiceTest {
 		//given
 		Mono<Kakao.User> monoUser = Mono.just(
 			new ObjectMapper().readValue(new ClassPathResource("/auth/kakaouser.json").getFile(), Kakao.User.class));
-		Auth.SignRequest dto = new Auth.SignRequest(ACCESS_TOKEN, "KAKAO", "user_nickname");
+		Auth.SignRequest dto = new Auth.SignRequest(ACCESS_TOKEN, "KAKAO");
 
 		//when
 		doReturn(monoUser).when(AuthClientUtil.getKakaoUser(dto));
