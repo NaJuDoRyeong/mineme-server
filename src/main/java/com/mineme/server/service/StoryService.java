@@ -1,8 +1,11 @@
 package com.mineme.server.service;
 
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
+import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +15,6 @@ import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.common.file.S3Uploader;
 import com.mineme.server.dto.Story;
-import com.mineme.server.dto.Story.Detail;
-import com.mineme.server.dto.Story.SaveRequest;
-import com.mineme.server.dto.Story.Stories;
 import com.mineme.server.entity.Post;
 import com.mineme.server.entity.User;
 import com.mineme.server.repository.PostRepository;
@@ -27,36 +27,34 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class StoryService {
+	private static final String START_DATE = "START";
+	private static final String END_DATE = "END";
 	private final AuthService authService;
 	private final PostRepository postRepository;
 	private final S3Uploader s3Uploader;
 
-	public Stories getStories() {
-		// TODO 현재 유저가 커플인지 검증 (ACTIVATED)
+	public Story.Stories getStories(String year, String month) {
+		User currentUser = authService.getCurrentActivatedUser();
+		Map<String, LocalDate> date = parseToLocalDateMap(year, month);
+		List<Post> posts = postRepository.findMonthlyPosts(currentUser, date.get(START_DATE), date.get(END_DATE));
 
-		User currentUser = authService.getCurrentUser();
-
-		LocalDate start = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-		LocalDate end = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-		// TODO Paging 이용해서 목록 제공하기
-		List<Post> posts = postRepository.findMonthlyPosts(currentUser, start, end);
-
-		return Stories.of(start, posts);
+		return Story.Stories.of(date.get(START_DATE), posts);
 	}
 
-	public Detail getStory(Long storyId) {
+	public Story.Detail getStory(Long storyId) {
 		// TODO Paging 이용해서 목록 제공하기
-		return Detail.of(getPostAndValidate(storyId));
+		return Story.Detail.of(getPostAndValidate(storyId));
 	}
 
 	@Transactional
-	public void addStory(SaveRequest request) {
-		// TODO 현재 유저가 커플인지 검증 (ACTIVATED?).
-		postRepository.save(request.toEntity(authService.getCurrentUser()));
+	public void addStory(Story.SaveRequest request) {
+		postRepository.save(
+			Post.createPost(request, authService.getCurrentActivatedUser())
+		);
 	}
 
 	public Story.Urls uploadImage(List<MultipartFile> files) {
-		User user = authService.getCurrentUser();
+		User user = authService.getCurrentActivatedUser();
 		List<String> urls = s3Uploader.uploadFiles(files, user.getId().toString());
 		return new Story.Urls(urls);
 	}
@@ -65,16 +63,26 @@ public class StoryService {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_REQUEST));
 
-		User user = authService.getCurrentUser();
+		User user = authService.getCurrentActivatedUser();
 
-		if (post.getUserId().getId() != user.getId()) {
+		if (!post.getUserId().getId().equals(user.getId())) {
 			throw new CustomException(ErrorCode.INVALID_USER);
 		}
-		// TODO AuthService 에 유저 유효성 로직 구현되면 변경
-		// if (user.getUserState() != UserState.ACTIVATED) {
-		// 	throw new CustomException(ErrorCode.INVALID_USER);
-		// }
 
 		return post;
+	}
+
+	private Map<String, LocalDate> parseToLocalDateMap(String year, String month) {
+		try {
+			Map<String, LocalDate> dateMap = new HashMap<>();
+
+			LocalDate date = LocalDate.parse(year + "-" + month + "-01");
+			YearMonth yearMonth = YearMonth.from(date);
+			dateMap.put(START_DATE, yearMonth.atDay(1));
+			dateMap.put(END_DATE, yearMonth.atEndOfMonth());
+			return dateMap;
+		} catch (DateTimeParseException e) {
+			throw new CustomException(ErrorCode.INVALID_DATE_FORMAT);
+		}
 	}
 }
