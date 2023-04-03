@@ -45,6 +45,7 @@ public class User extends BaseEntity implements UserDetails {
 	/**
 	 * @Todo Apple의 경우 username이 32 byte 길이를 초과함. ERD의 변경이 필요.
 	 */
+	// 소셜 로그인 ID
 	@Column(name = "USERNAME")
 	@Size(max = 255)
 	@NotNull
