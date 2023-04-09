@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class AppleAuthService extends AuthService<Apple.SignRequest> {
+public class AppleAuthService extends AuthServiceImpl<Apple.SignRequest> {
 
 	private final UserService userService;
 

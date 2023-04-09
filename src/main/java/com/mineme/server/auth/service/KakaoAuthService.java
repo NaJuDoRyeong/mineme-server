@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class KakaoAuthService extends AuthService<Auth.SignRequest> {
+public class KakaoAuthService extends AuthServiceImpl<Auth.SignRequest> {
 
 	private final UserService userService;
 
