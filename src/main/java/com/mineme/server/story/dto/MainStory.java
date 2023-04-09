@@ -1,8 +1,10 @@
 package com.mineme.server.story.dto;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 import com.mineme.server.entity.Post;
+import com.mineme.server.story.dto.enums.AnniversaryComments;
 import com.mineme.server.story.dto.enums.RandomStoryStatus;
 
 import lombok.AccessLevel;
@@ -20,19 +22,19 @@ public class MainStory {
 		private RandomStoryStatus status;
 		private RandomStoryDetails post;
 
-		public static RandomStory getMainRandomStory(RandomStoryStatus status, final Post post) {
+		public static RandomStory getMainRandomStory(RandomStoryStatus status, final Post post, final String comment) {
 			try {
-				return new RandomStory(status, post);
+				return new RandomStory(status, post, comment);
 			} catch (NullPointerException e) { // post에서 NPE가 발생할 경우 대응.
 				return new RandomStory(RandomStoryStatus.NO_DATA);
 			}
 		}
 
 		/* 조회할 랜덤 스토리가 있는 경우 */
-		public RandomStory(RandomStoryStatus status, final Post post) {
+		public RandomStory(RandomStoryStatus status, final Post post, final String comment) {
 			this.isExist = "y";
 			this.status = status;
-			this.post = toRandomStoryDetailsForTest();
+			this.post = toRandomStoryDetails(post, comment);
 		}
 
 		/* 조회할 랜덤 스토리가 없을 경우 */
@@ -60,18 +62,40 @@ public class MainStory {
 			}
 		}
 
+		public static String getAnniversaryComments(LocalDate date) {
+			StringBuilder sb = new StringBuilder();
+			LocalDate today = LocalDate.now();
+			int dayDiff = Period.between(date, today).getDays();
+
+			if(date.getMonthValue() == 12 && date.getDayOfMonth() == 25) { // 크리스마스
+				sb.append(date.getYear()).append("년 ").append(AnniversaryComments.CHRISTMAS.getComment());
+			} else if(dayDiff % 365 == 0) { // @Todo 현재는 엄격하게 365일을 년 단위로 나누지만 추후 변경할 것
+				sb.append(dayDiff/365).append(AnniversaryComments.YEARS_AGO.getComment());
+			} else {
+				sb.append(dayDiff).append("년 전");
+			}
+
+			return sb.toString();
+		}
+
+		public static RandomStory toRandomStory(final Post post) {
+			LocalDate writtenDate = post.getCreatedAt().toLocalDate();
+			String comment = getAnniversaryComments(writtenDate);
+			return getMainRandomStory(RandomStoryStatus.RANDOM, post, comment);
+		}
+
 		/* 메인 랜덤 스토리 세부 정보 */
-		public static RandomStoryDetails toRandomStoryDetails(final Post post) throws NullPointerException {
+		public static RandomStoryDetails toRandomStoryDetails(final Post post, final String comment) throws NullPointerException {
 			return RandomStoryDetails.mainRandomStoryDetailsBuilder()
 				.postId(post.getId())
-				.title("") //@Todo 기준에 따라 별도의 문자열을 생성하는 메서드가 필요함.
+				.title(comment) //@Todo 기준에 따라 별도의 문자열을 생성하는 메서드가 필요함.
 				.thumbnail(post.getPhotos().get(0).getPhotoUrl())
 				.date(post.getDatedAt())
 				.build();
 		}
 
-		/* @Todo 여기서부터 테스트 용이므로 추후 삭제 예정 */
 
+		/* @Todo 여기서부터 테스트 용이므로 추후 삭제 예정 */
 		public static RandomStory toRandomStoryForTest() {
 			int num = (int)((Math.random() * 10000) % 10);
 
@@ -80,9 +104,9 @@ public class MainStory {
 			} else if (2 <= num && num < 4) {
 				return new RandomStory(RandomStoryStatus.NO_DATA);
 			} else if (4 <= num && num < 8) {
-				return getMainRandomStory(RandomStoryStatus.ANNIVERSARY, null);
+				return getMainRandomStory(RandomStoryStatus.ANNIVERSARY, null, "기념일");
 			} else {
-				return getMainRandomStory(RandomStoryStatus.RANDOM, null);
+				return getMainRandomStory(RandomStoryStatus.RANDOM, null, "N년 전 오늘");
 			}
 		}
 
