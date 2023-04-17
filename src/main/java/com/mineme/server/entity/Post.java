@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
 	@NotNull
 	private String content;
 
-    @Builder
+    @Builder(builderClassName = "postCreateBuilder", builderMethodName = "postCreateBuilder")
     public Post(User user, LocalDate datedAt, String content) {
 		this.userId = user;
 		this.coupleId = user.getCoupleId();
@@ -58,7 +58,7 @@ public class Post extends BaseEntity {
 
 	//==생성 메소드==//
 	public static Post createPost(Story.SaveRequest request, User user) {
-		Post post = Post.builder()
+		Post post = Post.postCreateBuilder()
 			.user(user)
 			.datedAt(request.getDate())
 			.content(request.getContent())
