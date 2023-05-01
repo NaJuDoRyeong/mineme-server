@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserBuilder {
 
-	private final static String PENDING_USER_NICKNAME = "PENDING_USER";
+	private static final String PENDING_USER_NICKNAME = "PENDING_USER";
 
 	public static User toPendingUserEntity(String username, Auth.SignRequest dto) {
 		return User.userRegisterBuilder()
@@ -34,7 +34,7 @@ public class UserBuilder {
 			.provider(user.getProvider())
 			.userState(UserState.PENDING)
 			.birthday(LocalDate.parse(init.getBirthday()))
-			.gender(Character.toUpperCase(init.getGender().charAt(0)))
+			.gender('N')
 			.build();
 	}
 }

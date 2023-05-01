@@ -18,20 +18,14 @@ public class UserInfos {
 	public static class Init {
 		private String nickname;
 		private String birthday;
-		private String gender;
 
-		public Init(String nickname, String birthday, String gender) {
+		public Init(String nickname, String birthday) {
 			this.nickname = nickname;
 			this.birthday = birthday;
-			this.gender = gender;
 		}
 
 		public static User getInitializedUser(User user, Init init) {
 			try {
-				char gender = Character.toUpperCase(init.getGender().charAt(0));
-				if (gender != 'M' && gender != 'F')
-					throw new CustomException(ErrorCode.INVALID_GENDER_FORMAT);
-
 				return UserBuilder.toInitializedUserEntity(user, init);
 			} catch (DateTimeParseException e) {
 				throw new CustomException(ErrorCode.INVALID_DATE_FORMAT);
