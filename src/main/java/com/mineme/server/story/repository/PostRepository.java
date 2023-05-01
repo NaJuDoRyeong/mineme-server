@@ -1,4 +1,4 @@
-package com.mineme.server.repository;
+package com.mineme.server.story.repository;
 
 import java.time.LocalDate;
 import java.util.List;

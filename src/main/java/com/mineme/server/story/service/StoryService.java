@@ -1,4 +1,4 @@
-package com.mineme.server.service;
+package com.mineme.server.story.service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -12,10 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.common.file.S3Uploader;
-import com.mineme.server.dto.Story;
+import com.mineme.server.story.dto.Story;
 import com.mineme.server.entity.Post;
 import com.mineme.server.entity.User;
-import com.mineme.server.repository.PostRepository;
+import com.mineme.server.story.repository.PostRepository;
+import com.mineme.server.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

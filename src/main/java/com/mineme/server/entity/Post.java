@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mineme.server.dto.Story;
+import com.mineme.server.story.dto.Story;
 
 @Getter
 @Entity

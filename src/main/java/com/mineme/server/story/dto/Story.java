@@ -1,4 +1,4 @@
-package com.mineme.server.dto;
+package com.mineme.server.story.dto;
 
 import java.time.LocalDate;
 import java.util.List;

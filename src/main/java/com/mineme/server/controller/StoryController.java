@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mineme.server.common.dto.ResponseDto;
-import com.mineme.server.dto.Story;
-import com.mineme.server.service.StoryService;
+import com.mineme.server.story.dto.Story;
+import com.mineme.server.story.service.StoryService;
 
 import lombok.RequiredArgsConstructor;
 
