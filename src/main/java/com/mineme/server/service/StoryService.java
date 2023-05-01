@@ -3,9 +3,7 @@ package com.mineme.server.service;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,18 +25,18 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class StoryService {
-	private static final String START_DATE = "START";
-	private static final String END_DATE = "END";
+
 	private final AuthService authService;
 	private final PostRepository postRepository;
 	private final S3Uploader s3Uploader;
 
 	public Story.Stories getStories(String year, String month) {
 		User currentUser = authService.getCurrentActivatedUser();
-		Map<String, LocalDate> date = parseToLocalDateMap(year, month);
-		List<Post> posts = postRepository.findMonthlyPosts(currentUser, date.get(START_DATE), date.get(END_DATE));
+		YearMonth yearMonth = parseToYearMonth(year, month);
 
-		return Story.Stories.of(date.get(START_DATE), posts);
+		List<Post> posts = postRepository.findMonthlyPosts(currentUser, yearMonth.atDay(1), yearMonth.atEndOfMonth());
+
+		return Story.Stories.of(yearMonth.atDay(1), posts);
 	}
 
 	public Story.Detail getStory(Long storyId) {
@@ -72,17 +70,12 @@ public class StoryService {
 		return post;
 	}
 
-	private Map<String, LocalDate> parseToLocalDateMap(String year, String month) {
+	private YearMonth parseToYearMonth(String year, String month) {
 		try {
-			Map<String, LocalDate> dateMap = new HashMap<>();
-
 			LocalDate date = LocalDate.parse(year + "-" + month + "-01");
-			YearMonth yearMonth = YearMonth.from(date);
-			dateMap.put(START_DATE, yearMonth.atDay(1));
-			dateMap.put(END_DATE, yearMonth.atEndOfMonth());
-			return dateMap;
+			return YearMonth.from(date);
 		} catch (DateTimeParseException e) {
-			throw new CustomException(ErrorCode.INVALID_DATE_FORMAT);
+			return YearMonth.from(LocalDate.now());
 		}
 	}
 }
