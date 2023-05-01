@@ -28,7 +28,7 @@ public class UserInitTest {
 	public void validateUserBuilderPassTest() {
 
 		//given
-		UserInfos.Init init = new UserInfos.Init("가나다", "1998-01-10", "M");
+		UserInfos.Init init = new UserInfos.Init("가나다", "1998-01-10");
 
 		//when
 		User initializedUser = UserBuilder.toInitializedUserEntity(testUser, init);
@@ -36,7 +36,6 @@ public class UserInitTest {
 		//then
 		Assertions.assertEquals("가나다", initializedUser.getNickname());
 		Assertions.assertEquals(LocalDate.parse("1998-01-10"), initializedUser.getBirthday());
-		Assertions.assertEquals('M', initializedUser.getGender());
 	}
 
 	@Test
@@ -44,52 +43,22 @@ public class UserInitTest {
 	public void validateUserInitDtoPassTest() {
 
 		//given
-		UserInfos.Init init = new UserInfos.Init("가나다", "1998-01-10", "M");
+		UserInfos.Init init = new UserInfos.Init("가나다", "1998-01-10");
 
 		//when
 		User initializedUser = UserInfos.Init.getInitializedUser(testUser, init);
 
 		//then
 		Assertions.assertEquals(LocalDate.parse("1998-01-10"), initializedUser.getBirthday());
-		Assertions.assertEquals('M', initializedUser.getGender());
 	}
 
-	@Test
-	@DisplayName("유저의 정상적인 성별을 검증함.")
-	public void validateUserInitDtoPass2Test() {
-
-		//given
-		UserInfos.Init init = new UserInfos.Init("가나다", "1998-01-10", "MF");
-
-		//when
-		User initializedUser = UserInfos.Init.getInitializedUser(testUser, init);
-
-		//then
-		Assertions.assertEquals(LocalDate.parse("1998-01-10"), initializedUser.getBirthday());
-		Assertions.assertEquals('M', initializedUser.getGender());
-	}
 
 	@Test
 	@DisplayName("유저의 비정상적인 생년월일을 검증함.")
 	public void validateUserInitDtoFailedTest() {
 
 		//given
-		UserInfos.Init init = new UserInfos.Init("가나다", "19f98-01-10fwe", "MF");
-
-		//when
-
-		//then
-		Assertions.assertThrows(CustomException.class, () -> {
-			User validatedUser = UserInfos.Init.getInitializedUser(testUser, init);
-		});
-	}
-
-	@Test
-	@DisplayName("유저의 비정상적인 성별을 검증함.")
-	public void validateUserInitDtoFailed2Test() {
-
-		//given
-		UserInfos.Init init = new UserInfos.Init("가나다", "1998-01-10", "lAS");
+		UserInfos.Init init = new UserInfos.Init("가나다", "19f98-01-10fwe");
 
 		//when
 
