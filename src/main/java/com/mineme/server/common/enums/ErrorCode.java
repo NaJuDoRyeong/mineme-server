@@ -27,7 +27,8 @@ public enum ErrorCode {
 	INVALID_GENDER_FORMAT(4016, HttpStatus.BAD_REQUEST, "Gender format is invalid."),
 	INVALID_USER_STATE(4017, HttpStatus.UNAUTHORIZED, "Invalid User state."),
 
-	INVALID_COUPLE(40017, HttpStatus.BAD_REQUEST, "You can't matching user to couple."),
+	INVALID_COUPLE(4018, HttpStatus.BAD_REQUEST, "You can't matching user to couple."),
+	INVALID_TOKEN_FORMAT(4019, HttpStatus.UNAUTHORIZED, "Invalid Token format."),
 
 	/* File Error */
 	FILE_CONVERT(5001, HttpStatus.INTERNAL_SERVER_ERROR, "File conversion failed"),

@@ -6,6 +6,7 @@ import org.springframework.lang.Nullable;
 
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
+import com.mineme.server.common.exception.CustomJwtException;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +42,15 @@ public class ResponseDto<T> {
 				.success(false)
 				.data(null)
 				.error(new ExceptionDto(e.getErrorCode())).build());
+	}
+
+	// Jwt 인증 예외
+	public static ResponseEntity<Object> toResponseEntity(CustomJwtException e) {
+		return ResponseEntity.status(e.getErrorCode().getHttpStatus())
+			.body(ResponseDto.builder()
+				.success(false)
+				.data(null)
+				.error(new ExceptionDto(ErrorCode.INVALID_TOKEN)).build());
 	}
 
 	// 그 외 Exception 에 따른 ExceptionDto 리턴
