@@ -1,4 +1,4 @@
-package com.mineme.server.controller;
+package com.mineme.server.story.controller;
 
 import java.util.List;
 
