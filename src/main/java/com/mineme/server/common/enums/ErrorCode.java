@@ -25,6 +25,7 @@ public enum ErrorCode {
 	INVALID_USER_NICKNAME(4014, HttpStatus.UNAUTHORIZED, "User nickname is invalid."),
 	INVALID_DATE_FORMAT(4015, HttpStatus.BAD_REQUEST, "Date format is invalid."),
 	INVALID_GENDER_FORMAT(4016, HttpStatus.BAD_REQUEST, "Gender format is invalid."),
+	INVALID_USER_STATE(4017, HttpStatus.UNAUTHORIZED, "Invalid User state."),
 
 	INVALID_COUPLE(40017, HttpStatus.BAD_REQUEST, "You can't matching user to couple."),
 
