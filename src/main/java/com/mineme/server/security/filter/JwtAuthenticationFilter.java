@@ -31,7 +31,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		String token = jwtTokenProvider.resolve(request);
 
-		if (token == null || jwtTokenProvider.validate(token, properties.getSecret()))
+		if (token == null)
+			throw new CustomJwtException(ErrorCode.NULL_TOKEN);
+
+		if (!jwtTokenProvider.validate(token, properties.getSecret()))
 			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 
 		Authentication authentication = jwtTokenProvider.getAuthentication(token, properties.getSecret());

@@ -29,6 +29,7 @@ public enum ErrorCode {
 
 	INVALID_COUPLE(4018, HttpStatus.BAD_REQUEST, "You can't matching user to couple."),
 	INVALID_TOKEN_FORMAT(4019, HttpStatus.UNAUTHORIZED, "Invalid Token format."),
+	NULL_TOKEN(4020, HttpStatus.UNAUTHORIZED, "Token is null."),
 
 	/* File Error */
 	FILE_CONVERT(5001, HttpStatus.INTERNAL_SERVER_ERROR, "File conversion failed"),
