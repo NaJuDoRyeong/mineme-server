@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.mineme.server.common.enums.ErrorCode;
+import com.mineme.server.common.exception.CustomJwtException;
 import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
 
@@ -29,10 +31,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		String token = jwtTokenProvider.resolve(request);
 
-		if (token != null && jwtTokenProvider.validate(token, properties.getSecret())) {
-			Authentication authentication = jwtTokenProvider.getAuthentication(token, properties.getSecret());
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-		}
+		if (token == null)
+			throw new CustomJwtException(ErrorCode.NULL_TOKEN);
+
+		if (!jwtTokenProvider.validate(token, properties.getSecret()))
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
+
+		Authentication authentication = jwtTokenProvider.getAuthentication(token, properties.getSecret());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		chain.doFilter(request, response);
 	}

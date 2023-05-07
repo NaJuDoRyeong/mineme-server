@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(value = {Exception.class})
 	public ResponseEntity<Object> handleException(Exception e) {
+		e.printStackTrace();
 		log.error("handleException throw Exception : {}", e.getMessage());
 		return ResponseDto.toResponseEntity(e);
 	}

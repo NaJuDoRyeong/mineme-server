@@ -1,7 +1,7 @@
 package com.mineme.server.security.provider;
 
 import com.mineme.server.common.enums.ErrorCode;
-import com.mineme.server.common.exception.CustomException;
+import com.mineme.server.common.exception.CustomJwtException;
 import com.mineme.server.entity.User;
 import com.mineme.server.entity.enums.UserState;
 import com.mineme.server.security.service.CustomUserDetailsService;
@@ -22,9 +22,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Date;
 
-/**
- * @todo 애플 인가 작업 후 일괄 예외처리 핸들러로 넘길 예정
- */
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -63,22 +60,22 @@ public class JwtTokenProvider {
 			return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 		} catch (SecurityException e) {
 			log.error(ErrorCode.INVALID_TOKEN_SIGNATURE.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN_SIGNATURE);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN_SIGNATURE);
 		} catch (MalformedJwtException e) {
 			log.error(ErrorCode.INVALID_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 		} catch (ExpiredJwtException e) {
 			log.error(ErrorCode.TOKEN_EXPIRED.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.TOKEN_EXPIRED);
+			throw new CustomJwtException(ErrorCode.TOKEN_EXPIRED);
 		} catch (UnsupportedJwtException e) {
 			log.error(ErrorCode.UNSUPPORTED_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.UNSUPPORTED_TOKEN);
+			throw new CustomJwtException(ErrorCode.UNSUPPORTED_TOKEN);
 		} catch (IllegalArgumentException e) {
 			log.error(ErrorCode.EMPTY_TOKEN_CLAIMS.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.EMPTY_TOKEN_CLAIMS);
+			throw new CustomJwtException(ErrorCode.EMPTY_TOKEN_CLAIMS);
 		} catch (Exception e) {
 			log.error(ErrorCode.INVALID_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 		}
 	}
 
@@ -87,22 +84,22 @@ public class JwtTokenProvider {
 			return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 		} catch (SecurityException e) {
 			log.error(ErrorCode.INVALID_TOKEN_SIGNATURE.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN_SIGNATURE);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN_SIGNATURE);
 		} catch (MalformedJwtException e) {
 			log.error(ErrorCode.INVALID_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 		} catch (ExpiredJwtException e) {
 			log.error(ErrorCode.TOKEN_EXPIRED.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.TOKEN_EXPIRED);
+			throw new CustomJwtException(ErrorCode.TOKEN_EXPIRED);
 		} catch (UnsupportedJwtException e) {
 			log.error(ErrorCode.UNSUPPORTED_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.UNSUPPORTED_TOKEN);
+			throw new CustomJwtException(ErrorCode.UNSUPPORTED_TOKEN);
 		} catch (IllegalArgumentException e) {
 			log.error(ErrorCode.EMPTY_TOKEN_CLAIMS.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.EMPTY_TOKEN_CLAIMS);
+			throw new CustomJwtException(ErrorCode.EMPTY_TOKEN_CLAIMS);
 		} catch (Exception e) {
 			log.error(ErrorCode.INVALID_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 		}
 	}
 
@@ -129,22 +126,22 @@ public class JwtTokenProvider {
 			return true;
 		} catch (SecurityException e) {
 			log.error(ErrorCode.INVALID_TOKEN_SIGNATURE.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN_SIGNATURE);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN_SIGNATURE);
 		} catch (MalformedJwtException e) {
 			log.error(ErrorCode.INVALID_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 		} catch (ExpiredJwtException e) {
 			log.error(ErrorCode.TOKEN_EXPIRED.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.TOKEN_EXPIRED);
+			throw new CustomJwtException(ErrorCode.TOKEN_EXPIRED);
 		} catch (UnsupportedJwtException e) {
 			log.error(ErrorCode.UNSUPPORTED_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.UNSUPPORTED_TOKEN);
+			throw new CustomJwtException(ErrorCode.UNSUPPORTED_TOKEN);
 		} catch (IllegalArgumentException e) {
 			log.error(ErrorCode.EMPTY_TOKEN_CLAIMS.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.EMPTY_TOKEN_CLAIMS);
+			throw new CustomJwtException(ErrorCode.EMPTY_TOKEN_CLAIMS);
 		} catch (Exception e) {
 			log.error(ErrorCode.INVALID_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 		}
 	}
 
@@ -154,22 +151,22 @@ public class JwtTokenProvider {
 			return true;
 		} catch (SecurityException e) {
 			log.error(ErrorCode.INVALID_TOKEN_SIGNATURE.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN_SIGNATURE);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN_SIGNATURE);
 		} catch (MalformedJwtException e) {
 			log.error(ErrorCode.INVALID_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 		} catch (ExpiredJwtException e) {
 			log.error(ErrorCode.TOKEN_EXPIRED.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.TOKEN_EXPIRED);
+			throw new CustomJwtException(ErrorCode.TOKEN_EXPIRED);
 		} catch (UnsupportedJwtException e) {
 			log.error(ErrorCode.UNSUPPORTED_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.UNSUPPORTED_TOKEN);
+			throw new CustomJwtException(ErrorCode.UNSUPPORTED_TOKEN);
 		} catch (IllegalArgumentException e) {
 			log.error(ErrorCode.EMPTY_TOKEN_CLAIMS.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.EMPTY_TOKEN_CLAIMS);
+			throw new CustomJwtException(ErrorCode.EMPTY_TOKEN_CLAIMS);
 		} catch (Exception e) {
 			log.error(ErrorCode.INVALID_TOKEN.getMessage(), e.getMessage());
-			throw new CustomException(ErrorCode.INVALID_TOKEN);
+			throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 		}
 	}
 
@@ -186,6 +183,6 @@ public class JwtTokenProvider {
 		if (authorization.startsWith("token "))
 			return authorization.substring(6);
 
-		throw new CustomException(ErrorCode.INVALID_TOKEN);
+		throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
 	}
 }

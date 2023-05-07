@@ -13,6 +13,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.mineme.server.security.filter.JwtAuthenticationFilter;
+import com.mineme.server.security.filter.JwtExceptionFilter;
+import com.mineme.server.security.filter.JwtGlobalEntryPoint;
 import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.security.provider.UserJwtAuthenticationProvider;
 import com.mineme.server.security.service.CustomUserDetailsService;
@@ -23,6 +25,8 @@ import com.mineme.server.security.service.CustomUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final CustomUserDetailsService userDetailsService;
+	private final JwtGlobalEntryPoint jwtGlobalEntryPoint;
+	private final JwtExceptionFilter jwtExceptionFilter;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final Properties properties;
 
@@ -43,14 +47,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.httpBasic()
 			.disable()
-			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.authorizeRequests()
-			.antMatchers("/**")
-			.permitAll()    // @Todo URI 결정 후 접근 제어 변경
+			.antMatchers("/api/v1/auth/**").permitAll()
+			.and()
+			.authorizeRequests()
+			.anyRequest().authenticated()
+			.and()
+			.exceptionHandling().authenticationEntryPoint(jwtGlobalEntryPoint)
 			.and()
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, properties),
-				UsernamePasswordAuthenticationFilter.class);
+				UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
 	}
 }
