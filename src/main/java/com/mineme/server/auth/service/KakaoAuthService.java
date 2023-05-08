@@ -17,21 +17,20 @@ import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.user.dto.UserBuilder;
 import com.mineme.server.user.repository.UserRepository;
-import com.mineme.server.user.service.UserService;
+import com.mineme.server.user.service.UserServiceImpl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class KakaoAuthService extends AuthService<Auth.SignRequest> {
+@RequiredArgsConstructor
+public class KakaoAuthService implements AuthService<Auth.SignRequest> {
 
-	private final UserService userService;
-
-	public KakaoAuthService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, Properties properties,
-		UserService userService) {
-		super(jwtTokenProvider, userRepository, properties);
-		this.userService = userService;
-	}
+	private final UserServiceImpl userServiceImpl;
+	private final UserRepository userRepository;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final Properties properties;
 
 	@Transactional
 	@Override
@@ -51,7 +50,7 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userService.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
 			} else {
 				User pendingUser = UserBuilder.toPendingUserEntity(username, dto);
 				User signedUser = userRepository.save(pendingUser);
@@ -59,7 +58,7 @@ public class KakaoAuthService extends AuthService<Auth.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userService.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
 			}
 		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);

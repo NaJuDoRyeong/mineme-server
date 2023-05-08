@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mineme.server.common.dto.ResponseDto;
 import com.mineme.server.user.dto.UserInfos;
-import com.mineme.server.user.service.UserService;
+import com.mineme.server.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-	private final UserService userService;
+	private final UserServiceImpl userServiceImpl;
 
 	@PostMapping
 	public ResponseDto userAdd(@RequestBody UserInfos.Init dto) {
 
-		userService.addUserDetails(dto);
+		userServiceImpl.addUserDetails(dto);
 
 		return new ResponseDto<>(null);
 	}
@@ -30,7 +30,7 @@ public class UserController {
 	@DeleteMapping
 	public ResponseDto userRemove() {
 
-		userService.removeUser();
+		userServiceImpl.removeUser();
 
 		return new ResponseDto<>(null);
 	}

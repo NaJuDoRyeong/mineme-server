@@ -3,32 +3,27 @@ package com.mineme.server.user.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mineme.server.auth.dto.Auth;
-import com.mineme.server.auth.service.AuthService;
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.Couple;
 import com.mineme.server.entity.User;
 import com.mineme.server.entity.enums.UserState;
-import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.user.repository.CoupleRepository;
 import com.mineme.server.user.repository.UserMatchingCodeRepository;
 import com.mineme.server.user.repository.UserRepository;
 import com.mineme.server.user.util.UserUtil;
 
-@Service
-public class CoupleService extends AuthService<Object> {
+import lombok.RequiredArgsConstructor;
 
+@Service
+@RequiredArgsConstructor
+public class CoupleServiceImpl implements UserService {
+
+	private final JwtTokenProvider jwtTokenProvider;
+	private final UserRepository userRepository;
 	private final UserMatchingCodeRepository userMatchingCodeRepository;
 	private final CoupleRepository coupleRepository;
-
-	public CoupleService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, Properties properties,
-		UserMatchingCodeRepository userMatchingCodeRepository, CoupleRepository coupleRepository) {
-		super(jwtTokenProvider, userRepository, properties);
-		this.userMatchingCodeRepository = userMatchingCodeRepository;
-		this.coupleRepository = coupleRepository;
-	}
 
 	/**
 	 * 유저 코드를 기반으로 커플을 연결함.
@@ -43,7 +38,7 @@ public class CoupleService extends AuthService<Object> {
 			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER))
 			.getUserId();
 
-		if(me.getUserState() == UserState.DEACTIVATED && mine.getUserState() == UserState.DEACTIVATED) {
+		if (me.getUserState() == UserState.DEACTIVATED && mine.getUserState() == UserState.DEACTIVATED) {
 			Couple couple = Couple.getEmptyCoupleEntity(me.getNickname(), mine.getNickname());
 			couple = coupleRepository.save(couple);
 
@@ -57,7 +52,18 @@ public class CoupleService extends AuthService<Object> {
 	}
 
 	@Override
-	public Auth.CreatedJwt getUserDetails(Object dto) {
+	public User getCurrentUser() {
+		String username = jwtTokenProvider.getUsername();
+		return userRepository.findByUsername(username).orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
+	}
+
+	@Override
+	public User getCurrentActivatedUser() {
 		return null;
+	}
+
+	@Override
+	public void isValidCurrentUserState(UserState userState) {
+
 	}
 }
