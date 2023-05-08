@@ -32,4 +32,16 @@ public class UserInfos {
 			}
 		}
 	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class Notice {
+		private String type;
+		private String allow;
+
+		public Notice(String type, String allow) {
+			this.type = type;
+			this.allow = allow;
+		}
+	}
 }
