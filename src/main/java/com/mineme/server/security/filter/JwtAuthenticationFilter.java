@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			String token = jwtTokenProvider.resolve(request);
 
 			if (token == null)
-				throw new CustomJwtException(ErrorCode.NULL_TOKEN);
+				throw new NullPointerException();
 
 			if (!jwtTokenProvider.validate(token, properties.getSecret()))
 				throw new CustomJwtException(ErrorCode.INVALID_TOKEN);
@@ -45,6 +45,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			Authentication authentication = jwtTokenProvider.getAuthentication(token, properties.getSecret());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
+		} catch (NullPointerException e) {
+			request.setAttribute(EXCEPTION, ErrorCode.NULL_TOKEN.getCode());
 		} catch (SecurityException e) {
 			request.setAttribute(EXCEPTION, ErrorCode.INVALID_TOKEN_SIGNATURE.getCode());
 		} catch (MalformedJwtException e) {
