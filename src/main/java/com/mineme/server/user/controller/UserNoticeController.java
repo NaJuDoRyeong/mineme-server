@@ -15,15 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/notice")
+@RequestMapping("/api/v1/user/notice")
 public class UserNoticeController {
 
 	private final UserServiceImpl userServiceImpl;
 
 	@PatchMapping
 	public ResponseDto userNoticeModify(@RequestBody UserInfos.Notice dto) {
-		userServiceImpl.modifyUserNotice(dto);
+		UserInfos.Notice response = userServiceImpl.modifyUserNotice(dto);
 
-		return new ResponseDto<>(null);
+		return new ResponseDto<>(response);
 	}
 }

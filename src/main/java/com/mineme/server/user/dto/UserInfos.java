@@ -43,5 +43,31 @@ public class UserInfos {
 			this.type = type;
 			this.allow = allow;
 		}
+
+		public Notice(String notice, User user) {
+			this.type = notice;
+
+			if(notice.equals("ANNIVERSARY")) {
+				if(user.getNoticeAnniversary())
+					this.allow = "y";
+				else
+					this.allow = "n";
+			} else if (notice.equals("FEED")) {
+				if(user.getNoticeAnniversary())
+					this.allow = "y";
+				else
+					this.allow = "n";
+			} else if (notice.equals("MARKETING")) {
+				if(user.getNoticeFeed())
+					this.allow = "y";
+				else
+					this.allow = "n";
+			} else {
+				if(user.getNoticeMarketing())
+					this.allow = "y";
+				else
+					this.allow = "n";
+			}
+		}
 	}
 }

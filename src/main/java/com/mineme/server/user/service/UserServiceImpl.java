@@ -62,10 +62,12 @@ public class UserServiceImpl implements UserService {
 		return UserUtil.createUserCode(tmpCode.get().getId());
 	}
 
-	public void modifyUserNotice(UserInfos.Notice notice) {
+	public UserInfos.Notice modifyUserNotice(UserInfos.Notice notice) {
 		User currentUser = getCurrentUser();
 		currentUser.updateUserNoticeState(notice);
-		userRepository.save(currentUser);
+		currentUser = userRepository.save(currentUser);
+
+		return new UserInfos.Notice(notice.getType(), currentUser);
 	}
 
 	/**
