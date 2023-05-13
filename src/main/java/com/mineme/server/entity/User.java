@@ -1,6 +1,8 @@
 package com.mineme.server.entity;
 
 import com.mineme.server.common.Utils;
+import com.mineme.server.common.enums.ErrorCode;
+import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
 import com.mineme.server.user.dto.UserInfos;
@@ -166,6 +168,8 @@ public class User extends BaseEntity implements UserDetails {
 		} else if (type.equals(NoticeType.MARKETING.getType())) {
 			this.noticeMarketing = Utils.stringToBoolean(type.getAllow());
 		}
+
+		throw new CustomException(ErrorCode.INVALID_REQUEST);
 	}
 
 	@Override
