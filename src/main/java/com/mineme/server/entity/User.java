@@ -160,8 +160,8 @@ public class User extends BaseEntity implements UserDetails {
 		couple.getUsers().add(this);
 	}
 
-	public void updateUserNoticeState(UserInfos.Notice type) {
-		if(type.equals(NoticeType.ANNIVERSARY.getType())) {
+	public void updateUserNoticeState(UserInfos.Notice type) throws NullPointerException {
+		if (type.equals(NoticeType.ANNIVERSARY.getType())) {
 			this.noticeAnniversary = Utils.stringToBoolean(type.getAllow());
 		} else if (type.equals(NoticeType.FEED.getType())) {
 			this.noticeFeed = Utils.stringToBoolean(type.getAllow());

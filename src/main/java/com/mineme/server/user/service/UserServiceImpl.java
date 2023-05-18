@@ -63,11 +63,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public UserInfos.Notice modifyUserNotice(UserInfos.Notice notice) {
-		User currentUser = getCurrentUser();
-		currentUser.updateUserNoticeState(notice);
-		currentUser = userRepository.save(currentUser);
+		try {
+			User currentUser = getCurrentUser();
+			currentUser.updateUserNoticeState(notice);
+			currentUser = userRepository.save(currentUser);
 
-		return new UserInfos.Notice(notice.getType(), currentUser);
+			return new UserInfos.Notice(notice.getType(), currentUser);
+		} catch (NullPointerException e) {
+			throw new CustomException(ErrorCode.NULL_REQUEST);
+		}
 	}
 
 	/**
