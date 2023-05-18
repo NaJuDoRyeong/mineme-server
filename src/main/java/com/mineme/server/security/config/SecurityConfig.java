@@ -13,7 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.mineme.server.security.filter.JwtAuthenticationFilter;
-import com.mineme.server.security.filter.JwtExceptionFilter;
 import com.mineme.server.security.filter.JwtGlobalEntryPoint;
 import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.security.provider.UserJwtAuthenticationProvider;
@@ -26,7 +25,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final CustomUserDetailsService userDetailsService;
 	private final JwtGlobalEntryPoint jwtGlobalEntryPoint;
-	private final JwtExceptionFilter jwtExceptionFilter;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final Properties properties;
 
@@ -58,7 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(jwtGlobalEntryPoint)
 			.and()
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, properties),
-				UsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
+				UsernamePasswordAuthenticationFilter.class);
 	}
 }

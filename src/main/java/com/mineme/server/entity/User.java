@@ -1,7 +1,12 @@
 package com.mineme.server.entity;
 
+import com.mineme.server.common.Utils;
+import com.mineme.server.common.enums.ErrorCode;
+import com.mineme.server.common.exception.CustomException;
 import com.mineme.server.entity.enums.Provider;
 import com.mineme.server.entity.enums.UserState;
+import com.mineme.server.user.dto.UserInfos;
+import com.mineme.server.user.enums.NoticeType;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -153,6 +158,18 @@ public class User extends BaseEntity implements UserDetails {
 	public void matchCouple(Couple couple) {
 		this.coupleId = couple;
 		couple.getUsers().add(this);
+	}
+
+	public void updateUserNoticeState(UserInfos.Notice type) throws NullPointerException {
+		if (type.equals(NoticeType.ANNIVERSARY.getType())) {
+			this.noticeAnniversary = Utils.stringToBoolean(type.getAllow());
+		} else if (type.equals(NoticeType.FEED.getType())) {
+			this.noticeFeed = Utils.stringToBoolean(type.getAllow());
+		} else if (type.equals(NoticeType.MARKETING.getType())) {
+			this.noticeMarketing = Utils.stringToBoolean(type.getAllow());
+		}
+
+		throw new CustomException(ErrorCode.INVALID_REQUEST);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package com.mineme.server.user.controller;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,27 +10,20 @@ import com.mineme.server.user.dto.UserInfos;
 import com.mineme.server.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
-public class UserController {
+@RequestMapping("/api/v1/user/notice")
+public class UserNoticeController {
 
 	private final UserServiceImpl userServiceImpl;
 
-	@PostMapping
-	public ResponseDto userAdd(@RequestBody UserInfos.Init dto) {
+	@PatchMapping
+	public ResponseDto userNoticeModify(@RequestBody UserInfos.Notice dto) {
+		UserInfos.Notice response = userServiceImpl.modifyUserNotice(dto);
 
-		userServiceImpl.addUserDetails(dto);
-
-		return new ResponseDto<>(null);
-	}
-
-	@DeleteMapping
-	public ResponseDto userRemove() {
-
-		userServiceImpl.removeUser();
-
-		return new ResponseDto<>(null);
+		return new ResponseDto<>(response);
 	}
 }

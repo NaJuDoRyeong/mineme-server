@@ -12,7 +12,7 @@ import com.mineme.server.auth.utils.AuthClientUtil;
 import com.mineme.server.auth.utils.AuthUtil;
 import com.mineme.server.user.dto.UserBuilder;
 import com.mineme.server.user.repository.UserRepository;
-import com.mineme.server.user.service.UserService;
+import com.mineme.server.user.service.UserServiceImpl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,19 +23,18 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class AppleAuthService extends AuthService<Apple.SignRequest> {
+@RequiredArgsConstructor
+public class AppleAuthService implements AuthService<Apple.SignRequest> {
 
-	private final UserService userService;
-
-	public AppleAuthService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, Properties properties,
-		UserService userService) {
-		super(jwtTokenProvider, userRepository, properties);
-		this.userService = userService;
-	}
+	private final UserServiceImpl userServiceImpl;
+	private final UserRepository userRepository;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final Properties properties;
 
 	@Transactional
 	@Override
@@ -57,7 +56,7 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userService.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
 			} else {
 				User pendingUser = UserBuilder.toPendingUserEntity(username, dto);
 				User signedUser = userRepository.save(pendingUser);
@@ -65,7 +64,7 @@ public class AppleAuthService extends AuthService<Apple.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userService.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
 			}
 		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);
