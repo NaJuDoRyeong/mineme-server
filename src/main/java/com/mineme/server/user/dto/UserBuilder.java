@@ -1,7 +1,5 @@
 package com.mineme.server.user.dto;
 
-import java.time.LocalDate;
-
 import com.mineme.server.auth.dto.Auth;
 import com.mineme.server.entity.User;
 import com.mineme.server.entity.enums.Provider;
@@ -15,6 +13,10 @@ public class UserBuilder {
 
 	private static final String PENDING_USER_NICKNAME = "PENDING_USER";
 
+	/**
+	 * 유저 최초 가입
+	 * @return User
+	 */
 	public static User toPendingUserEntity(String username, Auth.SignRequest dto) {
 		return User.userRegisterBuilder()
 			.userCode(null)
@@ -25,16 +27,14 @@ public class UserBuilder {
 			.build();
 	}
 
+	/**
+	 * 유저 초기 설정
+	 * @return User
+	 */
 	public static User toInitializedUserEntity(User user, UserInfos.Init init) {
 		return User.userInitializeBuilder()
-			.userCode(user.getUserCode())
-			.username(user.getUsername())
-			.lastLogin(user.getLastLogin())
-			.nickname(init.getNickname())
-			.provider(user.getProvider())
-			.userState(UserState.PENDING)
-			.birthday(LocalDate.parse(init.getBirthday()))
-			.gender('N')
+			.user(user)
+			.init(init)
 			.build();
 	}
 }

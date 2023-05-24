@@ -140,19 +140,22 @@ public class User extends BaseEntity implements UserDetails {
 	}
 
 	@Builder(builderClassName = "userInitializeBuilder", builderMethodName = "userInitializeBuilder")
-	public User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider,
-		LocalDateTime lastLogin, LocalDate birthday, Character gender) {
-		this.userCode = userCode;
-		this.username = username;
-		this.nickname = nickname;
-		this.userState = userState;
-		this.provider = provider;
-		this.lastLogin = lastLogin;
-		this.birthday = birthday;
-		this.gender = gender;
+	public User(User user, UserInfos.Init init) {
+		/* 변경되지 않는 값 */
+		this.id = user.getId();
+		this.userCode = user.getUserCode();
+		this.username = user.getUsername();
+		this.userState = user.getUserState();
+		this.provider = user.getProvider();
+		this.gender = 'N';
 		this.noticeFeed = false;
 		this.noticeAnniversary = false;
 		this.noticeMarketing = false;
+
+		/* 변경되는 값 */
+		this.nickname = init.getNickname();
+		this.lastLogin = LocalDateTime.now();
+		this.birthday = LocalDate.parse(init.getBirthday());
 	}
 
 	public void matchCouple(Couple couple) {
