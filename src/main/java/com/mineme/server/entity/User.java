@@ -128,7 +128,7 @@ public class User extends BaseEntity implements UserDetails {
 	private Boolean noticeMarketing;
 
 	@Builder(builderClassName = "userRegisterBuilder", builderMethodName = "userRegisterBuilder")
-	private User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider) {
+	public User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider) {
 		this.userCode = userCode;
 		this.username = username;
 		this.nickname = nickname;
@@ -183,23 +183,7 @@ public class User extends BaseEntity implements UserDetails {
 		throw new CustomException(ErrorCode.INVALID_REQUEST);
 	}
 
-	/** @Todo 커플에서 구현할 것
-	 * 커플 프로필을 변경함.
-	 * @return Couple
-	 */
-	public Couple updateUserDetails(Optional<UserInfos.Modifying> dto) {
-		/* 개인 */
-		this.nickname = dto.map(UserInfos.Modifying::getNickname).orElse(this.nickname);
-		this.comment = dto.map(UserInfos.Modifying::getMineDescription).orElse(this.comment);
-		this.instaId = dto.map(UserInfos.Modifying::getInstaId).orElse(this.instaId);
-		this.birthday = dto.map(UserInfos.Modifying::getBirthday).orElse(this.birthday);
 
-		if (this.coupleId == null)
-			return null;
-
-		/* 커플 */
-		return this.getCoupleId().updateCoupleDetails(this, dto);
-	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
