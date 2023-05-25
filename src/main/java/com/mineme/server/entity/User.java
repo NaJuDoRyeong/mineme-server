@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -88,6 +89,7 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(name = "COMMENT")
 	private String comment;
 
+	/* @Todo 해당 필드는 추후 삭제 예정 */
 	@Column(name = "GENDER", length = 1)
 	private Character gender;
 
@@ -132,6 +134,7 @@ public class User extends BaseEntity implements UserDetails {
 		this.nickname = nickname;
 		this.userState = userState;
 		this.provider = provider;
+		/* @Todo - gender 필드 삭제에 따라 함께 조정할 것 */
 		this.gender = 'n';
 		this.lastLogin = LocalDateTime.now();
 		this.noticeFeed = false;
@@ -147,10 +150,12 @@ public class User extends BaseEntity implements UserDetails {
 		this.username = user.getUsername();
 		this.userState = user.getUserState();
 		this.provider = user.getProvider();
-		this.gender = 'N';
 		this.noticeFeed = false;
 		this.noticeAnniversary = false;
 		this.noticeMarketing = false;
+
+		/* @Todo - gender 필드 삭제에 따라 함께 조정할 것 */
+		this.gender = 'N';
 
 		/* 변경되는 값 */
 		this.nickname = init.getNickname();
@@ -163,6 +168,9 @@ public class User extends BaseEntity implements UserDetails {
 		couple.getUsers().add(this);
 	}
 
+	/**
+	 * 사용자의 알림 상태를 변경함.
+	 */
 	public void updateUserNoticeState(UserInfos.Notice type) throws NullPointerException {
 		if (type.equals(NoticeType.ANNIVERSARY.getType())) {
 			this.noticeAnniversary = Utils.stringToBoolean(type.getAllow());
@@ -173,6 +181,24 @@ public class User extends BaseEntity implements UserDetails {
 		}
 
 		throw new CustomException(ErrorCode.INVALID_REQUEST);
+	}
+
+	/** @Todo 커플에서 구현할 것
+	 * 커플 프로필을 변경함.
+	 * @return Couple
+	 */
+	public Couple updateUserDetails(Optional<UserInfos.Modifying> dto) {
+		/* 개인 */
+		this.nickname = dto.map(UserInfos.Modifying::getNickname).orElse(this.nickname);
+		this.comment = dto.map(UserInfos.Modifying::getMineDescription).orElse(this.comment);
+		this.instaId = dto.map(UserInfos.Modifying::getInstaId).orElse(this.instaId);
+		this.birthday = dto.map(UserInfos.Modifying::getBirthday).orElse(this.birthday);
+
+		if (this.coupleId == null)
+			return null;
+
+		/* 커플 */
+		return this.getCoupleId().updateCoupleDetails(this, dto);
 	}
 
 	@Override
