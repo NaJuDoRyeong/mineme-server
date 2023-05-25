@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -88,6 +89,7 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(name = "COMMENT")
 	private String comment;
 
+	/* @Todo 해당 필드는 추후 삭제 예정 */
 	@Column(name = "GENDER", length = 1)
 	private Character gender;
 
@@ -126,12 +128,13 @@ public class User extends BaseEntity implements UserDetails {
 	private Boolean noticeMarketing;
 
 	@Builder(builderClassName = "userRegisterBuilder", builderMethodName = "userRegisterBuilder")
-	private User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider) {
+	public User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider) {
 		this.userCode = userCode;
 		this.username = username;
 		this.nickname = nickname;
 		this.userState = userState;
 		this.provider = provider;
+		/* @Todo - gender 필드 삭제에 따라 함께 조정할 것 */
 		this.gender = 'n';
 		this.lastLogin = LocalDateTime.now();
 		this.noticeFeed = false;
@@ -140,19 +143,24 @@ public class User extends BaseEntity implements UserDetails {
 	}
 
 	@Builder(builderClassName = "userInitializeBuilder", builderMethodName = "userInitializeBuilder")
-	public User(UserMatchingCode userCode, String username, String nickname, UserState userState, Provider provider,
-		LocalDateTime lastLogin, LocalDate birthday, Character gender) {
-		this.userCode = userCode;
-		this.username = username;
-		this.nickname = nickname;
-		this.userState = userState;
-		this.provider = provider;
-		this.lastLogin = lastLogin;
-		this.birthday = birthday;
-		this.gender = gender;
+	public User(User user, UserInfos.Init init) {
+		/* 변경되지 않는 값 */
+		this.id = user.getId();
+		this.userCode = user.getUserCode();
+		this.username = user.getUsername();
+		this.userState = user.getUserState();
+		this.provider = user.getProvider();
 		this.noticeFeed = false;
 		this.noticeAnniversary = false;
 		this.noticeMarketing = false;
+
+		/* @Todo - gender 필드 삭제에 따라 함께 조정할 것 */
+		this.gender = 'N';
+
+		/* 변경되는 값 */
+		this.nickname = init.getNickname();
+		this.lastLogin = LocalDateTime.now();
+		this.birthday = LocalDate.parse(init.getBirthday());
 	}
 
 	public void matchCouple(Couple couple) {
@@ -160,6 +168,9 @@ public class User extends BaseEntity implements UserDetails {
 		couple.getUsers().add(this);
 	}
 
+	/**
+	 * 사용자의 알림 상태를 변경함.
+	 */
 	public void updateUserNoticeState(UserInfos.Notice type) throws NullPointerException {
 		if (type.equals(NoticeType.ANNIVERSARY.getType())) {
 			this.noticeAnniversary = Utils.stringToBoolean(type.getAllow());
@@ -171,6 +182,8 @@ public class User extends BaseEntity implements UserDetails {
 
 		throw new CustomException(ErrorCode.INVALID_REQUEST);
 	}
+
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
