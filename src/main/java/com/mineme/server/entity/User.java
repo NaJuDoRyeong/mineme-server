@@ -183,7 +183,23 @@ public class User extends BaseEntity implements UserDetails {
 		throw new CustomException(ErrorCode.INVALID_REQUEST);
 	}
 
+	/** @Todo 커플에서 구현할 것
+	 * 커플 프로필의 변경 대상인 필드를 수정함
+	 * @return Couple
+	 */
+	public Couple updateUserProfile(Optional<UserInfos.Modifying> dto) {
+		/* 개인 */
+		this.nickname = dto.map(UserInfos.Modifying::getNickname).orElse(this.nickname);
+		this.comment = dto.map(UserInfos.Modifying::getMineDescription).orElse(this.comment);
+		this.instaId = dto.map(UserInfos.Modifying::getInstaId).orElse(this.instaId);
+		this.birthday = dto.map(UserInfos.Modifying::getBirthday).orElse(this.birthday);
 
+		if (this.coupleId == null)
+			return null;
+
+		/* 커플 */
+		return this.getCoupleId().updateCoupleProfile(this, dto);
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

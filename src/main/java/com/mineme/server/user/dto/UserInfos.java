@@ -1,5 +1,6 @@
 package com.mineme.server.user.dto;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import com.mineme.server.common.enums.ErrorCode;
@@ -47,27 +48,67 @@ public class UserInfos {
 		public Notice(String notice, User user) {
 			this.type = notice;
 
-			if(notice.equals("ANNIVERSARY")) {
-				if(user.getNoticeAnniversary())
+			if (notice.equals("ANNIVERSARY")) {
+				if (user.getNoticeAnniversary())
 					this.allow = "y";
 				else
 					this.allow = "n";
 			} else if (notice.equals("FEED")) {
-				if(user.getNoticeAnniversary())
+				if (user.getNoticeAnniversary())
 					this.allow = "y";
 				else
 					this.allow = "n";
 			} else if (notice.equals("MARKETING")) {
-				if(user.getNoticeFeed())
+				if (user.getNoticeFeed())
 					this.allow = "y";
 				else
 					this.allow = "n";
 			} else {
-				if(user.getNoticeMarketing())
+				if (user.getNoticeMarketing())
 					this.allow = "y";
 				else
 					this.allow = "n";
 			}
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class Modifying {
+		private String nickname;
+		private String coupleName;
+		private String mineDescription;
+		private String instaId;
+		private LocalDate startDate;
+		private LocalDate birthday;
+
+		public Modifying(String nickname, String coupleName, String mineDescription, String instaId,
+			LocalDate startDate, LocalDate birthday) {
+			/* 내 정보 */
+			this.nickname = nickname;
+			this.instaId = instaId;
+			this.birthday = birthday;
+
+			/* 상대방 소개 글 */
+			this.mineDescription = mineDescription;
+
+			/* 커플 정보 */
+			this.coupleName = coupleName;
+			this.startDate = startDate;
+		}
+
+		public Modifying(User user) {
+			/* 내 정보 */
+			this.nickname = user.getNickname();
+			this.instaId = user.getInstaId();
+			this.birthday = user.getBirthday();
+
+			/* 상대방 소개 글 */
+			this.mineDescription = user.getComment();
+
+			/* 커플 정보 */
+			this.coupleName = user.getCoupleId().getName();
+			this.startDate = user.getCoupleId().getBeginDate();
 		}
 	}
 }

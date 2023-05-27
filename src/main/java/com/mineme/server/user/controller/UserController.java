@@ -17,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-	private final UserServiceImpl userServiceImpl;
+	private final UserServiceImpl userService;
 
 	@PostMapping
 	public ResponseDto userAdd(@RequestBody UserInfos.Init dto) {
 
-		userServiceImpl.addUserDetails(dto);
+		userService.addUserDetails(dto);
 
 		return new ResponseDto<>(null);
 	}
@@ -30,7 +30,7 @@ public class UserController {
 	@DeleteMapping
 	public ResponseDto userRemove() {
 
-		userServiceImpl.removeUser();
+		userService.removeUser();
 
 		return new ResponseDto<>(null);
 	}

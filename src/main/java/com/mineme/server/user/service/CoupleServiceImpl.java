@@ -1,5 +1,7 @@
 package com.mineme.server.user.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +11,7 @@ import com.mineme.server.entity.Couple;
 import com.mineme.server.entity.User;
 import com.mineme.server.entity.enums.UserState;
 import com.mineme.server.security.provider.JwtTokenProvider;
+import com.mineme.server.user.dto.UserInfos;
 import com.mineme.server.user.repository.CoupleRepository;
 import com.mineme.server.user.repository.UserMatchingCodeRepository;
 import com.mineme.server.user.repository.UserRepository;
@@ -51,6 +54,25 @@ public class CoupleServiceImpl implements UserService {
 		/* @Todo 커플매칭코드를 초기화 하는 로직 추가 */
 	}
 
+	/**
+	 * 커플 프로필을 변경.
+	 * @return UserInfos.Modifying
+	 */
+	@Transactional
+	public UserInfos.Modifying modifyCoupleProfile(UserInfos.Modifying dto) {
+		try {
+			User currentUser = getCurrentActivatedUser();
+
+			Couple updatedCouple = currentUser.updateUserProfile(Optional.ofNullable(dto));
+			userRepository.save(currentUser);
+			coupleRepository.save(updatedCouple);
+
+			return new UserInfos.Modifying(currentUser);
+		} catch (NullPointerException e) {
+			throw new CustomException(ErrorCode.INVALID_COUPLE_PROFILE);
+		}
+	}
+
 	@Override
 	public User getCurrentUser() {
 		String username = jwtTokenProvider.getUsername();
@@ -59,7 +81,13 @@ public class CoupleServiceImpl implements UserService {
 
 	@Override
 	public User getCurrentActivatedUser() {
-		return null;
+		User user = userRepository.findByUsername(jwtTokenProvider.getUsername())
+			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
+
+		if (user.getUserState() != UserState.ACTIVATED)
+			throw new CustomException(ErrorCode.INVALID_USER_STATE);
+
+		return user;
 	}
 
 	@Override
