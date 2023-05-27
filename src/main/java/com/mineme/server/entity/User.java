@@ -173,11 +173,11 @@ public class User extends BaseEntity implements UserDetails {
 	 */
 	public void updateUserNoticeState(UserInfos.Notice type) throws NullPointerException {
 		if (type.equals(NoticeType.ANNIVERSARY.getType())) {
-			this.noticeAnniversary = Utils.stringToBoolean(type.getAllow());
+			this.noticeAnniversary = type.isAllow();
 		} else if (type.equals(NoticeType.FEED.getType())) {
-			this.noticeFeed = Utils.stringToBoolean(type.getAllow());
+			this.noticeFeed = type.isAllow();
 		} else if (type.equals(NoticeType.MARKETING.getType())) {
-			this.noticeMarketing = Utils.stringToBoolean(type.getAllow());
+			this.noticeMarketing = type.isAllow();
 		}
 
 		throw new CustomException(ErrorCode.INVALID_REQUEST);

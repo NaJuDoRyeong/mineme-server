@@ -18,11 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/user/notice")
 public class UserNoticeController {
 
-	private final UserServiceImpl userServiceImpl;
+	private final UserServiceImpl userService;
 
 	@PatchMapping
 	public ResponseDto userNoticeModify(@RequestBody UserInfos.Notice dto) {
-		UserInfos.Notice response = userServiceImpl.modifyUserNotice(dto);
+		UserInfos.Notice response = userService.modifyUserNotice(dto);
 
 		return new ResponseDto<>(response);
 	}

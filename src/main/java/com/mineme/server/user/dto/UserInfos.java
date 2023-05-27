@@ -38,9 +38,9 @@ public class UserInfos {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class Notice {
 		private String type;
-		private String allow;
+		private boolean allow;
 
-		public Notice(String type, String allow) {
+		public Notice(String type, boolean allow) {
 			this.type = type;
 			this.allow = allow;
 		}
@@ -50,24 +50,24 @@ public class UserInfos {
 
 			if (notice.equals("ANNIVERSARY")) {
 				if (user.getNoticeAnniversary())
-					this.allow = "y";
+					this.allow = true;
 				else
-					this.allow = "n";
+					this.allow = false;
 			} else if (notice.equals("FEED")) {
 				if (user.getNoticeAnniversary())
-					this.allow = "y";
+					this.allow = true;
 				else
-					this.allow = "n";
+					this.allow = false;
 			} else if (notice.equals("MARKETING")) {
 				if (user.getNoticeFeed())
-					this.allow = "y";
+					this.allow = true;
 				else
-					this.allow = "n";
+					this.allow = false;
 			} else {
 				if (user.getNoticeMarketing())
-					this.allow = "y";
+					this.allow = true;
 				else
-					this.allow = "n";
+					this.allow = false;
 			}
 		}
 	}
