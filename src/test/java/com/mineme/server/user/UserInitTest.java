@@ -1,8 +1,8 @@
 package com.mineme.server.user;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,8 +20,13 @@ import com.mineme.server.user.dto.UserInfos;
 @DisplayName("유저 초기 설정 테스트")
 public class UserInitTest {
 
-	private final static User testUser = new User(null, "123456", null, UserState.PENDING, Provider.APPLE, LocalDateTime.now(), null,
-		null);
+	private User testUser = new User(null, "username", "nickname", UserState.PENDING, Provider.APPLE);
+
+	@Before
+	public void setTestUser() {
+		UserInfos.Init testUserInit = new UserInfos.Init("가나다", "1998-01-10");
+		testUser = new User(testUser, testUserInit);
+	}
 
 	@Test
 	@DisplayName("UserBuilder 동작 테스트.")
