@@ -62,6 +62,10 @@ public class UserServiceImpl implements UserService {
 		return UserUtil.createUserCode(tmpCode.get().getId());
 	}
 
+	/**
+	 * 유저 알림 설정을 변경.
+	 * @return UserInfos.Notice
+	 */
 	public UserInfos.Notice modifyUserNotice(UserInfos.Notice notice) {
 		try {
 			User currentUser = getCurrentUser();
