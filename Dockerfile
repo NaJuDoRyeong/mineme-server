@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim
+FROM arm64v8/openjdk:11
 
 WORKDIR /app/
 
