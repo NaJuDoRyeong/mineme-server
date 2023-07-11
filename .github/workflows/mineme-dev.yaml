@@ -35,11 +35,19 @@ jobs:
 
       - name: Docker login
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      
+
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      # https://github.com/docker/setup-buildx-action
+      # docker buildx 설치
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Docker build
         run: |
           DATE=$(date "+%y.%m.%d")
-          docker build -t ${{ secrets.DOCKER_REPO }}/mineme-api:$DATE .
+          docker buildx build --platform  -t ${{ secrets.DOCKER_REPO }}/mineme-api:$DATE .
       
       - name: Docker push
         run: |
