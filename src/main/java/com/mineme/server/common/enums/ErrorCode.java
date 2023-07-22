@@ -35,6 +35,7 @@ public enum ErrorCode {
 	/* 43xx : Couple Error */
 	INVALID_COUPLE_SIZE(4301, HttpStatus.BAD_REQUEST, "Invalid couple size."),
 	INVALID_COUPLE_PROFILE(4302, HttpStatus.BAD_REQUEST, "Invalid couple profile."),
+	NO_COUPLE_DATA(4303, HttpStatus.BAD_REQUEST, "Couldn't find couple data."),
 
 
 	/* File Error */

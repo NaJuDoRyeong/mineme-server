@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
+import com.mineme.server.entity.Couple;
 import com.mineme.server.entity.User;
 import com.mineme.server.entity.UserMatchingCode;
 import com.mineme.server.entity.enums.UserState;
@@ -27,12 +28,21 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final UserMatchingCodeRepository userMatchingCodeRepository;
 
+	/**
+	 * 유저 탈퇴, 커플 상태를 비활성화.
+	 */
 	@Transactional
 	public void removeUser() {
-		/* @Todo 해당 컨텍스트를 플러싱하지 않고 처리할 수 있는 방법 찾기. */
-		String username = getCurrentUser().getUsername();
-		User user = userRepository.findByUsername(username)
-			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
+		User user = getCurrentUser();
+
+		if (user.getCoupleId() != null) {
+			Couple couple = user.getCoupleId();
+			try {
+				couple.deactivateCouple(user);
+			} catch (NullPointerException e) {
+				throw new CustomException(ErrorCode.INVALID_USER);
+			}
+		}
 
 		userRepository.delete(user);
 	}

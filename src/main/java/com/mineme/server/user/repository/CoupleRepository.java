@@ -7,4 +7,5 @@ import com.mineme.server.entity.Couple;
 
 @Repository
 public interface CoupleRepository extends JpaRepository<Couple, Long> {
+
 }
