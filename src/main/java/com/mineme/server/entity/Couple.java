@@ -58,14 +58,18 @@ public class Couple extends BaseEntity {
 	 * @return Couple
 	 */
 	public Couple updateCoupleProfile(User user, Optional<UserInfos.Modifying> dto) {
+		if (users.size() > 2) {
+			throw new CustomException(ErrorCode.INVALID_COUPLE_SIZE);
+		}
+
 		this.beginDate = dto.map(UserInfos.Modifying::getStartDate).orElse(this.beginDate);
 		this.name = dto.map(UserInfos.Modifying::getCoupleName).orElse(this.name);
 
-		for (int i = 0; i < users.size(); i++)
+		for (int i = 0; i < users.size(); i++) {
 			users.set(i, user);
+		}
 
-		if (users.size() > 2)
-			throw new CustomException(ErrorCode.INVALID_COUPLE_SIZE);
+
 
 		return this;
 	}
@@ -74,8 +78,10 @@ public class Couple extends BaseEntity {
 	 * 커플 상태를 비활성화 (Deactivate) 시킴.
 	 */
 	public void deactivateCouple(User user) throws NullPointerException {
+		if (this.users.size() > 2) {
+			throw new CustomException(ErrorCode.INVALID_COUPLE_SIZE);
+		}
 
-		// 스트림으로 처리하려 했으나 idx 값이 필요하다고 판단
 		for (int userIdx = 0; userIdx < this.users.size(); userIdx++) {
 			if (this.users.get(userIdx).getId().equals(user.getId())) {
 				this.users.remove(userIdx);
@@ -83,13 +89,12 @@ public class Couple extends BaseEntity {
 		}
 
 		this.coupleState = CoupleState.DEACTIVATED;
-
-		if (this.users.size() > 2) {
-			throw new CustomException(ErrorCode.INVALID_COUPLE_SIZE);
-		}
 	}
 
 	public static Couple getEmptyCoupleEntity(String me, String mine) {
-		return Couple.builder().me(me).mine(mine).build();
+		return Couple.builder()
+			.me(me)
+			.mine(mine)
+			.build();
 	}
 }
