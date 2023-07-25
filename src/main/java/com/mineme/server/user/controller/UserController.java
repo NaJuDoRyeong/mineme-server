@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mineme.server.common.dto.ResponseDto;
 import com.mineme.server.user.dto.UserInfos;
-import com.mineme.server.user.service.UserServiceImpl;
+import com.mineme.server.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-	private final UserServiceImpl userService;
+	private final UserService userService;
 
 	/**
 	 * 회원가입 직후, 최초 정보 기입

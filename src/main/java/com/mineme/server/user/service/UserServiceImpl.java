@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * 유저 탈퇴, 커플 상태를 비활성화.
 	 */
+	@Override
 	@Transactional
 	public void removeUser() {
 		User user = getCurrentUser();
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * 회원가입하는 유저의 최초 정보를 입력함.
 	 */
+	@Override
 	public void addUserDetails(UserInfos.Init dto) {
 		User currentUser = getCurrentUser();
 		currentUser = UserInfos.Init.getInitializedUser(currentUser, dto);
@@ -61,7 +63,8 @@ public class UserServiceImpl implements UserService {
 	 * 조회 대상 유저의 유저(커플)매칭코드를 가져옴.
 	 * @return 커플매칭코드
 	 */
-	public String getUserMatchingCode(User user) throws NoSuchAlgorithmException {
+	@Override
+	public String getUserMatchingCode(User user) {
 		Optional<UserMatchingCode> tmpCode = userMatchingCodeRepository.findByUserId(user);
 
 		if (!tmpCode.isPresent()) {
@@ -76,6 +79,7 @@ public class UserServiceImpl implements UserService {
 	 * 유저 알림 설정을 변경.
 	 * @return UserInfos.Notice
 	 */
+	@Override
 	public UserInfos.Notice modifyUserNotice(UserInfos.Notice notice) {
 		try {
 			User currentUser = getCurrentUser();

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mineme.server.common.dto.ResponseDto;
 import com.mineme.server.user.dto.UserInfos;
+import com.mineme.server.user.service.CoupleService;
 import com.mineme.server.user.service.CoupleServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/couple")
 public class CoupleController {
 
-	private final CoupleServiceImpl coupleService;
+	private final CoupleService coupleService;
 
 	/**
 	 * 커플 매칭을 수행함

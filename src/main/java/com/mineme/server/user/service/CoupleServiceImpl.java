@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CoupleServiceImpl implements UserService {
+public class CoupleServiceImpl implements CoupleService {
 
 	private final JwtTokenProvider jwtTokenProvider;
 	private final UserRepository userRepository;
@@ -33,6 +33,7 @@ public class CoupleServiceImpl implements UserService {
 	 * 두 커플의 상태가 DEACTIVATED(서로 연결할 수 있는 상태)일 경우 연결 수행
 	 * @Todo 추후, 별도의 검증 과정이 필요함.
 	 */
+	@Override
 	@Transactional
 	public void addUserRelationByCouple(String userCode) {
 		User me = getCurrentUser();
@@ -58,6 +59,7 @@ public class CoupleServiceImpl implements UserService {
 	 * 커플 프로필을 변경.
 	 * @return UserInfos.Modifying
 	 */
+	@Override
 	@Transactional
 	public UserInfos.Modifying modifyCoupleProfile(UserInfos.Modifying dto) {
 		try {
@@ -73,12 +75,14 @@ public class CoupleServiceImpl implements UserService {
 		}
 	}
 
+	// Todo - 인터페이스 구현이 아니라 상속으로 뺄 예정
 	@Override
 	public User getCurrentUser() {
 		String username = jwtTokenProvider.getUsername();
 		return userRepository.findByUsername(username).orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
 	}
 
+	// Todo - 인터페이스 구현이 아니라 상속으로 뺄 예정
 	@Override
 	public User getCurrentActivatedUser() {
 		User user = userRepository.findByUsername(jwtTokenProvider.getUsername())
@@ -88,10 +92,5 @@ public class CoupleServiceImpl implements UserService {
 			throw new CustomException(ErrorCode.INVALID_USER_STATE);
 
 		return user;
-	}
-
-	@Override
-	public void isValidCurrentUserState(UserState userState) {
-
 	}
 }
