@@ -194,7 +194,7 @@ public class User extends BaseEntity implements UserDetails {
 		this.instaId = dto.map(UserInfos.Modifying::getInstaId).orElse(this.instaId);
 		this.birthday = dto.map(UserInfos.Modifying::getBirthday).orElse(this.birthday);
 
-		if (this.coupleId == null)
+		if (this.coupleId == null) // Todo - 추후, 적절한 처리로 리팩터링 예정
 			return null;
 
 		/* 커플 */
