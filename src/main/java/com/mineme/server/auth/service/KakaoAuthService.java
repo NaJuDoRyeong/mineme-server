@@ -50,7 +50,8 @@ public class KakaoAuthService implements AuthService<Auth.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken,
+					userServiceImpl.getUserMatchingCode(signedUser));
 			} else {
 				User pendingUser = UserBuilder.toPendingUserEntity(username, dto);
 				User signedUser = userRepository.save(pendingUser);
@@ -58,14 +59,13 @@ public class KakaoAuthService implements AuthService<Auth.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken,
+					userServiceImpl.getUserMatchingCode(signedUser));
 			}
 		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);
 		} catch (WebClientResponseException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
-		} catch (NoSuchAlgorithmException e) {
-			throw new CustomException(ErrorCode.CANNOT_CREATE_MATCHING_CODE);
 		} catch (Exception e) {
 			throw new CustomException(ErrorCode.SERVER_ERROR);
 		}
