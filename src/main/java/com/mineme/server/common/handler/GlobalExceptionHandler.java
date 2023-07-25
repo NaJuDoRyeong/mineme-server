@@ -1,0 +1,28 @@
+package com.mineme.server.common.handler;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.mineme.server.common.dto.ResponseDto;
+import com.mineme.server.common.exception.CustomException;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RestControllerAdvice
+@Slf4j
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(value = {CustomException.class})
+	public ResponseEntity<Object> handleApiException(CustomException e) {
+		log.error("handleApiException throw RestApiException : {}", e.getErrorCode().getMessage());
+		return ResponseDto.toResponseEntity(e);
+	}
+
+	@ExceptionHandler(value = {Exception.class})
+	public ResponseEntity<Object> handleException(Exception e) {
+		e.printStackTrace();
+		log.error("handleException throw Exception : {}", e.getMessage());
+		return ResponseDto.toResponseEntity(e);
+	}
+}

@@ -18,6 +18,15 @@ jobs:
         with:
           java-version: 11
 
+      - name: Make Application.yml
+        run: |
+          ## create application.yml
+          cd ./src/main/resources
+
+          # GitHub-Actions 에서 설정한 값을 application.yml 파일에 쓰기
+          echo "${{ secrets.APPLICATION_DEV }}" > ./application.yml
+        shell: bash
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -28,10 +37,14 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       
       - name: Docker build
-        run: docker build -t ${{ secrets.DOCKER_REPO }}/mineme-api .
+        run: |
+          DATE=$(date "+%y.%m.%d")
+          docker build -t ${{ secrets.DOCKER_REPO }}/mineme-api:$DATE .
       
       - name: Docker push
-        run: docker push ${{ secrets.DOCKER_REPO }}/mineme-api
+        run: |
+          DATE=$(date "+%y.%m.%d")
+          docker push ${{ secrets.DOCKER_REPO }}/mineme-api:$DATE
 
       - name: Deploy
         uses: appleboy/ssh-action@master
@@ -41,10 +54,11 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
+            DATE=$(date "+%y.%m.%d")
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker stop MINEME_DEV
             docker rm -f MINEME_DEV
-            docker pull ${{ secrets.DOCKER_REPO }}/mineme-api
-            docker-compose up -d
+            docker pull ${{ secrets.DOCKER_REPO }}/mineme-api:$DATE
+            ./server_start.sh
             docker image prune -f
       

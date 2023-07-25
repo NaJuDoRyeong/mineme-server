@@ -1,0 +1,11 @@
+{
+  "id" : "unique_kakao_user",
+  "kakao_account" : {
+    "profile" : {
+      "nickname" : "user_nickname",
+      "thumbnail_image_url" : "thumbnail_image_url",
+      "profile_image_url" : "profile_image_url",
+      "is_default_image" : "is_default_image"
+    }
+  }
+}
