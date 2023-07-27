@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mineme.server.common.enums.ErrorCode;
 import com.mineme.server.common.exception.CustomException;
+import com.mineme.server.entity.Couple;
 import com.mineme.server.entity.User;
 import com.mineme.server.entity.UserMatchingCode;
 import com.mineme.server.entity.enums.UserState;
@@ -27,12 +28,22 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final UserMatchingCodeRepository userMatchingCodeRepository;
 
+	/**
+	 * 유저 탈퇴, 커플 상태를 비활성화.
+	 */
+	@Override
 	@Transactional
 	public void removeUser() {
-		/* @Todo 해당 컨텍스트를 플러싱하지 않고 처리할 수 있는 방법 찾기. */
-		String username = getCurrentUser().getUsername();
-		User user = userRepository.findByUsername(username)
-			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_USER));
+		User user = getCurrentUser();
+
+		if (user.getCoupleId() != null) {
+			Couple couple = user.getCoupleId();
+			try {
+				couple.deactivateCouple(user);
+			} catch (NullPointerException e) {
+				throw new CustomException(ErrorCode.INVALID_USER);
+			}
+		}
 
 		userRepository.delete(user);
 	}
@@ -40,6 +51,7 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * 회원가입하는 유저의 최초 정보를 입력함.
 	 */
+	@Override
 	public void addUserDetails(UserInfos.Init dto) {
 		User currentUser = getCurrentUser();
 		currentUser = UserInfos.Init.getInitializedUser(currentUser, dto);
@@ -51,7 +63,8 @@ public class UserServiceImpl implements UserService {
 	 * 조회 대상 유저의 유저(커플)매칭코드를 가져옴.
 	 * @return 커플매칭코드
 	 */
-	public String getUserMatchingCode(User user) throws NoSuchAlgorithmException {
+	@Override
+	public String getUserMatchingCode(User user) {
 		Optional<UserMatchingCode> tmpCode = userMatchingCodeRepository.findByUserId(user);
 
 		if (!tmpCode.isPresent()) {
@@ -62,6 +75,11 @@ public class UserServiceImpl implements UserService {
 		return UserUtil.createUserCode(tmpCode.get().getId());
 	}
 
+	/**
+	 * 유저 알림 설정을 변경.
+	 * @return UserInfos.Notice
+	 */
+	@Override
 	public UserInfos.Notice modifyUserNotice(UserInfos.Notice notice) {
 		try {
 			User currentUser = getCurrentUser();

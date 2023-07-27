@@ -17,6 +17,7 @@ import com.mineme.server.security.config.Properties;
 import com.mineme.server.security.provider.JwtTokenProvider;
 import com.mineme.server.user.dto.UserBuilder;
 import com.mineme.server.user.repository.UserRepository;
+import com.mineme.server.user.service.UserService;
 import com.mineme.server.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class KakaoAuthService implements AuthService<Auth.SignRequest> {
 
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final Properties properties;
@@ -50,7 +51,8 @@ public class KakaoAuthService implements AuthService<Auth.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken,
+					userService.getUserMatchingCode(signedUser));
 			} else {
 				User pendingUser = UserBuilder.toPendingUserEntity(username, dto);
 				User signedUser = userRepository.save(pendingUser);
@@ -58,14 +60,13 @@ public class KakaoAuthService implements AuthService<Auth.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken,
+					userService.getUserMatchingCode(signedUser));
 			}
 		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);
 		} catch (WebClientResponseException e) {
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
-		} catch (NoSuchAlgorithmException e) {
-			throw new CustomException(ErrorCode.CANNOT_CREATE_MATCHING_CODE);
 		} catch (Exception e) {
 			throw new CustomException(ErrorCode.SERVER_ERROR);
 		}

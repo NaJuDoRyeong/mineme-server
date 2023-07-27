@@ -32,6 +32,12 @@ public enum ErrorCode {
 	NULL_TOKEN(4020, HttpStatus.UNAUTHORIZED, "Token is null."),
 	NULL_REQUEST(4021, HttpStatus.UNAUTHORIZED, "Request null."),
 
+	/* 43xx : Couple Error */
+	INVALID_COUPLE_SIZE(4301, HttpStatus.BAD_REQUEST, "Invalid couple size."),
+	INVALID_COUPLE_PROFILE(4302, HttpStatus.BAD_REQUEST, "Invalid couple profile."),
+	NO_COUPLE_DATA(4303, HttpStatus.BAD_REQUEST, "Couldn't find couple data."),
+
+
 	/* File Error */
 	FILE_CONVERT(5001, HttpStatus.INTERNAL_SERVER_ERROR, "File conversion failed"),
 	FILE_UPLOAD(5002, HttpStatus.INTERNAL_SERVER_ERROR, "File upload failed"),
