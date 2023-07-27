@@ -12,6 +12,7 @@ import com.mineme.server.auth.utils.AuthClientUtil;
 import com.mineme.server.auth.utils.AuthUtil;
 import com.mineme.server.user.dto.UserBuilder;
 import com.mineme.server.user.repository.UserRepository;
+import com.mineme.server.user.service.UserService;
 import com.mineme.server.user.service.UserServiceImpl;
 
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AppleAuthService implements AuthService<Apple.SignRequest> {
 
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final Properties properties;
@@ -56,7 +57,7 @@ public class AppleAuthService implements AuthService<Apple.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(false, accessToken, userService.getUserMatchingCode(signedUser));
 			} else {
 				User pendingUser = UserBuilder.toPendingUserEntity(username, dto);
 				User signedUser = userRepository.save(pendingUser);
@@ -64,7 +65,7 @@ public class AppleAuthService implements AuthService<Apple.SignRequest> {
 				String accessToken = jwtTokenProvider.create(signedUser.getUsername(), signedUser.getUserState(),
 					properties.getSecret());
 
-				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userServiceImpl.getUserMatchingCode(signedUser));
+				return Auth.CreatedJwt.toCreatedJwtDto(true, accessToken, userService.getUserMatchingCode(signedUser));
 			}
 		} catch (NullPointerException e) {
 			throw new CustomException(ErrorCode.INVALID_USER);
